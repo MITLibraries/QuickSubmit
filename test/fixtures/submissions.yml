@@ -1,0 +1,33 @@
+# == Schema Information
+#
+# Table name: submissions
+#
+#  id                :integer          not null, primary key
+#  user_id           :integer
+#  title             :string           not null
+#  journal           :string
+#  doi               :string
+#  author            :string
+#  doe               :boolean
+#  grant_number      :string
+#  agreed_to_license :boolean
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+sub_one:
+  title: 'Popcorn is a fruit.'
+  agreed_to_license: true
+  user: one
+
+sub_two:
+  title: 'Simple Secret Substitution Songs'
+  user: two
+  journal: 'Journal of Popcorn Management'
+  doi: 'doi:10.10.1038/nphys1170'
+  author: 'Lastname, Firstname'
+  doe: true
+  grant_number: 'asdf123'
+  agreed_to_license: true
