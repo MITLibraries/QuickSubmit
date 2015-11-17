@@ -20,4 +20,8 @@ class Submission < ActiveRecord::Base
   validates :user, presence: true
   validates :title, presence: true
   validates :agreed_to_license, inclusion: { in: [true] }
+
+  def to_mets
+    Mets.new(self).to_xml
+  end
 end
