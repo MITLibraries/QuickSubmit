@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 ruby '2.2.3'
 
 gem 'rails', '4.2.5'
+gem 'bootstrap_form'
 gem 'devise'
 gem 'http_logger'
 gem 'jquery-rails'
