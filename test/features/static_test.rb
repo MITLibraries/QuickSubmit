@@ -15,8 +15,8 @@ class StaticTest < Capybara::Rails::TestCase
 
   test 'sign in link' do
     visit root_path
-    assert page.has_link?('Sign in')
-    refute page.has_link?('Sign out')
+    assert_link('Sign in')
+    refute_link('Sign out')
   end
 
   test 'sign out link' do
@@ -27,7 +27,7 @@ class StaticTest < Capybara::Rails::TestCase
 
     visit '/users/auth/mit_oauth2/callback'
     visit root_path
-    assert page.has_link?('Sign out')
-    refute page.has_link?('Sign in')
+    assert_link('Sign out')
+    refute_link('Sign in')
   end
 end

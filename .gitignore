@@ -17,3 +17,7 @@
 /tmp
 coverage
 .env
+
+.byebug_history
+
+*.lock
