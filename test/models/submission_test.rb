@@ -40,4 +40,15 @@ class SubmissionTest < ActiveSupport::TestCase
     sub.agreed_to_license = false
     assert_not sub.valid?
   end
+
+  test '#mets' do
+    VCR.use_cassette('mets_dtd') do
+      dtd = Net::HTTP.get(
+        URI('http://www.loc.gov/standards/mets/version111/mets.xsd'))
+      sub = submissions(:sub_two)
+      xsd = Nokogiri::XML::Schema(dtd)
+      doc = Nokogiri::XML(sub.to_mets)
+      assert_equal(true, xsd.valid?(doc))
+    end
+  end
 end
