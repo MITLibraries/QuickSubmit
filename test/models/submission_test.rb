@@ -42,11 +42,9 @@ class SubmissionTest < ActiveSupport::TestCase
   end
 
   test '#mets' do
-    VCR.use_cassette('mets_dtd') do
-      dtd = Net::HTTP.get(
-        URI('http://www.loc.gov/standards/mets/version111/mets.xsd'))
+    Dir.chdir("#{Rails.root}/test/fixtures/schemas") do
       sub = submissions(:sub_two)
-      xsd = Nokogiri::XML::Schema(dtd)
+      xsd = Nokogiri::XML::Schema(File.read('mets.xsd'))
       doc = Nokogiri::XML(sub.to_mets)
       assert_equal(true, xsd.valid?(doc))
     end

@@ -1,0 +1,185 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://purl.org/eprint/epdcx/2006-11-16/"
+           targetNamespace="http://purl.org/eprint/epdcx/2006-11-16/"
+           elementFormDefault="qualified"
+           attributeFormDefault="qualified">
+
+  <xs:annotation>
+    <xs:documentation xml:lang="en">
+      XML Schema for http://purl.org/eprint/epdcx/2006-11-16/ namespace
+
+      Created 2006-11-30
+
+      Created by
+
+      Pete Johnston (pete.johnston@eduserv.org.uk)
+
+      This schema declares a set of XML elements and attributes for use in Eprints-DC-XML documents.
+
+    </xs:documentation>
+
+  </xs:annotation>
+
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+             schemaLocation="http://www.w3.org/2001/03/xml.xsd">
+  </xs:import>
+
+
+  <xs:complexType name="DescriptionSetElement" final="extension">
+    <xs:annotation>
+      <xs:documentation>
+        The DescriptionSetElement complexType defines the content model for a Eprints-DC-XML Description Set Element.
+        A Eprints-DC-XML Description Set Element may contain one or more Eprints-DC-XML Description Elements.
+        A Eprints-DC-XML Description Set Element may also have XML attributes, the names of which may be from any other XML namespace.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="description" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attributeGroup ref="DescriptionSetElementAttributes" />
+  </xs:complexType>
+
+  <xs:attributeGroup name="DescriptionSetElementAttributes">
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:attributeGroup>
+
+  <xs:element name="descriptionSet" type="DescriptionSetElement" />
+
+
+  <xs:complexType name="DescriptionElement" final="extension">
+    <xs:annotation>
+      <xs:documentation>
+        The DescriptionElement complexType defines the content model for a Eprints-DC-XML Description Element.
+        A Eprints-DC-XML Description Element may contain one or more Eprints-DC-XML Statement Elements.
+        A Eprints-DC-XML Description Element may also have a epdcx:resourceURI and a epdcx:resourceId attribute.
+        A Eprints-DC-XML Description Element may also have other XML attributes, the names of which may be from any other XML namespace.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="statement" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attributeGroup ref="DescriptionElementAttributes" />
+  </xs:complexType>
+
+  <xs:attributeGroup name="DescriptionElementAttributes">
+    <xs:attribute ref="resourceId" use="optional"/> <!-- can't constrain either resourceId or resourceURI -->
+    <xs:attribute ref="resourceURI" use="optional"/>
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:attributeGroup>
+
+  <xs:attribute name="resourceId" type="xs:ID" />
+
+  <xs:attribute name="resourceURI" type="xs:anyURI" />
+
+  <xs:element name="description" type="DescriptionElement" />
+
+
+  <xs:complexType name="StatementElement" final="extension">
+    <xs:annotation>
+      <xs:documentation>
+        The StatementElement complexType defines the content model for a Eprints-DC-XML Statement Element.
+        A Eprints-DC-XML Statement Element may contain Value Representation Elements.
+        A Eprints-DC-XML Statement Element may also have a epdcx:valueURI, epdcx:vesURI or epdcx:valueRef attribute.
+        A Eprints-DC-XML Statement Element may also have other XML attributes, the names of which may be from any other XML namespace.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="valueString"/>
+        <xs:element ref="XMLRepresentation"/>
+        <xs:element ref="binaryRepresentation"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attributeGroup ref="StatementElementAttributes"/>
+  </xs:complexType>
+
+  <xs:attributeGroup name="StatementElementAttributes">
+    <xs:attribute ref="propertyURI" use="required"/>
+    <xs:attribute ref="vesURI" use="optional"/>
+    <xs:attribute ref="valueURI" use="optional"/> <!-- can't constrain either valueRef or valueURI -->
+    <xs:attribute ref="valueRef" use="optional"/>
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:attributeGroup>
+
+  <xs:attribute name="propertyURI" type="xs:anyURI" />
+
+  <xs:attribute name="valueURI" type="xs:anyURI" />
+
+  <xs:attribute name="vesURI" type="xs:anyURI" />
+
+  <xs:attribute name="valueRef" type="xs:IDREF" />
+
+  <xs:element name="statement" type="StatementElement" />
+
+
+
+  <xs:complexType name="ValueStringElement" final="extension">
+    <xs:annotation>
+      <xs:documentation>
+
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:anySimpleType">
+<!--      <xs:extension base="xs:string"> -->
+	<xs:attributeGroup ref="ValueStringElementAttributes"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:attributeGroup name="ValueStringElementAttributes">
+    <xs:attribute ref="xml:lang" use="optional"/> <!-- can't constrain either xml:lang or sesURI -->
+    <xs:attribute ref="sesURI" use="optional"/>
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:attributeGroup>
+
+  <xs:attribute name="sesURI" type="xs:anyURI" />
+
+  <xs:element name="valueString" type="ValueStringElement" />
+
+
+  <xs:complexType name="XMLRepresentationElement" mixed="true" final="extension">
+    <xs:annotation>
+      <xs:documentation>
+        XML Representation Element as mixed content
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="XMLRepresentationElementAttributes"/>
+  </xs:complexType>
+
+  <xs:attributeGroup name="XMLRepresentationElementAttributes">
+    <xs:attribute ref="mediaType" use="required" />
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:attributeGroup>
+
+  <xs:attribute name="mediaType" type="xs:string" />
+
+  <xs:element name="XMLRepresentation" type="XMLRepresentationElement" />
+
+
+  <xs:complexType name="BinaryRepresentationElement" final="extension">
+    <xs:annotation>
+      <xs:documentation>
+        Binary Representation Element as Base64
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:base64Binary">
+	<xs:attributeGroup ref="BinaryRepresentationElementAttributes"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:attributeGroup name="BinaryRepresentationElementAttributes">
+    <xs:attribute ref="mediaType" use="required" />
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:attributeGroup>
+
+  <xs:element name="binaryRepresentation" type="BinaryRepresentationElement" />
+
+</xs:schema>

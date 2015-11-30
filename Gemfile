@@ -36,6 +36,4 @@ group :test do
   gem 'minitest-reporters'
   gem 'minitest-rails'
   gem 'minitest-rails-capybara'
-  gem 'vcr'
-  gem 'webmock'
 end
