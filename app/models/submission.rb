@@ -20,6 +20,8 @@ class Submission < ActiveRecord::Base
   validates :user, presence: true
   validates :title, presence: true
   validates :agreed_to_license, inclusion: { in: [true] }
+  mount_uploaders :documents, DocumentUploader
+  serialize :documents, JSON
 
   def to_mets
     Mets.new(self).to_xml

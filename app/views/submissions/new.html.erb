@@ -17,6 +17,8 @@
         label: "I am authorized to submit this article." %>
   <% end %>
 
+  <%= f.file_field :documents, multiple: true %>
+
   <%= f.form_group do %>
     <%= f.submit %>
   <% end %>
