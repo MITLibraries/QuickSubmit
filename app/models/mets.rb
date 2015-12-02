@@ -34,7 +34,7 @@ class Mets
   end
 
   def dmd(xml)
-    xml['mets'].dmdSec('ID' => 'VAA4025-102-1-a01-dmd') do
+    xml['mets'].dmdSec('ID' => 'mitqs_dmd') do
       xml['mets'].mdWrap('MDTYPE' => 'OTHER', 'OTHERMDTYPE' => 'EPDCX',
                          'MIMETYPE' => 'text/xml') do
         xml_data(xml)
@@ -43,22 +43,26 @@ class Mets
   end
 
   def filesec(xml)
-    xml['mets'].fileSec('ID' => 'VAA4025-102-1-a02-dmd') do
-      xml['mets'].fileGrp('USE' => 'CONTENT') do
-        xml['mets'].file('ID' => 'JHEP09',
-                         'MIMETYPE' => 'application/pdf') do
-          xml['mets'].FLocat('LOCTYPE' => 'URL',
-                             'xlink:href' => 'JHEP09(2015)175_pdfa.pdf')
+    xml['mets'].fileSec do
+      @submission.documents.each_with_index do |doc, index|
+        xml['mets'].fileGrp('USE' => 'CONTENT') do
+          xml['mets'].file('ID' => "mitqs_doc_#{index}",
+                           'MIMETYPE' => doc.file.content_type) do
+            xml['mets'].FLocat('LOCTYPE' => 'URL',
+                               'xlink:href' => doc.file.filename)
+          end
         end
       end
     end
   end
 
   def structmap(xml)
-    xml['mets'].structMap('ID' => 'VAA4025-102-1-a03-dmd') do
-      xml['mets'].div('DMDID' => 'sword-mets-dmd-1') do
+    xml['mets'].structMap do
+      xml['mets'].div('DMDID' => 'mitqs_dmd') do
         xml['mets'].div('TYPE' => 'File') do
-          xml['mets'].fptr('FILEID' => 'JHEP09')
+          @submission.documents.each_with_index do |_doc, index|
+            xml['mets'].fptr('FILEID' => "mitqs_doc_#{index}")
+          end
         end
       end
     end

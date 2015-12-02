@@ -21,7 +21,7 @@
 sub_one:
   title: 'Popcorn is a fruit.'
   agreed_to_license: true
-  documents: "[\"b_pdf.pdf\"]"
+  documents: "[\"b_pdf.pdf\", \"a_pdf.pdf\"]"
   user: one
 
 sub_two:
