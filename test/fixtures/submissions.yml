@@ -13,6 +13,7 @@
 #  agreed_to_license :boolean
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  documents         :string
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
@@ -20,6 +21,7 @@
 sub_one:
   title: 'Popcorn is a fruit.'
   agreed_to_license: true
+  documents: "[\"b_pdf.pdf\"]"
   user: one
 
 sub_two:
@@ -31,3 +33,4 @@ sub_two:
   doe: true
   grant_number: 'asdf123'
   agreed_to_license: true
+  documents: "[\"b_pdf.pdf\"]"

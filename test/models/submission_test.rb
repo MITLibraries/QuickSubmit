@@ -13,6 +13,7 @@
 #  agreed_to_license :boolean
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  documents         :string
 #
 
 require 'test_helper'
@@ -38,6 +39,12 @@ class SubmissionTest < ActiveSupport::TestCase
   test 'invalid without agreed_to_license' do
     sub = submissions(:sub_one)
     sub.agreed_to_license = false
+    assert_not sub.valid?
+  end
+
+  test 'invalid without documents' do
+    sub = submissions(:sub_one)
+    sub.remove_documents!
     assert_not sub.valid?
   end
 

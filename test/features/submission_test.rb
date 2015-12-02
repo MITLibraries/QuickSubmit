@@ -85,11 +85,27 @@ class SubmissionPagesTest < Capybara::Rails::TestCase
   end
 
   test 'non pdf cannot be attached' do
+    subs = Submission.count
     base_valid_form
     attach_file('submission[documents][]',
                 File.absolute_path('./test/fixtures/a.txt'))
     click_on('Create Submission')
-    @sub = Submission.last
-    assert_equal(0, @sub.documents.count)
+    assert_equal(Submission.count, subs)
+    assert_text('You are not allowed to upload "txt" files, allowed types: pdf')
+  end
+
+  test 'pdf retained across invalid form submission' do
+    subs = Submission.count
+    base_valid_form
+    attach_file('submission[documents][]',
+                File.absolute_path('./test/fixtures/a_pdf.pdf'))
+    uncheck('I am authorized to submit this article.')
+    click_on('Create Submission')
+    assert_equal(Submission.count, subs)
+    assert_text('a_pdf.pdf')
+    check('I am authorized to submit this article.')
+    click_on('Create Submission')
+    assert_equal(Submission.count, (subs + 1))
+    assert('a_pdf.pdf', Submission.last.documents.first.filename)
   end
 end
