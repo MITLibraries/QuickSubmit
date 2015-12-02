@@ -21,3 +21,5 @@ coverage
 .byebug_history
 
 *.lock
+
+public/uploads/*

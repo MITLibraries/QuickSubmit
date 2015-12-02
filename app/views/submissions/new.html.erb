@@ -17,6 +17,20 @@
         label: "I am authorized to submit this article." %>
   <% end %>
 
+  <%= f.file_field :documents, multiple: true %>
+  <%= f.hidden_field :documents_cache %>
+
+  <% if @submission.documents? %>
+    <%= f.form_group :documents do %>
+      Already Uploaded Documents for this Submission:
+      <ul>
+      <% @submission.documents.each do |doc| %>
+        <li><%= doc.filename %></li>
+      <% end %>
+      </ul>
+    <% end %>
+  <% end %>
+
   <%= f.form_group do %>
     <%= f.submit %>
   <% end %>

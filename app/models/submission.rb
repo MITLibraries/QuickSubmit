@@ -13,6 +13,7 @@
 #  agreed_to_license :boolean
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  documents         :string
 #
 
 class Submission < ActiveRecord::Base
@@ -20,6 +21,9 @@ class Submission < ActiveRecord::Base
   validates :user, presence: true
   validates :title, presence: true
   validates :agreed_to_license, inclusion: { in: [true] }
+  validates :documents, presence: true
+  mount_uploaders :documents, DocumentUploader
+  serialize :documents, JSON
 
   def to_mets
     Mets.new(self).to_xml

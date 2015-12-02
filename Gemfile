@@ -3,6 +3,7 @@ ruby '2.2.3'
 
 gem 'rails', '4.2.5'
 gem 'bootstrap_form'
+gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 gem 'devise'
 gem 'http_logger'
 gem 'jquery-rails'
@@ -36,6 +37,4 @@ group :test do
   gem 'minitest-reporters'
   gem 'minitest-rails'
   gem 'minitest-rails-capybara'
-  gem 'vcr'
-  gem 'webmock'
 end
