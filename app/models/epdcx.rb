@@ -1,15 +1,15 @@
 class Epdcx
   def initialize(xml, submission)
     @xml = xml
-    @xml['mets'].xmlData do
-      @xml['epdcx'].descriptionSet(
-        'xmlns:epdcx' => 'http://purl.org/eprint/epdcx/2006-11-16/',
-        'xsi:schemaLocation' =>
-          'http://purl.org/eprint/epdcx/xsd/2006-11-16/epdcx.xsd') do
-        work(submission)
-        entity(submission)
-      end
+    @xml['epdcx'].descriptionSet(
+      'xmlns:epdcx' => 'http://purl.org/eprint/epdcx/2006-11-16/') do
+      work(submission)
+      entity(submission)
     end
+  end
+
+  def to_xml
+    @xml.to_xml
   end
 
   private
@@ -32,9 +32,8 @@ class Epdcx
       statement('http://purl.org/dc/elements/1.1/creator', submission.author)
 
       @xml['epdcx'].statement('epdcx:propertyURI' =>
-                             'http://purl.org/eprint/terms/isExpressedAs') do
-        @xml['epdcx'].valueRef('sword-mets-expr-1')
-      end
+                             'http://purl.org/eprint/terms/isExpressedAs',
+                              'epdcx:valueRef' => 'sword-mets-expr-1')
     end
   end
 
