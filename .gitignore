@@ -23,3 +23,5 @@ coverage
 *.lock
 
 public/uploads/*
+
+*.pid
