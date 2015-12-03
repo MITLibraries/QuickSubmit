@@ -42,16 +42,20 @@ class Mets
     end
   end
 
+  def filegrp(xml, doc, index)
+    xml['mets'].fileGrp('USE' => 'CONTENT') do
+      xml['mets'].file('ID' => "mitqs_doc_#{index}",
+                       'MIMETYPE' => doc.file.content_type) do
+        xml['mets'].FLocat('LOCTYPE' => 'URL',
+                           'xlink:href' => doc.file.filename)
+      end
+    end
+  end
+
   def filesec(xml)
     xml['mets'].fileSec do
       @submission.documents.each_with_index do |doc, index|
-        xml['mets'].fileGrp('USE' => 'CONTENT') do
-          xml['mets'].file('ID' => "mitqs_doc_#{index}",
-                           'MIMETYPE' => doc.file.content_type) do
-            xml['mets'].FLocat('LOCTYPE' => 'URL',
-                               'xlink:href' => doc.file.filename)
-          end
-        end
+        filegrp(xml, doc, index)
       end
     end
   end
@@ -69,6 +73,8 @@ class Mets
   end
 
   def xml_data(xml)
-    Epdcx.new(xml, @submission)
+    xml['mets'].xmlData do
+      Epdcx.new(xml, @submission)
+    end
   end
 end

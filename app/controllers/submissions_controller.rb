@@ -11,6 +11,7 @@ class SubmissionsController < ApplicationController
     @submission.user = current_user
     if @submission.save
       flash.notice = 'Your Submission is now in progress.'
+      # render :json => @submission.to_mets
       redirect_to root_path
     else
       render 'new'
