@@ -12,6 +12,7 @@ gem 'nokogiri'
 gem 'omniauth-mit-oauth2'
 gem 'omniauth-oauth2', '~> 1.3.1'
 gem 'passenger'
+gem 'rubyzip', require: 'zip'
 gem 'therubyracer', platforms: :ruby
 gem 'twitter-bootstrap-rails'
 gem 'uglifier', '>= 1.3.0'
