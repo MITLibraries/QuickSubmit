@@ -28,4 +28,18 @@ class Submission < ActiveRecord::Base
   def to_mets
     Mets.new(self).to_xml
   end
+
+  def sword_path
+    md5 = Digest::MD5.new
+    "tmp/#{md5.update(id.to_s)}.zip"
+  end
+
+  def to_sword_package
+    Zip::File.open(sword_path, Zip::File::CREATE) do |zipfile|
+      documents.each do |document|
+        zipfile.add(document.file.filename, document.file.file)
+      end
+      zipfile.get_output_stream('mets.xml') { |os| os.write to_mets }
+    end
+  end
 end
