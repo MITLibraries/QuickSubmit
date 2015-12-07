@@ -213,6 +213,7 @@ GEM
       ruby-progressbar (~> 1.7)
       tins (<= 1.6.0)
     ruby-progressbar (1.7.5)
+    rubyzip (1.1.7)
     simplecov (0.10.0)
       docile (~> 1.1.0)
       json (~> 1.8)
@@ -281,6 +282,7 @@ DEPENDENCIES
   rails (= 4.2.5)
   rails_12factor
   rubocop
+  rubyzip
   sqlite3
   therubyracer
   twitter-bootstrap-rails

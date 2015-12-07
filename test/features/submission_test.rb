@@ -2,6 +2,8 @@ require 'test_helper'
 
 class SubmissionPagesTest < Capybara::Rails::TestCase
   def setup
+    FileUtils.rm_f('tmp/69b9156a124c96bbdb55cad753810e14.zip')
+    FileUtils.rm_f('tmp/40550618d6b4d97792b0773c97207186.zip')
     Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
     Rails.application.env_config['omniauth.auth'] =
       OmniAuth.config.mock_auth[:mit_oauth2]
@@ -107,6 +109,7 @@ class SubmissionPagesTest < Capybara::Rails::TestCase
     check('I am authorized to submit this article.')
     click_on('Create Submission')
     assert_equal(Submission.count, (subs + 1))
-    assert('a_pdf.pdf', Submission.last.documents.first.filename)
+    @sub = Submission.last
+    assert('a_pdf.pdf', @sub.documents.first.filename)
   end
 end
