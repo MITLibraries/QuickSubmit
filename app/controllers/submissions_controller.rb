@@ -1,5 +1,14 @@
 class SubmissionsController < ApplicationController
   before_action :authenticate_user!
+  load_and_authorize_resource
+
+  def index
+    if current_user.admin?
+      @submissions = Submission.all.order(created_at: :desc)
+    else
+      @submissions = current_user.submissions.order(created_at: :desc)
+    end
+  end
 
   def new
     @submission = Submission.new
@@ -12,10 +21,14 @@ class SubmissionsController < ApplicationController
     if @submission.save
       process_submission(@submission)
       flash.notice = 'Your Submission is now in progress.'
-      redirect_to root_path
+      redirect_to submissions_path
     else
       render 'new'
     end
+  end
+
+  def package
+    send_file(Submission.find_by_id(params[:id]).sword_path)
   end
 
   private

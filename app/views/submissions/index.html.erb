@@ -1,0 +1,18 @@
+<h1>MIT DSpace Quick Submit Submissions</h1>
+
+<% if @submissions %>
+  <ul>
+  <% @submissions.each do |sub| %>
+    <li>
+      <strong><%= sub.title %></strong>
+      submitted: <%= time_ago_in_words(sub.created_at) %> ago
+      <br />
+      <% if current_user.admin? %>
+        <%= link_to('Sword Package', submission_package_path(sub)) %>
+      <% end %>
+    </li>
+  <% end %>
+  </ul>
+<% else %>
+  <p>You have no submissions in progress.</p>
+<% end %>

@@ -34,6 +34,7 @@
           <ul class="nav navbar-nav">
             <li><%= link_to "New Submission", new_submission_path %></li>
             <% if user_signed_in? %>
+              <li><%= link_to "Submissions", submissions_path %></li>
               <li><%= link_to("Sign out", destroy_user_session_path, method: :delete, id: "sign_in") %></li>
             <% else %>
               <li><%= link_to("Sign in", user_omniauth_authorize_path(:mit_oauth2), id: "sign_in") %></li>

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  resources :submissions, only: [:new, :create]
+  resources :submissions, only: [:new, :create, :index]
+  get 'submissions/package/:id', to: 'submissions#package', as: :submission_package
 
   devise_for :users, :controllers => {
     :omniauth_callbacks => 'users/omniauth_callbacks'
