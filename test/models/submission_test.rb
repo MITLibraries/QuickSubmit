@@ -56,4 +56,38 @@ class SubmissionTest < ActiveSupport::TestCase
       assert_equal(true, xsd.valid?(doc))
     end
   end
+
+  test '#sword_package_name' do
+    sub = submissions(:sub_one)
+    assert_equal(sub.sword_path, 'tmp/69b9156a124c96bbdb55cad753810e14.zip')
+  end
+
+  def setup_sword_files(sub)
+    FileUtils.rm_f(sub.sword_path)
+    FileUtils.mkdir_p('./tmp/uploads/submission/documents/783478147')
+    FileUtils.cp(['./test/fixtures/a_pdf.pdf', './test/fixtures/b_pdf.pdf'],
+                 './tmp/uploads/submission/documents/783478147')
+  end
+
+  def cleaup_sword_files(sub)
+    sub.documents.map(&:remove!)
+    FileUtils.rm_f(sub.sword_path)
+  end
+
+  test '#to_sword_package creates zip file' do
+    sub = submissions(:sub_one)
+    setup_sword_files(sub)
+    sub.to_sword_package
+    assert_equal(true, File.file?(sub.sword_path))
+    cleaup_sword_files(sub)
+  end
+
+  test '#to_sword_package zip contains correct files' do
+    sub = submissions(:sub_one)
+    setup_sword_files(sub)
+    sub.to_sword_package
+    sword = Zip::File.open(sub.sword_path)
+    assert_equal(['a_pdf.pdf', 'b_pdf.pdf', 'mets.xml'], sword.map(&:name).sort)
+    cleaup_sword_files(sub)
+  end
 end

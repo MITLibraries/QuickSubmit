@@ -10,17 +10,21 @@ class SubmissionsController < ApplicationController
     @submission = Submission.new(submission_params)
     @submission.user = current_user
     if @submission.save
+      process_submission(@submission)
       flash.notice = 'Your Submission is now in progress.'
-      # temporarily render mets for demo purposes
-      # we'll send to a receipt / next steps page eventually
-      render json: @submission.to_mets
-      # redirect_to root_path
+      redirect_to root_path
     else
       render 'new'
     end
   end
 
   private
+
+  def process_submission(submission)
+    # this will likely want to be an asynch job queue
+    # to create the package and handle the sword submission
+    submission.to_sword_package
+  end
 
   def submission_params
     params.require(:submission).permit(:title, :agreed_to_license, :author,
