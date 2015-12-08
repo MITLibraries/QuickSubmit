@@ -1,31 +1,27 @@
 require 'test_helper'
 
-class SubmissionPagesTest < Capybara::Rails::TestCase
+class SubmissionCreatePagesTest < Capybara::Rails::TestCase
   def setup
+    auth_setup
     FileUtils.rm_f('tmp/69b9156a124c96bbdb55cad753810e14.zip')
     FileUtils.rm_f('tmp/40550618d6b4d97792b0773c97207186.zip')
-    Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
-    Rails.application.env_config['omniauth.auth'] =
-      OmniAuth.config.mock_auth[:mit_oauth2]
-    OmniAuth.config.test_mode = true
   end
 
   def teardown
-    OmniAuth.config.test_mode = false
-    OmniAuth.config.mock_auth[:mit_oauth2] = nil
+    auth_teardown
     @sub.documents.map(&:remove!) if @sub
   end
 
-  def mock_auth
+  def mock_auth(user)
     OmniAuth.config.mock_auth[:mit_oauth2] =
       OmniAuth::AuthHash.new(provider: 'mit_oauth2',
-                             uid: '123545',
-                             info: { email: 'bob@asdf.com' })
+                             uid: user.uid,
+                             info: { email: user.email })
     visit '/users/auth/mit_oauth2/callback'
   end
 
   def base_valid_form
-    mock_auth
+    mock_auth(users(:one))
     visit new_submission_path
     fill_in('Journal', with: 'Super Mega Journal')
     fill_in('Title', with: 'Alphabetical Order is Good Enough')
@@ -71,10 +67,9 @@ class SubmissionPagesTest < Capybara::Rails::TestCase
     click_on('Create Submission')
     assert_equal(Submission.count, (subs + 1))
     @sub = Submission.last
-    assert_equal('bob@asdf.com', @sub.user.email)
-    # Temporarily rendering mets for demo purposes. We'll get back to this.
-    # assert_equal(root_path, current_path)
-    # assert_text('Your Submission is now in progress')
+    assert_equal('abc123@example.com', @sub.user.email)
+    assert_equal(submissions_path, current_path)
+    assert_text('Your Submission is now in progress')
   end
 
   test 'multiple pdfs can be attached' do

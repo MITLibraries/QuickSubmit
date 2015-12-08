@@ -7,6 +7,7 @@
 #  uid        :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  admin      :boolean
 #
 
 class User < ActiveRecord::Base

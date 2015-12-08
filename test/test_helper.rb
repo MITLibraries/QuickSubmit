@@ -17,7 +17,26 @@ module ActiveSupport
     # Setup all fixtures in test/fixtures/*.yml for all tests in alpha order.
     fixtures :all
 
-    # Add more helper methods to be used by all tests here...
+    def mock_auth(user)
+      OmniAuth.config.mock_auth[:mit_oauth2] =
+        OmniAuth::AuthHash.new(provider: 'mit_oauth2',
+                               uid: user.uid,
+                               info: { email: user.email })
+      visit '/users/auth/mit_oauth2/callback'
+    end
+
+    def auth_setup
+      Rails.application.env_config['devise.mapping'] = Devise.mappings[:user]
+      Rails.application.env_config['omniauth.auth'] =
+        OmniAuth.config.mock_auth[:mit_oauth2]
+      OmniAuth.config.test_mode = true
+    end
+
+    def auth_teardown
+      OmniAuth.config.test_mode = false
+      OmniAuth.config.mock_auth[:mit_oauth2] = nil
+      reset_session!
+    end
   end
 end
 

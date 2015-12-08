@@ -3,6 +3,7 @@ ruby '2.2.3'
 
 gem 'rails', '4.2.5'
 gem 'bootstrap_form'
+gem 'cancancan'
 gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 gem 'devise'
 gem 'http_logger'

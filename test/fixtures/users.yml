@@ -7,12 +7,18 @@
 #  uid        :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  admin      :boolean
 #
 
 one:
-  uid: 'abc123'
-  email: 'abc123@example.com'
+  uid:   abc123
+  email: abc123@example.com
 
 two:
-  uid: 'def456'
-  email: 'def456@example.com'
+  uid:   def456
+  email: def456@example.com
+
+admin:
+  uid:   xyz789
+  email: xyz789@example.com
+  admin: true
