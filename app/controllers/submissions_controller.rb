@@ -19,8 +19,7 @@ class SubmissionsController < ApplicationController
     @submission = Submission.new(submission_params)
     @submission.user = current_user
     if @submission.save
-      process_submission(@submission)
-      flash.notice = 'Your Submission is now in progress.'
+      process_submission
       redirect_to submissions_path
     else
       render 'new'
@@ -33,10 +32,34 @@ class SubmissionsController < ApplicationController
 
   private
 
-  def process_submission(submission)
-    # this will likely want to be an asynch job queue
-    # to create the package and handle the sword submission
-    submission.to_sword_package
+  def process_submission
+    @submission.to_sword_package
+    sword = Sword.new(@submission)
+    begin
+      sword.deposit
+      read_sword_response(sword)
+    rescue RestClient::Unauthorized
+      @submission.status = 'failed'
+      flash.notice = 'There was a problem with your submission.'
+    end
+    @submission.save
+  end
+
+  def read_sword_response(sword)
+    deposited(sword) if sword.response.code == 201
+    queued if sword.response.code == 202
+  end
+
+  def deposited(sword)
+    @submission.status = 'deposited'
+    @submission.handle = sword.handle
+    flash.notice =
+      "Your Submission succeeded. Permanent URL: #{@submission.handle}"
+  end
+
+  def queued
+    @submission.status = 'in review queue'
+    flash.notice = 'Your Submission is now in progress.'
   end
 
   def submission_params

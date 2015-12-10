@@ -12,14 +12,6 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     @sub.documents.map(&:remove!) if @sub
   end
 
-  def mock_auth(user)
-    OmniAuth.config.mock_auth[:mit_oauth2] =
-      OmniAuth::AuthHash.new(provider: 'mit_oauth2',
-                             uid: user.uid,
-                             info: { email: user.email })
-    visit '/users/auth/mit_oauth2/callback'
-  end
-
   def base_valid_form
     mock_auth(users(:one))
     visit new_submission_path
@@ -64,7 +56,9 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     base_valid_form
     attach_file('submission[documents][]',
                 File.absolute_path('./test/fixtures/a_pdf.pdf'))
-    click_on('Create Submission')
+    VCR.use_cassette('a submission', preserve_exact_body_bytes: true) do
+      click_on('Create Submission')
+    end
     assert_equal(Submission.count, (subs + 1))
     @sub = Submission.last
     assert_equal('abc123@example.com', @sub.user.email)
@@ -77,7 +71,9 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     attach_file('submission[documents][]',
                 [File.absolute_path('./test/fixtures/a_pdf.pdf'),
                  File.absolute_path('./test/fixtures/b_pdf.pdf')])
-    click_on('Create Submission')
+    VCR.use_cassette('ab submission', preserve_exact_body_bytes: true) do
+      click_on('Create Submission')
+    end
     @sub = Submission.last
     assert_equal(2, @sub.documents.count)
   end
@@ -102,7 +98,9 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     assert_equal(Submission.count, subs)
     assert_text('a_pdf.pdf')
     check('I am authorized to submit this article.')
-    click_on('Create Submission')
+    VCR.use_cassette('a submission', preserve_exact_body_bytes: true) do
+      click_on('Create Submission')
+    end
     assert_equal(Submission.count, (subs + 1))
     @sub = Submission.last
     assert('a_pdf.pdf', @sub.documents.first.filename)

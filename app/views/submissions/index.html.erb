@@ -1,18 +1,33 @@
 <h1>MIT DSpace Quick Submit Submissions</h1>
 
 <% if @submissions %>
-  <ul>
+
   <% @submissions.each do |sub| %>
-    <li>
-      <strong><%= sub.title %></strong>
-      submitted: <%= time_ago_in_words(sub.created_at) %> ago
-      <br />
+    <% if sub.status == 'deposited' %>
+      <div class="panel panel-success">
+    <% elsif sub.status == 'in review queue' %>
+      <div class="panel panel-info">
+    <% elsif sub.status == 'failed' %>
+      <div class="panel panel-danger">
+    <% else %>
+      <div class="panel panel-warning">
+    <% end %>
+      <div class="panel-heading">
+        <%= sub.title %>
+      </div>
+      <div class="panel-body">
+        Submitted: <%= time_ago_in_words(sub.created_at) %> ago<br />
+        Status: <%= sub.status || 'unknown' %><br />
+        Permanent URL: <%= sub.handle || 'pending submission processing' %><br />
+      </div>
       <% if current_user.admin? %>
-        <%= link_to('Sword Package', submission_package_path(sub)) %>
+        <div class="panel-footer">
+          <%= link_to('Sword Package', submission_package_path(sub)) %>
+        </div>
       <% end %>
-    </li>
+    </div>
   <% end %>
-  </ul>
+
 <% else %>
   <p>You have no submissions in progress.</p>
 <% end %>
