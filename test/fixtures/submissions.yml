@@ -16,6 +16,7 @@
 #  documents         :string
 #  status            :string
 #  handle            :string
+#  uuid              :string
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

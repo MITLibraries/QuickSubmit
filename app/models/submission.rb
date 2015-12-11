@@ -16,6 +16,7 @@
 #  documents         :string
 #  status            :string
 #  handle            :string
+#  uuid              :string
 #
 
 class Submission < ActiveRecord::Base
@@ -24,9 +25,15 @@ class Submission < ActiveRecord::Base
   validates :title, presence: true
   validates :agreed_to_license, inclusion: { in: [true] }
   validates :documents, presence: true
+  validates :handle, format: URI.regexp, allow_nil: true
+  validates :handle, presence: true, if: :status_approved?
   mount_uploaders :documents, DocumentUploader
   serialize :documents, JSON
   before_create :generate_uuid
+
+  def status_approved?
+    status == 'approved'
+  end
 
   def to_mets
     Mets.new(self).to_xml

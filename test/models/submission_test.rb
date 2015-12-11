@@ -16,6 +16,7 @@
 #  documents         :string
 #  status            :string
 #  handle            :string
+#  uuid              :string
 #
 
 require 'test_helper'
@@ -47,6 +48,24 @@ class SubmissionTest < ActiveSupport::TestCase
   test 'invalid without documents' do
     sub = submissions(:sub_one)
     sub.remove_documents!
+    assert_not sub.valid?
+  end
+
+  test 'valid with uri handle' do
+    sub = submissions(:sub_one)
+    sub.handle = 'http://example.com/123456/789.0'
+    assert sub.valid?
+  end
+
+  test 'invalid with non nil blank handle' do
+    sub = submissions(:sub_one)
+    sub.handle = ''
+    assert_not sub.valid?
+  end
+
+  test 'invalid with non uri handle' do
+    sub = submissions(:sub_one)
+    sub.handle = 'not a uri'
     assert_not sub.valid?
   end
 
