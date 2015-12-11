@@ -50,6 +50,14 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_not sub.valid?
   end
 
+  test 'uuid is set' do
+    # fixtures bypass callbacks, so this is all manual.
+    user = users(:one)
+    sub = Submission.create(title: 'manual sub', agreed_to_license: true,
+                            documents: ['b_pdf.pdf'], user: user)
+    assert(sub.uuid)
+  end
+
   test '#mets' do
     Dir.chdir("#{Rails.root}/test/fixtures/schemas") do
       sub = submissions(:sub_two)

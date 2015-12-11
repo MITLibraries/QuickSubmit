@@ -26,6 +26,7 @@ class Submission < ActiveRecord::Base
   validates :documents, presence: true
   mount_uploaders :documents, DocumentUploader
   serialize :documents, JSON
+  before_create :generate_uuid
 
   def to_mets
     Mets.new(self).to_xml
@@ -34,6 +35,10 @@ class Submission < ActiveRecord::Base
   def sword_path
     md5 = Digest::MD5.new
     "tmp/#{md5.update(id.to_s)}.zip"
+  end
+
+  def generate_uuid
+    self.uuid = SecureRandom.uuid
   end
 
   def to_sword_package
