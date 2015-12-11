@@ -14,6 +14,8 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  documents         :string
+#  status            :string
+#  handle            :string
 #
 
 class Submission < ActiveRecord::Base

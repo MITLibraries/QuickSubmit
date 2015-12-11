@@ -7,7 +7,7 @@
 #  uid        :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  admin      :boolean
+#  admin      :boolean          default(FALSE)
 #
 
 require 'test_helper'

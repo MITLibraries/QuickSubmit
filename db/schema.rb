@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151208173727) do
+ActiveRecord::Schema.define(version: 20151210150444) do
 
   create_table "submissions", force: :cascade do |t|
     t.integer  "user_id"
@@ -25,6 +25,8 @@ ActiveRecord::Schema.define(version: 20151208173727) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.string   "documents"
+    t.string   "status"
+    t.string   "handle"
   end
 
   add_index "submissions", ["user_id"], name: "index_submissions_on_user_id"

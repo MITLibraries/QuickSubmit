@@ -12,7 +12,7 @@ gem 'less-rails'
 gem 'nokogiri'
 gem 'omniauth-mit-oauth2'
 gem 'omniauth-oauth2', '~> 1.3.1'
-gem 'passenger'
+gem 'rest-client'
 gem 'rubyzip', require: 'zip'
 gem 'skylight'
 gem 'therubyracer', platforms: :ruby
@@ -22,6 +22,10 @@ gem 'uglifier', '>= 1.3.0'
 group :production do
   gem 'pg'
   gem 'rails_12factor'
+end
+
+group :production, :development do
+  gem 'passenger'
 end
 
 group :development, :test do
@@ -40,4 +44,6 @@ group :test do
   gem 'minitest-reporters'
   gem 'minitest-rails'
   gem 'minitest-rails-capybara'
+  gem 'vcr'
+  gem 'webmock'
 end

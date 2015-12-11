@@ -5,7 +5,8 @@ class Mets
       xml['mets'].mets(
         'xmlns:mets' => 'http://www.loc.gov/METS/',
         'xmlns:xlink' => 'http://www.w3.org/1999/xlink',
-        'xmlns:epdcx' => 'http://purl.org/eprint/epdcx/2006-11-16/') do
+        'xmlns:epdcx' => 'http://purl.org/eprint/epdcx/2006-11-16/',
+        'PROFILE' => 'DSpace METS SIP Profile 1.0') do
         overall_structure(xml)
       end
     end

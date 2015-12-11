@@ -12,6 +12,11 @@ require 'minitest/rails/capybara'
 require 'minitest/reporters'
 Minitest::Reporters.use!
 
+VCR.configure do |config|
+  config.cassette_library_dir = 'test/vcr_cassettes'
+  config.hook_into :webmock
+end
+
 module ActiveSupport
   class TestCase
     # Setup all fixtures in test/fixtures/*.yml for all tests in alpha order.
