@@ -35,8 +35,8 @@ class Submission < ActiveRecord::Base
     status == 'approved'
   end
 
-  def to_mets
-    Mets.new(self).to_xml
+  def to_mets(callback)
+    Mets.new(self, callback).to_xml
   end
 
   def sword_path
@@ -48,12 +48,12 @@ class Submission < ActiveRecord::Base
     self.uuid = SecureRandom.uuid
   end
 
-  def to_sword_package
+  def to_sword_package(callback)
     Zip::File.open(sword_path, Zip::File::CREATE) do |zipfile|
       documents.each do |document|
         zipfile.add(document.file.filename, document.file.file)
       end
-      zipfile.get_output_stream('mets.xml') { |os| os.write to_mets }
+      zipfile.get_output_stream('mets.xml') { |os| os.write to_mets(callback) }
     end
   end
 end

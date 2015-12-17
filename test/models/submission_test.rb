@@ -81,7 +81,7 @@ class SubmissionTest < ActiveSupport::TestCase
     Dir.chdir("#{Rails.root}/test/fixtures/schemas") do
       sub = submissions(:sub_two)
       xsd = Nokogiri::XML::Schema(File.read('mets.xsd'))
-      doc = Nokogiri::XML(sub.to_mets)
+      doc = Nokogiri::XML(sub.to_mets('http://example.com/callback'))
       assert_equal(true, xsd.valid?(doc))
     end
   end
@@ -106,7 +106,7 @@ class SubmissionTest < ActiveSupport::TestCase
   test '#to_sword_package creates zip file' do
     sub = submissions(:sub_one)
     setup_sword_files(sub)
-    sub.to_sword_package
+    sub.to_sword_package('http://example.com/callback')
     assert_equal(true, File.file?(sub.sword_path))
     cleaup_sword_files(sub)
   end
@@ -114,7 +114,7 @@ class SubmissionTest < ActiveSupport::TestCase
   test '#to_sword_package zip contains correct files' do
     sub = submissions(:sub_one)
     setup_sword_files(sub)
-    sub.to_sword_package
+    sub.to_sword_package('http://example.com/callback')
     sword = Zip::File.open(sub.sword_path)
     assert_equal(['a_pdf.pdf', 'b_pdf.pdf', 'mets.xml'], sword.map(&:name).sort)
     cleaup_sword_files(sub)

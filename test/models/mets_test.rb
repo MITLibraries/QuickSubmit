@@ -5,7 +5,7 @@ class MetsTest < ActiveSupport::TestCase
     Dir.chdir("#{Rails.root}/test/fixtures/schemas") do
       sub = submissions(:sub_two)
       xsd = Nokogiri::XML::Schema(File.read('mets.xsd'))
-      xml = Mets.new(sub).to_xml
+      xml = Mets.new(sub, 'http://example.com/callback').to_xml
       doc = Nokogiri::XML(xml)
       assert_equal(true, xsd.valid?(doc))
     end
@@ -15,7 +15,7 @@ class MetsTest < ActiveSupport::TestCase
     Dir.chdir("#{Rails.root}/test/fixtures/schemas") do
       sub = submissions(:sub_one)
       xsd = Nokogiri::XML::Schema(File.read('mets.xsd'))
-      xml = Mets.new(sub).to_xml
+      xml = Mets.new(sub, 'http://example.com/callback').to_xml
       doc = Nokogiri::XML(xml)
       assert_equal(true, xsd.valid?(doc))
     end

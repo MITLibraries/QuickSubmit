@@ -1,15 +1,8 @@
 class Mets
-  def initialize(submission)
+  def initialize(submission, callback_uri)
     @submission = submission
-    @builder = Nokogiri::XML::Builder.new do |xml|
-      xml['mets'].mets(
-        'xmlns:mets' => 'http://www.loc.gov/METS/',
-        'xmlns:xlink' => 'http://www.w3.org/1999/xlink',
-        'xmlns:epdcx' => 'http://purl.org/eprint/epdcx/2006-11-16/',
-        'PROFILE' => 'DSpace METS SIP Profile 1.0') do
-        overall_structure(xml)
-      end
-    end
+    @callback_uri = callback_uri
+    @builder = xml_builder
   end
 
   def to_xml
@@ -18,9 +11,23 @@ class Mets
 
   private
 
+  def xml_builder
+    Nokogiri::XML::Builder.new do |xml|
+      xml['mets'].mets(
+        'xmlns:mets' => 'http://www.loc.gov/METS/',
+        'xmlns:xlink' => 'http://www.w3.org/1999/xlink',
+        'xmlns:epdcx' => 'http://purl.org/eprint/epdcx/2006-11-16/',
+        'xmlns:callback' => '',
+        'PROFILE' => 'DSpace METS SIP Profile 1.0') do
+        overall_structure(xml)
+      end
+    end
+  end
+
   def overall_structure(xml)
     header(xml)
     dmd(xml)
+    amd(xml)
     filesec(xml)
     structmap(xml)
   end
@@ -30,6 +37,18 @@ class Mets
       xml['mets'].agent('ROLE' => 'DISSEMINATOR',
                         'TYPE' => 'ORGANIZATION') do
         xml['mets'].name('MIT Libraries: QuickSubmit')
+      end
+    end
+  end
+
+  def amd(xml)
+    xml['mets'].amdSec('ID' => 'mitqs_amd') do
+      xml['mets'].techMD('ID' => 'mitqs_amd_tech') do
+        xml['mets'].mdWrap('MDTYPE' => 'OTHER', 'MIMETYPE' => 'text/xml') do
+          xml['mets'].xmlData do
+            xml['callback'].callback_uri(@callback_uri)
+          end
+        end
       end
     end
   end

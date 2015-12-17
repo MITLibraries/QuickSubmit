@@ -17,7 +17,7 @@ class SwordTest < ActiveSupport::TestCase
     VCR.use_cassette('workflow submission', preserve_exact_body_bytes: true) do
       sub = submissions(:sub_one)
       setup_sword_files(sub)
-      sub.to_sword_package
+      sub.to_sword_package('http://example.com/callback')
       sword = Sword.new(sub)
       response = sword.deposit
       cleaup_sword_files(sub)
@@ -29,7 +29,7 @@ class SwordTest < ActiveSupport::TestCase
     VCR.use_cassette('deposit', preserve_exact_body_bytes: true) do
       sub = submissions(:sub_one)
       setup_sword_files(sub)
-      sub.to_sword_package
+      sub.to_sword_package('http://example.com/callback')
       sword = Sword.new(sub)
       response = sword.deposit
       cleaup_sword_files(sub)
@@ -41,7 +41,7 @@ class SwordTest < ActiveSupport::TestCase
     VCR.use_cassette('invalid credentials', preserve_exact_body_bytes: true) do
       sub = submissions(:sub_one)
       setup_sword_files(sub)
-      sub.to_sword_package
+      sub.to_sword_package('http://example.com/callback')
       sword = Sword.new(sub)
       assert_raises RestClient::Unauthorized do
         sword.deposit
