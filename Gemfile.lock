@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/carrierwaveuploader/carrierwave.git
-  revision: e3acabb512cb55b683b6d74a63db0723f06df091
+  revision: ecf57fe5fed17657b258d708a59feeec9fac74cd
   specs:
     carrierwave (0.10.0)
       activemodel (>= 3.2.0)
@@ -146,7 +146,7 @@ GEM
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     netrc (0.11.0)
-    nokogiri (1.6.7)
+    nokogiri (1.6.7.1)
       mini_portile2 (~> 2.0.0.rc2)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
