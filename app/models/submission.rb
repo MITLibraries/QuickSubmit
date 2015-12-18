@@ -16,6 +16,7 @@
 #  documents         :string
 #  status            :string
 #  handle            :string
+#  uuid              :string
 #
 
 class Submission < ActiveRecord::Base
@@ -24,11 +25,18 @@ class Submission < ActiveRecord::Base
   validates :title, presence: true
   validates :agreed_to_license, inclusion: { in: [true] }
   validates :documents, presence: true
+  validates :handle, format: URI.regexp, allow_nil: true
+  validates :handle, presence: true, if: :status_approved?
   mount_uploaders :documents, DocumentUploader
   serialize :documents, JSON
+  before_create :generate_uuid
 
-  def to_mets
-    Mets.new(self).to_xml
+  def status_approved?
+    status == 'approved'
+  end
+
+  def to_mets(callback)
+    Mets.new(self, callback).to_xml
   end
 
   def sword_path
@@ -36,12 +44,16 @@ class Submission < ActiveRecord::Base
     "tmp/#{md5.update(id.to_s)}.zip"
   end
 
-  def to_sword_package
+  def generate_uuid
+    self.uuid = SecureRandom.uuid
+  end
+
+  def to_sword_package(callback)
     Zip::File.open(sword_path, Zip::File::CREATE) do |zipfile|
       documents.each do |document|
         zipfile.add(document.file.filename, document.file.file)
       end
-      zipfile.get_output_stream('mets.xml') { |os| os.write to_mets }
+      zipfile.get_output_stream('mets.xml') { |os| os.write to_mets(callback) }
     end
   end
 end

@@ -32,8 +32,12 @@ class SubmissionsController < ApplicationController
 
   private
 
+  def callback_uri
+    callback_submission_status_url(@submission)
+  end
+
   def process_submission
-    @submission.to_sword_package
+    @submission.to_sword_package(callback_uri)
     sword = Sword.new(@submission)
     begin
       sword.deposit
