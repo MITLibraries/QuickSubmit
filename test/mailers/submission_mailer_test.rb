@@ -20,7 +20,7 @@ class SubmissionMailerTest < ActionMailer::TestCase
   test 'deposited' do
     sub = submissions(:sub_one)
     sub.handle = 'http://example.com/1234567/890'
-    sub.status = 'deposited'
+    sub.status = 'approved'
     sub.save!
 
     # Send the email, then test that it got queued
@@ -34,6 +34,26 @@ class SubmissionMailerTest < ActionMailer::TestCase
     assert_equal(read_fixture('deposited_html').join,
                  email.html_part.body.to_s)
     assert_equal(read_fixture('deposited_text').join.strip,
+                 email.text_part.body.to_s.strip)
+  end
+
+  test 'rejected' do
+    sub = submissions(:sub_one)
+    sub.handle = 'http://example.com/1234567/890'
+    sub.status = 'rejected'
+    sub.save!
+
+    # Send the email, then test that it got queued
+    email = SubmissionMailer.rejected(sub).deliver_now
+    assert_not ActionMailer::Base.deliveries.empty?
+
+    assert_equal(2, email.body.parts.length)
+    assert_equal(['some_from@example.com'], email.from)
+    assert_equal(['abc123@example.com'], email.to)
+    assert_equal('Submission Problem', email.subject)
+    assert_equal(read_fixture('rejected_html').join,
+                 email.html_part.body.to_s)
+    assert_equal(read_fixture('rejected_text').join.strip,
                  email.text_part.body.to_s.strip)
   end
 end

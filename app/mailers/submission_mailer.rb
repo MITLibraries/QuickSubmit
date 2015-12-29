@@ -8,4 +8,9 @@ class SubmissionMailer < ApplicationMailer
     @submission = submission
     mail(to: @submission.user.email, subject: 'Submission Complete')
   end
+
+  def rejected(submission)
+    @submission = submission
+    mail(to: @submission.user.email, subject: 'Submission Problem')
+  end
 end

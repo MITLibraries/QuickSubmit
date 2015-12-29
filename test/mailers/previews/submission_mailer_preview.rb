@@ -8,6 +8,10 @@ class SubmissionMailerPreview < ActionMailer::Preview
     sub = Submission.last
     sub.handle = 'http://example.com/123456/789.0'
     sub.save
-    SubmissionMailer.deposited(Submission.last)
+    SubmissionMailer.deposited(sub)
+  end
+
+  def rejected
+    SubmissionMailer.rejected(Submission.last)
   end
 end
