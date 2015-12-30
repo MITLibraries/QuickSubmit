@@ -119,4 +119,48 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_equal(['a_pdf.pdf', 'b_pdf.pdf', 'mets.xml'], sword.map(&:name).sort)
     cleaup_sword_files(sub)
   end
+
+  test 'send_status_email will not send without a status' do
+    sub = submissions(:sub_one)
+    assert_difference('ActionMailer::Base.deliveries.size', 0) do
+      sub.send_status_email
+    end
+  end
+
+  test 'send_status_email with deposited status' do
+    sub = submissions(:sub_one)
+    sub.status = 'deposited'
+    sub.save!
+    assert_difference('ActionMailer::Base.deliveries.size', 1) do
+      sub.send_status_email
+    end
+  end
+
+  test 'send_status_email with approved status' do
+    sub = submissions(:sub_one)
+    sub.status = 'approved'
+    sub.handle = 'http://example.com/123/456'
+    sub.save!
+    assert_difference('ActionMailer::Base.deliveries.size', 1) do
+      sub.send_status_email
+    end
+  end
+
+  test 'send_status_email with in review queue status' do
+    sub = submissions(:sub_one)
+    sub.status = 'in review queue'
+    sub.save!
+    assert_difference('ActionMailer::Base.deliveries.size', 1) do
+      sub.send_status_email
+    end
+  end
+
+  test 'send_status_email with rejected status' do
+    sub = submissions(:sub_one)
+    sub.status = 'rejected'
+    sub.save!
+    assert_difference('ActionMailer::Base.deliveries.size', 1) do
+      sub.send_status_email
+    end
+  end
 end

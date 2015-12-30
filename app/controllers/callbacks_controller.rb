@@ -6,8 +6,11 @@ class CallbacksController < ApplicationController
     unless @submission.save
       fail ActionController::RoutingError, 'Approved Status Requires Handle'
     end
+    @submission.send_status_email
     render nothing: true, status: 200
   end
+
+  private
 
   def extract_and_update_status_and_handle(params)
     json = JSON.parse(params[:body])

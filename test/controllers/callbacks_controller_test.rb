@@ -6,7 +6,9 @@ class CallbacksControllerTest < ActionController::TestCase
     sub = submissions(:sub_one)
     sub.uuid = SecureRandom.uuid
     sub.save
-    post :status, uuid: sub.uuid, body: json
+    assert_difference('ActionMailer::Base.deliveries.size', +1) do
+      post :status, uuid: sub.uuid, body: json
+    end
     assert_response :success
     sub.reload
     assert_equal('approved', sub.status)
@@ -18,9 +20,11 @@ class CallbacksControllerTest < ActionController::TestCase
     sub = submissions(:sub_one)
     sub.uuid = SecureRandom.uuid
     sub.save
+    initial_deliveries_size = ActionMailer::Base.deliveries.size
     exception = assert_raises(ActionController::RoutingError) do
       post :status, uuid: sub.uuid, body: json
     end
+    assert_equal(initial_deliveries_size, ActionMailer::Base.deliveries.size)
     assert_equal('Approved Status Requires Handle', exception.message)
     sub.reload
     assert_nil(sub.status)
@@ -32,9 +36,11 @@ class CallbacksControllerTest < ActionController::TestCase
     sub = submissions(:sub_one)
     sub.uuid = SecureRandom.uuid
     sub.save
+    initial_deliveries_size = ActionMailer::Base.deliveries.size
     exception = assert_raises(ActionController::RoutingError) do
       post :status, uuid: sub.uuid, body: json
     end
+    assert_equal(initial_deliveries_size, ActionMailer::Base.deliveries.size)
     assert_equal('Approved Status Requires Handle', exception.message)
     sub.reload
     assert_nil(sub.status)
@@ -46,7 +52,9 @@ class CallbacksControllerTest < ActionController::TestCase
     sub = submissions(:sub_one)
     sub.uuid = SecureRandom.uuid
     sub.save
-    post :status, uuid: sub.uuid, body: json
+    assert_difference('ActionMailer::Base.deliveries.size', +1) do
+      post :status, uuid: sub.uuid, body: json
+    end
     assert_response :success
     sub.reload
     assert_equal('rejected', sub.status)
@@ -54,9 +62,11 @@ class CallbacksControllerTest < ActionController::TestCase
   end
 
   test 'post to submission with invalid uuid returns 404' do
+    initial_deliveries_size = ActionMailer::Base.deliveries.size
     exception = assert_raises(ActionController::RoutingError) do
       post :status, uuid: SecureRandom.uuid
     end
+    assert_equal(initial_deliveries_size, ActionMailer::Base.deliveries.size)
     assert_equal('Not Found', exception.message)
   end
 
@@ -64,10 +74,12 @@ class CallbacksControllerTest < ActionController::TestCase
     sub = submissions(:sub_one)
     sub.uuid = SecureRandom.uuid
     sub.save
+    initial_deliveries_size = ActionMailer::Base.deliveries.size
 
     exception = assert_raises(ActionController::RoutingError) do
       post :status, uuid: sub.uuid
     end
+    assert_equal(initial_deliveries_size, ActionMailer::Base.deliveries.size)
     assert_equal('Invalid Status', exception.message)
   end
 end
