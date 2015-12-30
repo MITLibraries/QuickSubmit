@@ -20,6 +20,7 @@ class SubmissionsController < ApplicationController
     @submission.user = current_user
     if @submission.save
       process_submission
+      @submission.send_status_email
       redirect_to submissions_path
     else
       render 'new'

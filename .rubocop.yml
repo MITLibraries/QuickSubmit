@@ -6,3 +6,7 @@ AllCops:
   Exclude:
     - db/**/*
     - config/**/*
+
+ClassLength:
+  Exclude:
+    - test/**/*

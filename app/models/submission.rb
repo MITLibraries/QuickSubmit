@@ -48,6 +48,17 @@ class Submission < ActiveRecord::Base
     self.uuid = SecureRandom.uuid
   end
 
+  def send_status_email
+    case status
+    when 'in review queue'
+      SubmissionMailer.queued(self).deliver_now
+    when 'deposited', 'approved'
+      SubmissionMailer.deposited(self).deliver_now
+    when 'rejected'
+      SubmissionMailer.rejected(self).deliver_now
+    end
+  end
+
   def to_sword_package(callback)
     Zip::File.open(sword_path, Zip::File::CREATE) do |zipfile|
       documents.each do |document|
