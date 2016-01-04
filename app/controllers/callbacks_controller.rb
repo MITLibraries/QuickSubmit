@@ -2,11 +2,12 @@ class CallbacksController < ApplicationController
   def status
     @submission = Submission.find_by_uuid(params[:uuid])
     validate_submission_and_params(params)
+    initial_status = @submission.status
     extract_and_update_status_and_handle(params)
     unless @submission.save
       fail ActionController::RoutingError, 'Approved Status Requires Handle'
     end
-    @submission.send_status_email
+    @submission.send_status_email unless @submission.status == initial_status
     render nothing: true, status: 200
   end
 

@@ -2,7 +2,8 @@ require 'test_helper'
 
 class CallbacksControllerTest < ActionController::TestCase
   test 'post to submission with valid status and handle updates record' do
-    json = ActiveSupport::JSON.encode(status: 'approved', handle: 'http://handle.net/123456/789')
+    json = ActiveSupport::JSON.encode(status: 'approved',
+                                      handle: 'http://handle.net/123456/789')
     sub = submissions(:sub_one)
     sub.uuid = SecureRandom.uuid
     sub.save
@@ -81,5 +82,57 @@ class CallbacksControllerTest < ActionController::TestCase
     end
     assert_equal(initial_deliveries_size, ActionMailer::Base.deliveries.size)
     assert_equal('Invalid Status', exception.message)
+  end
+
+  test 'post with redundant approved status does not send email' do
+    json = ActiveSupport::JSON.encode(status: 'approved',
+                                      handle: 'http://handle.net/123456/789')
+    sub = submissions(:sub_one)
+    sub.status = 'approved'
+    sub.handle = 'http://handle.net/123456/789'
+    sub.uuid = SecureRandom.uuid
+    sub.save!
+    assert_difference('ActionMailer::Base.deliveries.size', 0) do
+      post :status, uuid: sub.uuid, body: json
+    end
+    assert_response :success
+  end
+
+  test 'post with redundant rejected status does not send email' do
+    json = ActiveSupport::JSON.encode(status: 'rejected')
+    sub = submissions(:sub_one)
+    sub.status = 'rejected'
+    sub.uuid = SecureRandom.uuid
+    sub.save!
+    assert_difference('ActionMailer::Base.deliveries.size', 0) do
+      post :status, uuid: sub.uuid, body: json
+    end
+    assert_response :success
+  end
+
+  test 'post with rejected status after approved sends email' do
+    json = ActiveSupport::JSON.encode(status: 'rejected')
+    sub = submissions(:sub_one)
+    sub.status = 'approved'
+    sub.handle = 'http://handle.net/123456/789'
+    sub.uuid = SecureRandom.uuid
+    sub.save!
+    assert_difference('ActionMailer::Base.deliveries.size', +1) do
+      post :status, uuid: sub.uuid, body: json
+    end
+    assert_response :success
+  end
+
+  test 'post with approved status after rejected sends emails' do
+    json = ActiveSupport::JSON.encode(status: 'approved',
+                                      handle: 'http://handle.net/123456/789')
+    sub = submissions(:sub_one)
+    sub.status = 'rejected'
+    sub.uuid = SecureRandom.uuid
+    sub.save!
+    assert_difference('ActionMailer::Base.deliveries.size', +1) do
+      post :status, uuid: sub.uuid, body: json
+    end
+    assert_response :success
   end
 end
