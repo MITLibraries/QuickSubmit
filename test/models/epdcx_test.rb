@@ -6,7 +6,7 @@ class EpdcxTest < ActiveSupport::TestCase
       sub = submissions(:sub_two)
       builder = Nokogiri::XML::Builder.new { |xml| xml }
       xsd = Nokogiri::XML::Schema(File.read('epdcx.xsd'))
-      xml = Epdcx.new(builder, sub).to_xml
+      xml = Epdcx.new(builder, sub, 'http://example.com').to_xml
       doc = Nokogiri::XML(xml)
       assert_equal(true, xsd.valid?(doc))
     end
@@ -17,7 +17,7 @@ class EpdcxTest < ActiveSupport::TestCase
       sub = submissions(:sub_one)
       builder = Nokogiri::XML::Builder.new { |xml| xml }
       xsd = Nokogiri::XML::Schema(File.read('epdcx.xsd'))
-      xml = Epdcx.new(builder, sub).to_xml
+      xml = Epdcx.new(builder, sub, 'http://example.com').to_xml
       doc = Nokogiri::XML(xml)
       assert_equal(true, xsd.valid?(doc))
     end

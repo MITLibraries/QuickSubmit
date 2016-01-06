@@ -1,6 +1,7 @@
 class Epdcx
-  def initialize(xml, submission)
+  def initialize(xml, submission, callback_uri)
     @xml = xml
+    @callback_uri = callback_uri
     @xml['epdcx'].descriptionSet(
       'xmlns:epdcx' => 'http://purl.org/eprint/epdcx/2006-11-16/') do
       work(submission)
@@ -27,6 +28,7 @@ class Epdcx
 
   def work(submission)
     @xml['epdcx'].description('epdcx:resourceId' => 'sword-mets-epdcx-1') do
+      statement('http://libraries.mit.edu/xmlns/callback', @callback_uri)
       scholarly_work
       statement('http://purl.org/dc/elements/1.1/title', submission.title)
       statement('http://purl.org/dc/elements/1.1/creator', submission.author)
