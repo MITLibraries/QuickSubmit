@@ -17,7 +17,6 @@ class Mets
         'xmlns:mets' => 'http://www.loc.gov/METS/',
         'xmlns:xlink' => 'http://www.w3.org/1999/xlink',
         'xmlns:epdcx' => 'http://purl.org/eprint/epdcx/2006-11-16/',
-        'xmlns:callback' => '',
         'PROFILE' => 'DSpace METS SIP Profile 1.0') do
         overall_structure(xml)
       end
@@ -27,7 +26,6 @@ class Mets
   def overall_structure(xml)
     header(xml)
     dmd(xml)
-    amd(xml)
     filesec(xml)
     structmap(xml)
   end
@@ -37,18 +35,6 @@ class Mets
       xml['mets'].agent('ROLE' => 'DISSEMINATOR',
                         'TYPE' => 'ORGANIZATION') do
         xml['mets'].name('MIT Libraries: QuickSubmit')
-      end
-    end
-  end
-
-  def amd(xml)
-    xml['mets'].amdSec('ID' => 'mitqs_amd') do
-      xml['mets'].techMD('ID' => 'mitqs_amd_tech') do
-        xml['mets'].mdWrap('MDTYPE' => 'OTHER', 'MIMETYPE' => 'text/xml') do
-          xml['mets'].xmlData do
-            xml['callback'].callback_uri(@callback_uri)
-          end
-        end
       end
     end
   end
@@ -94,7 +80,7 @@ class Mets
 
   def xml_data(xml)
     xml['mets'].xmlData do
-      Epdcx.new(xml, @submission)
+      Epdcx.new(xml, @submission, @callback_uri)
     end
   end
 end
