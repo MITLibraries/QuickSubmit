@@ -62,10 +62,18 @@ class Submission < ActiveRecord::Base
     Zip::File.open(sword_path, Zip::File::CREATE) do |zipfile|
       documents.each do |document|
         zipfile.get_output_stream(document.split('/').last) do |os|
-          os.write RestClient.get document
+          os.write RestClient.get document_uri(document)
         end
       end
       zipfile.get_output_stream('mets.xml') { |os| os.write to_mets(callback) }
+    end
+  end
+
+  def document_uri(document)
+    if document.include?('localhost')
+      "http:#{document.gsub('localhost', 'localhost:10001')}"
+    else
+      "https:#{document}"
     end
   end
 end

@@ -2,11 +2,13 @@ source 'https://rubygems.org'
 ruby '2.3.0'
 
 gem 'rails', '4.2.5'
+gem 'aws-sdk', '~> 2'
 gem 'bootstrap_form'
 gem 'cancancan'
 gem 'devise'
 gem 'http_logger'
 gem 'jquery-rails'
+gem 'jquery-fileupload-rails'
 gem 'less-rails'
 gem 'nokogiri'
 gem 'omniauth-mit-oauth2'
@@ -29,6 +31,7 @@ end
 
 group :development, :test do
   gem 'byebug'
+  gem 'fakes3'
   gem 'sqlite3'
 end
 
@@ -40,9 +43,11 @@ end
 
 group :test do
   gem 'coveralls', require: false
+  gem 'database_cleaner'
   gem 'minitest-reporters'
   gem 'minitest-rails'
   gem 'minitest-rails-capybara'
+  gem 'poltergeist'
   gem 'vcr'
   gem 'webmock'
 end

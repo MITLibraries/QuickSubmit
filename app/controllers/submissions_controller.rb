@@ -1,5 +1,6 @@
 class SubmissionsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_s3_direct_post, only: [:new, :create]
   load_and_authorize_resource
 
   def index
@@ -19,8 +20,9 @@ class SubmissionsController < ApplicationController
     @submission = Submission.new(submission_params)
     @submission.user = current_user
     if @submission.save
-      process_submission
-      @submission.send_status_email
+      # process_submission
+      # @submission.send_status_email
+      flash.notice = 'Your Submission is now in progress'
       redirect_to submissions_path
     else
       render 'new'
@@ -32,6 +34,13 @@ class SubmissionsController < ApplicationController
   end
 
   private
+
+  def set_s3_direct_post
+    @s3_direct_post = S3_BUCKET.presigned_post(
+      key: "uploads/#{SecureRandom.uuid}/${filename}",
+      success_action_status: '201',
+      acl: 'public-read')
+  end
 
   def callback_uri
     callback_submission_status_url(@submission)

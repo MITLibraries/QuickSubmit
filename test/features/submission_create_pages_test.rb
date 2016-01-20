@@ -2,12 +2,17 @@ require 'test_helper'
 
 class SubmissionCreatePagesTest < Capybara::Rails::TestCase
   def setup
+    Capybara.current_driver = :poltergeist
+    Capybara.server_port = 5000
+    Capybara.server_host = 'localhost'
     auth_setup
     FileUtils.rm_f('tmp/69b9156a124c96bbdb55cad753810e14.zip')
     FileUtils.rm_f('tmp/40550618d6b4d97792b0773c97207186.zip')
   end
 
   def teardown
+    super
+    Capybara.use_default_driver
     auth_teardown
     @sub.documents.map(&:remove!) if @sub
   end
@@ -56,9 +61,8 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     base_valid_form
     attach_file('submission[documents][]',
                 File.absolute_path('./test/fixtures/a_pdf.pdf'))
-    VCR.use_cassette('a submission', preserve_exact_body_bytes: true) do
-      click_on('Create Submission')
-    end
+    assert page.has_content?('Uploading done')
+    click_on('Create Submission')
     assert_equal(Submission.count, (subs + 1))
     @sub = Submission.last
     assert_equal('abc123@example.com', @sub.user.email)
@@ -67,13 +71,18 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
   end
 
   test 'multiple pdfs can be attached' do
+    # this is a bit flakey. Fun with async js testing.
+    # when using capybara with rspec, we get auto delays
+    # when using the built in matchers. I'm not sure yet if
+    # those are in play with minitest.
+    # It may be worth rewriting this in rspec to see if the flakiness
+    # goes away (although that was always a bit suspect).
     base_valid_form
     attach_file('submission[documents][]',
                 [File.absolute_path('./test/fixtures/a_pdf.pdf'),
                  File.absolute_path('./test/fixtures/b_pdf.pdf')])
-    VCR.use_cassette('ab submission', preserve_exact_body_bytes: true) do
-      click_on('Create Submission')
-    end
+    assert page.has_content?('Uploading done')
+    click_on('Create Submission')
     @sub = Submission.last
     assert_equal(2, @sub.documents.count)
   end
@@ -83,9 +92,8 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     base_valid_form
     attach_file('submission[documents][]',
                 File.absolute_path('./test/fixtures/a.txt'))
-    click_on('Create Submission')
-    assert_equal(Submission.count, subs)
-    assert_text('You are not allowed to upload "txt" files, allowed types: pdf')
+    assert page.has_content?('Only PDF files are accepted at this time')
+    assert_equal(subs, Submission.count)
   end
 
   test 'pdf retained across invalid form submission' do
@@ -93,16 +101,15 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     base_valid_form
     attach_file('submission[documents][]',
                 File.absolute_path('./test/fixtures/a_pdf.pdf'))
+    assert page.has_content?('Uploading done')
     uncheck('I am authorized to submit this article.')
     click_on('Create Submission')
-    assert_equal(Submission.count, subs)
+    assert_equal(subs, Submission.count)
     assert_text('a_pdf.pdf')
     check('I am authorized to submit this article.')
-    VCR.use_cassette('a submission', preserve_exact_body_bytes: true) do
-      click_on('Create Submission')
-    end
-    assert_equal(Submission.count, (subs + 1))
+    click_on('Create Submission')
+    assert_equal((subs + 1), Submission.count)
     @sub = Submission.last
-    assert('a_pdf.pdf', @sub.documents.first.filename)
+    assert(@sub.documents.first.include?('a_pdf.pdf'))
   end
 end
