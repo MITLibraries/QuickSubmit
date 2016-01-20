@@ -47,7 +47,7 @@ class SubmissionTest < ActiveSupport::TestCase
 
   test 'invalid without documents' do
     sub = submissions(:sub_one)
-    sub.remove_documents!
+    sub.documents = ''
     assert_not sub.valid?
   end
 
@@ -99,25 +99,29 @@ class SubmissionTest < ActiveSupport::TestCase
   end
 
   def cleaup_sword_files(sub)
-    sub.documents.map(&:remove!)
     FileUtils.rm_f(sub.sword_path)
   end
 
   test '#to_sword_package creates zip file' do
-    sub = submissions(:sub_one)
-    setup_sword_files(sub)
-    sub.to_sword_package('http://example.com/callback')
-    assert_equal(true, File.file?(sub.sword_path))
-    cleaup_sword_files(sub)
+    VCR.use_cassette('read a and b files from s3') do
+      sub = submissions(:sub_one)
+      setup_sword_files(sub)
+      sub.to_sword_package('http://example.com/callback')
+      assert_equal(true, File.file?(sub.sword_path))
+      cleaup_sword_files(sub)
+    end
   end
 
   test '#to_sword_package zip contains correct files' do
-    sub = submissions(:sub_one)
-    setup_sword_files(sub)
-    sub.to_sword_package('http://example.com/callback')
-    sword = Zip::File.open(sub.sword_path)
-    assert_equal(['a_pdf.pdf', 'b_pdf.pdf', 'mets.xml'], sword.map(&:name).sort)
-    cleaup_sword_files(sub)
+    VCR.use_cassette('read a and b files from s3') do
+      sub = submissions(:sub_one)
+      setup_sword_files(sub)
+      sub.to_sword_package('http://example.com/callback')
+      sword = Zip::File.open(sub.sword_path)
+      assert_equal(['a_pdf.pdf', 'b_pdf.pdf', 'mets.xml'],
+                   sword.map(&:name).sort)
+      cleaup_sword_files(sub)
+    end
   end
 
   test 'send_status_email will not send without a status' do

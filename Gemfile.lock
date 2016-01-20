@@ -1,13 +1,3 @@
-GIT
-  remote: git://github.com/carrierwaveuploader/carrierwave.git
-  revision: ecf57fe5fed17657b258d708a59feeec9fac74cd
-  specs:
-    carrierwave (0.10.0)
-      activemodel (>= 3.2.0)
-      activesupport (>= 3.2.0)
-      json (>= 1.7)
-      mime-types (>= 1.16)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -281,7 +271,6 @@ DEPENDENCIES
   bootstrap_form
   byebug
   cancancan
-  carrierwave!
   coveralls
   devise
   http_logger
@@ -310,4 +299,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.10.6
+   1.11.2
