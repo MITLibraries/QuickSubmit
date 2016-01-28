@@ -1,6 +1,11 @@
 <h1>MIT DSpace Quick Submit</h1>
 
-<%= bootstrap_form_for(@submission, layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10") do |f| %>
+<%= bootstrap_form_for(@submission,
+                       html: { class: 'submissionUpload',
+                               data: { 'form-data' => (@s3_direct_post.fields),
+                              'url' => @s3_direct_post.url,
+                              'host' => URI.parse(@s3_direct_post.url).host } },
+                       layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10") do |f| %>
   <%= f.alert_message "Please fix the errors below." %>
   <%= f.text_field :author %>
   <%= f.text_field :title %>
@@ -18,14 +23,14 @@
   <% end %>
 
   <%= f.file_field :documents, multiple: true %>
-  <%= f.hidden_field :documents_cache %>
 
   <% if @submission.documents? %>
     <%= f.form_group :documents do %>
       Already Uploaded Documents for this Submission:
       <ul>
       <% @submission.documents.each do |doc| %>
-        <li><%= doc.filename %></li>
+        <li><%= doc %></li>
+        <%= f.hidden_field :documents, value: doc, name: 'submission[documents][]' %>
       <% end %>
       </ul>
     <% end %>
@@ -35,3 +40,75 @@
     <%= f.submit %>
   <% end %>
 <% end %>
+
+<script>
+$(function() {
+  $('.submissionUpload').find("input:file").each(function(i, elem) {
+    var fileInput    = $(elem);
+    var form         = $(fileInput.parents('form:first'));
+    var submitButton = form.find('input[type="submit"]');
+    var progressBar  = $("<div class='bar'></div>");
+    var barContainer = $("<div class='progress'></div>").append(progressBar);
+    var errorContainer = $('<span class="help-block errorContainer"></span>');
+    fileInput.after(errorContainer);
+    fileInput.after(barContainer);
+    fileInput.fileupload({
+      fileInput:       fileInput,
+      url:             form.data('url'),
+      type:            'POST',
+      autoUpload:       true,
+      formData:         form.data('form-data'),
+      paramName:        'file', // S3 does not like nested name fields i.e. name="user[avatar_url]"
+      dataType:         'XML',  // S3 returns XML if success_action_status is set to 201
+      replaceFileInput: true,
+      acceptFileTypes: /(\.|\/)(pdf)$/i,
+      progressall: function (e, data) {
+        var progress = parseInt(data.loaded / data.total * 100, 10);
+        progressBar.css('width', progress + '%')
+      },
+      start: function (e) {
+        errorContainer.text("");
+        $('.submissionUpload').find("input:file").parent().parent().removeClass('has-error');
+        submitButton.prop('disabled', true);
+
+        progressBar.
+          css('background', 'green').
+          css('display', 'block').
+          css('width', '0%').
+          text("Loading...");
+      },
+      done: function(e, data) {
+        // console.log('done');
+        // console.log(data);
+        submitButton.prop('disabled', false);
+        progressBar.text("Uploading done");
+
+        // extract key and generate URL from response
+        var key   = $(data.jqXHR.responseXML).find("Key").text();
+        // console.log(key);
+        var url   = '//' + form.data('host') + '/' + key;
+        // console.log(url);
+
+        // create hidden field
+        var input = $("<input />", { type:'hidden', name: fileInput.attr('name'), value: url })
+        // console.log(input);
+        form.append(input);
+      },
+      fail: function(e, data) {
+        submitButton.prop('disabled', false);
+        // console.log('fail');
+        // console.log(data);
+        progressBar.
+          css("background", "red").
+          text("Failed");
+      },
+      processalways: function(e,data){
+        if (data.files.error) {
+          errorContainer.text("Only PDF files are accepted at this time.");
+          $('.submissionUpload').find("input:file").parent().parent().addClass('has-error');
+        }
+      }
+    });
+  });
+});
+</script>

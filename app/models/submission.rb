@@ -27,7 +27,6 @@ class Submission < ActiveRecord::Base
   validates :documents, presence: true
   validates :handle, format: URI.regexp, allow_nil: true
   validates :handle, presence: true, if: :status_approved?
-  mount_uploaders :documents, DocumentUploader
   serialize :documents, JSON
   before_create :generate_uuid
 
@@ -62,9 +61,19 @@ class Submission < ActiveRecord::Base
   def to_sword_package(callback)
     Zip::File.open(sword_path, Zip::File::CREATE) do |zipfile|
       documents.each do |document|
-        zipfile.add(document.file.filename, document.file.file)
+        zipfile.get_output_stream(document.split('/').last) do |os|
+          os.write RestClient.get document_uri(document)
+        end
       end
       zipfile.get_output_stream('mets.xml') { |os| os.write to_mets(callback) }
+    end
+  end
+
+  def document_uri(document)
+    if document.include?('localhost')
+      "http:#{document.gsub('localhost', 'localhost:10001')}"
+    else
+      "https:#{document}"
     end
   end
 end

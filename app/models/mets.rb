@@ -51,9 +51,9 @@ class Mets
   def filegrp(xml, doc, index)
     xml['mets'].fileGrp('USE' => 'CONTENT') do
       xml['mets'].file('ID' => "mitqs_doc_#{index}",
-                       'MIMETYPE' => doc.file.content_type) do
+                       'MIMETYPE' => 'application/pdf') do
         xml['mets'].FLocat('LOCTYPE' => 'URL',
-                           'xlink:href' => doc.file.filename)
+                           'xlink:href' => doc.split('/').last)
       end
     end
   end
