@@ -1,8 +1,9 @@
 class Sword
   attr_reader :response
 
-  def initialize(submission)
+  def initialize(submission, callback_uri)
     @submission = submission
+    @callback_uri = callback_uri
     @sword_server = RestClient::Resource.new(
       Rails.application.secrets.sword_endpoint,
       user: Rails.application.secrets.sword_username,
@@ -11,7 +12,7 @@ class Sword
 
   def deposit
     @response = @sword_server.post(
-      File.read(@submission.sword_path),
+      @submission.to_sword_package(@callback_uri),
       content_type: 'application/zip',
       x_packaging: 'http://purl.org/net/sword-types/METSDSpaceSIP')
   end
