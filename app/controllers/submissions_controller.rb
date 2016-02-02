@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: submissions
+#
+#  id                :integer          not null, primary key
+#  user_id           :integer
+#  title             :string           not null
+#  journal           :string
+#  doi               :string
+#  author            :string
+#  doe               :boolean
+#  grant_number      :string
+#  agreed_to_license :boolean
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  documents         :string
+#  status            :string
+#  handle            :string
+#  uuid              :string
+#
+
 class SubmissionsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_s3_direct_post, only: [:new, :create]
