@@ -3,8 +3,9 @@ require 'test_helper'
 class SwordSubmitJobTest < ActiveJob::TestCase
   test 'successful sword submission with workflow enabled' do
     sub = submissions(:sub_one)
+    callback_uri = "http://example.com/callbacks/status/#{sub.uuid}"
     VCR.use_cassette('workflow_submission', preserve_exact_body_bytes: true) do
-      SwordSubmitJob.perform_now(sub)
+      SwordSubmitJob.perform_now(sub, callback_uri)
     end
     sub.reload
     assert_equal('in review queue', sub.status)
@@ -13,8 +14,9 @@ class SwordSubmitJobTest < ActiveJob::TestCase
 
   test 'successful sword submission with no workflow enabled' do
     sub = submissions(:sub_one)
+    callback_uri = "http://example.com/callbacks/status/#{sub.uuid}"
     VCR.use_cassette('deposit', preserve_exact_body_bytes: true) do
-      SwordSubmitJob.perform_now(sub)
+      SwordSubmitJob.perform_now(sub, callback_uri)
     end
     sub.reload
     assert_equal('deposited', sub.status)
@@ -23,8 +25,9 @@ class SwordSubmitJobTest < ActiveJob::TestCase
 
   test 'invalid sword credentials' do
     sub = submissions(:sub_one)
+    callback_uri = "http://example.com/callbacks/status/#{sub.uuid}"
     VCR.use_cassette('invalid_credentials', preserve_exact_body_bytes: true) do
-      SwordSubmitJob.perform_now(sub)
+      SwordSubmitJob.perform_now(sub, callback_uri)
     end
     sub.reload
     assert_equal('failed', sub.status)

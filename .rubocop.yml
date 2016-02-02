@@ -1,11 +1,15 @@
 Documentation:
   Enabled: false
 
+Rails:
+  Enabled: true
+
 AllCops:
-  RunRailsCops: true
+  TargetRubyVersion: 2.3
   Exclude:
     - db/**/*
     - config/**/*
+    - bin/delayed_job
 
 ClassLength:
   Exclude:
