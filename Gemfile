@@ -39,7 +39,7 @@ end
 group :development do
   gem 'annotate'
   gem 'rubocop'
-  gem 'web-console', '~> 2.0'
+  gem 'web-console'
 end
 
 group :test do

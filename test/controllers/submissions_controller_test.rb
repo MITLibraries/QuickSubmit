@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: submissions
+#
+#  id                :integer          not null, primary key
+#  user_id           :integer
+#  title             :string           not null
+#  journal           :string
+#  doi               :string
+#  author            :string
+#  doe               :boolean
+#  grant_number      :string
+#  agreed_to_license :boolean
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  documents         :string
+#  status            :string
+#  handle            :string
+#  uuid              :string
+#
+
 require 'test_helper'
 
 class SubmissionsControllerTest < ActionController::TestCase
