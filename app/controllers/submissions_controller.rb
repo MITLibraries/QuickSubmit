@@ -4,11 +4,11 @@ class SubmissionsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    if current_user.admin?
-      @submissions = Submission.all.order(created_at: :desc)
-    else
-      @submissions = current_user.submissions.order(created_at: :desc)
-    end
+    @submissions = if current_user.admin?
+                     Submission.all.order(created_at: :desc)
+                   else
+                     current_user.submissions.order(created_at: :desc)
+                   end
   end
 
   def new
@@ -20,6 +20,7 @@ class SubmissionsController < ApplicationController
     @submission = Submission.new(submission_params)
     @submission.user = current_user
     if @submission.save
+      SwordSubmitJob.perform_later(@submission, callback_uri)
       flash.notice = 'Your Submission is now in progress'
       redirect_to submissions_path
     else
@@ -28,7 +29,9 @@ class SubmissionsController < ApplicationController
   end
 
   def package
-    send_file(Submission.find_by_id(params[:id]).sword_path)
+    @submission = Submission.find_by_id(params[:id])
+    @submission.to_sword_package(callback_uri)
+    send_file(@submission.sword_path)
   end
 
   private

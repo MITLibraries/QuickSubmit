@@ -1,19 +1,21 @@
 class SwordSubmitJob < ActiveJob::Base
   queue_as :default
 
-  def perform(submission)
+  def perform(submission, callback_uri)
     @submission = submission
+    @callback_uri = callback_uri
     process_submission
     @submission.send_status_email
   end
 
   def process_submission
-    callback_uri = "http://example.com/callbacks/status/#{@submission.uuid}'"
-    sword = Sword.new(@submission, callback_uri)
+    sword = Sword.new(@submission, @callback_uri)
     begin
       sword.deposit
       read_sword_response(sword)
     rescue RestClient::Unauthorized
+      @submission.status = 'failed'
+    rescue RestClient::RequestFailed
       @submission.status = 'failed'
     end
     @submission.save

@@ -64,9 +64,11 @@ class SubmissionsControllerTest < ActionController::TestCase
 
   test 'admin users can download package' do
     sub = submissions(:sub_one)
-    File.write(sub.sword_path, 'Fakey fake fake')
     sign_in users(:admin)
-    get :package, id: sub
+    VCR.use_cassette('read_a_and_b_files_from_s3',
+                     preserve_exact_body_bytes: true) do
+      get :package, id: sub
+    end
     assert_response :success
     FileUtils.rm_f(sub.sword_path)
   end

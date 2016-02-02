@@ -1,3 +1,13 @@
+GIT
+  remote: git://github.com/teampoltergeist/poltergeist.git
+  revision: c44714102f1e2c997004b614a27e69ef46307154
+  specs:
+    poltergeist (1.8.1)
+      capybara (~> 2.1)
+      cliver (~> 0.3.1)
+      multi_json (~> 1.0)
+      websocket-driver (>= 0.2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -77,6 +87,11 @@ GEM
       safe_yaml (~> 1.0.0)
     database_cleaner (1.5.1)
     debug_inspector (0.0.2)
+    delayed_job (4.1.1)
+      activesupport (>= 3.0, < 5.0)
+    delayed_job_active_record (4.1.0)
+      activerecord (>= 3.0, < 5)
+      delayed_job (>= 3.0, < 5)
     devise (3.5.5)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -174,11 +189,6 @@ GEM
       rack
       rake (>= 0.8.1)
     pg (0.18.4)
-    poltergeist (1.8.1)
-      capybara (~> 2.1)
-      cliver (~> 0.3.1)
-      multi_json (~> 1.0)
-      websocket-driver (>= 0.2.0)
     powerpack (0.1.1)
     rack (1.6.4)
     rack-test (0.6.3)
@@ -296,6 +306,7 @@ DEPENDENCIES
   cancancan
   coveralls
   database_cleaner
+  delayed_job_active_record
   devise
   fakes3
   http_logger
@@ -310,7 +321,7 @@ DEPENDENCIES
   omniauth-oauth2
   passenger
   pg
-  poltergeist
+  poltergeist!
   rails (= 4.2.5.1)
   rails_12factor
   rest-client

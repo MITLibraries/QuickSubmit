@@ -71,7 +71,8 @@ class Submission < ActiveRecord::Base
 
   def document_uri(document)
     if document.include?('localhost')
-      "http:#{document.gsub('localhost', 'localhost:10001')}"
+      swap = "localhost:10001/#{ENV['S3_BUCKET']}/"
+      "http:#{document.gsub('localhost/', swap)}"
     else
       "https:#{document}"
     end
