@@ -28,7 +28,9 @@ class SubmissionsController < ApplicationController
   end
 
   def package
-    send_file(Submission.find_by_id(params[:id]).sword_path)
+    @submission = Submission.find_by_id(params[:id])
+    @submission.to_sword_package(callback_uri)
+    send_file(@submission.sword_path)
   end
 
   private

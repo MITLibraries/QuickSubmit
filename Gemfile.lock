@@ -1,3 +1,13 @@
+GIT
+  remote: git://github.com/teampoltergeist/poltergeist.git
+  revision: c44714102f1e2c997004b614a27e69ef46307154
+  specs:
+    poltergeist (1.8.1)
+      capybara (~> 2.1)
+      cliver (~> 0.3.1)
+      multi_json (~> 1.0)
+      websocket-driver (>= 0.2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -174,11 +184,6 @@ GEM
       rack
       rake (>= 0.8.1)
     pg (0.18.4)
-    poltergeist (1.8.1)
-      capybara (~> 2.1)
-      cliver (~> 0.3.1)
-      multi_json (~> 1.0)
-      websocket-driver (>= 0.2.0)
     powerpack (0.1.1)
     rack (1.6.4)
     rack-test (0.6.3)
@@ -310,7 +315,7 @@ DEPENDENCIES
   omniauth-oauth2
   passenger
   pg
-  poltergeist
+  poltergeist!
   rails (= 4.2.5.1)
   rails_12factor
   rest-client
