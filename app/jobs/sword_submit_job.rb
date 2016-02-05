@@ -40,5 +40,6 @@ class SwordSubmitJob < ActiveJob::Base
     logger.error(message)
     logger.error(error.inspect)
     logger.error(@submission.inspect)
+    SubmissionMailer.failed(@submission, error).deliver_now
   end
 end

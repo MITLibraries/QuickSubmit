@@ -56,4 +56,22 @@ class SubmissionMailerTest < ActionMailer::TestCase
     assert_equal(read_fixture('rejected_text').join.strip,
                  email.text_part.body.to_s.strip)
   end
+
+  test 'failed' do
+    sub = submissions(:sub_one)
+    sub.handle = 'http://example.com/1234567/890'
+    sub.status = 'failed'
+    sub.save!
+
+    error = { 'message': 'Error text', 'more_stuff': 12_345 }
+
+    # Send the email, then test that it got queued
+    email = SubmissionMailer.failed(sub, error).deliver_now
+    assert_not ActionMailer::Base.deliveries.empty?
+
+    assert_equal(0, email.body.parts.length)
+    assert_equal(['some_from@example.com'], email.from)
+    assert_equal(['xyz789@example.com'], email.to)
+    assert_equal('QuickSubmit: failure', email.subject)
+  end
 end
