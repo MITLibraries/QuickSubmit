@@ -55,6 +55,13 @@ class SubmissionsController < ApplicationController
     send_file(@submission.sword_path)
   end
 
+  def resubmit
+    @submission = Submission.find_by_id(params[:id])
+    SwordSubmitJob.perform_later(@submission, callback_uri)
+    flash.notice = 'Submission has been resubmitted to the job queue'
+    redirect_to submissions_path
+  end
+
   private
 
   def set_s3_direct_post
