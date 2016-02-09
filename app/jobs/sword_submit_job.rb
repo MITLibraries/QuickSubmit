@@ -13,10 +13,10 @@ class SwordSubmitJob < ActiveJob::Base
     begin
       sword.deposit
       read_sword_response(sword)
-    rescue RestClient::Unauthorized
-      @submission.status = 'failed'
-    rescue RestClient::RequestFailed
-      @submission.status = 'failed'
+    rescue RestClient::Unauthorized => error
+      error_handler(error, 'Sword Submission Failed With Invalid Credentials')
+    rescue RestClient::RequestFailed => error
+      error_handler(error, 'Sword Submission Failed')
     end
     @submission.save
   end
@@ -33,5 +33,13 @@ class SwordSubmitJob < ActiveJob::Base
 
   def queued
     @submission.status = 'in review queue'
+  end
+
+  def error_handler(error, message)
+    @submission.status = 'failed'
+    logger.error(message)
+    logger.error(error.inspect)
+    logger.error(@submission.inspect)
+    SubmissionMailer.failed(@submission, error).deliver_now
   end
 end

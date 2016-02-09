@@ -33,4 +33,17 @@ class SwordSubmitJobTest < ActiveJob::TestCase
     assert_equal('failed', sub.status)
     assert_nil(sub.handle)
   end
+
+  test 'internal server error' do
+    sub = submissions(:sub_one)
+    callback_uri = "http://example.com/callbacks/status/#{sub.uuid}"
+    VCR.use_cassette('internal_server_error',
+                     preserve_exact_body_bytes: true,
+                     record: :new_episodes) do
+      SwordSubmitJob.perform_now(sub, callback_uri)
+    end
+    sub.reload
+    assert_equal('failed', sub.status)
+    assert_nil(sub.handle)
+  end
 end

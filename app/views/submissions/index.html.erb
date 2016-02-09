@@ -18,11 +18,14 @@
       <div class="panel-body">
         Submitted: <%= time_ago_in_words(sub.created_at) %> ago<br />
         Status: <%= sub.status || 'unknown' %><br />
-        Permanent URL: <%= sub.handle || 'pending submission processing' %><br />
+        Permanent URL: <%= sub.handle || 'pending submission processing' %>
+        <br />
       </div>
       <% if current_user.admin? %>
         <div class="panel-footer">
-          <%= link_to('Sword Package', submission_package_path(sub)) %>
+          <%= link_to('View Sword Package', submission_package_path(sub)) %>
+          --
+          <%= link_to('Resubmit Package', resubmit_path(sub), method: :post) %>
         </div>
       <% end %>
     </div>

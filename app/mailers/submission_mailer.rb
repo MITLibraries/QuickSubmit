@@ -13,4 +13,11 @@ class SubmissionMailer < ApplicationMailer
     @submission = submission
     mail(to: @submission.user.email, subject: 'Submission Problem')
   end
+
+  def failed(submission, error)
+    @submission = submission
+    @error = error
+    mail(to: User.where(admin: true).map(&:email),
+         subject: 'QuickSubmit: failure')
+  end
 end

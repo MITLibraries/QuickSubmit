@@ -14,4 +14,10 @@ class SubmissionMailerPreview < ActionMailer::Preview
   def rejected
     SubmissionMailer.rejected(Submission.last)
   end
+
+  def failure
+    sub = Submission.last
+    error = { 'message': 'Error text', 'more_stuff': 12_345 }
+    SubmissionMailer.failed(sub, error)
+  end
 end

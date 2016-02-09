@@ -74,13 +74,13 @@ class SubmissionsControllerTest < ActionController::TestCase
 
   test 'non-authenticated users cannot download package' do
     get :package, id: submissions(:sub_one)
-    assert_response :redirect
+    assert_redirected_to root_path
   end
 
   test 'non-admin user cannot download package' do
     sign_in users(:one)
     get :package, id: submissions(:sub_one)
-    assert_response :redirect
+    assert_redirected_to root_path
   end
 
   test 'admin users can download package' do
@@ -92,5 +92,21 @@ class SubmissionsControllerTest < ActionController::TestCase
     end
     assert_response :success
     FileUtils.rm_f(sub.sword_path)
+  end
+
+  test 'non-authenticated users cannot resubmit package' do
+    post :resubmit, id: submissions(:sub_one)
+    assert_redirected_to root_path
+  end
+
+  test 'non-admin user cannot resubmit package' do
+    post :resubmit, id: submissions(:sub_one)
+    assert_redirected_to root_path
+  end
+
+  test 'admin users can resubmit package' do
+    sign_in users(:admin)
+    post :resubmit, id: submissions(:sub_one)
+    assert_redirected_to submissions_path
   end
 end
