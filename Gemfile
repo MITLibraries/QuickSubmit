@@ -48,7 +48,7 @@ group :test do
   gem 'minitest-reporters'
   gem 'minitest-rails'
   gem 'minitest-rails-capybara'
-  gem 'poltergeist', git: 'git://github.com/teampoltergeist/poltergeist.git'
+  gem 'poltergeist'
   gem 'vcr'
   gem 'webmock'
 end
