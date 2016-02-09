@@ -167,4 +167,16 @@ class SubmissionTest < ActiveSupport::TestCase
       sub.send_status_email
     end
   end
+
+  test 'document_uri with non-localhost' do
+    sub = submissions(:sub_one)
+    assert_equal(sub.document_uri('//bucket.example.com/popcorn'),
+                 'https://bucket.example.com/popcorn')
+  end
+
+  test 'document_uri with localhost' do
+    sub = submissions(:sub_one)
+    assert_equal(sub.document_uri('//localhost/popcorn'),
+                 'http://localhost:10001/fakebucket/popcorn')
+  end
 end
