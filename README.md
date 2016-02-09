@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/MITLibraries/QuickSubmit.svg)](https://travis-ci.org/MITLibraries/QuickSubmit)
 [![Dependency Status](https://gemnasium.com/MITLibraries/QuickSubmit.svg)](https://gemnasium.com/MITLibraries/QuickSubmit)
 [![Code Climate](https://codeclimate.com/github/MITLibraries/QuickSubmit/badges/gpa.svg)](https://codeclimate.com/github/MITLibraries/QuickSubmit)
+[![Coverage Status](https://coveralls.io/repos/github/MITLibraries/QuickSubmit/badge.svg?branch=master)](https://coveralls.io/github/MITLibraries/QuickSubmit?branch=master)
 
 ## What is this?
 
