@@ -11,8 +11,9 @@ class Sword
   end
 
   def deposit
+    @submission.to_sword_package(@callback_uri)
     @response = @sword_server.post(
-      @submission.to_sword_package(@callback_uri),
+      File.read(@submission.sword_path),
       content_type: 'application/zip',
       x_packaging: 'http://purl.org/net/sword-types/METSDSpaceSIP')
   end
