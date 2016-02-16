@@ -5,7 +5,7 @@ class CallbacksController < ApplicationController
     initial_status = @submission.status
     extract_and_update_status_and_handle(params)
     unless @submission.save
-      fail ActionController::RoutingError, 'Approved Status Requires Handle'
+      raise ActionController::RoutingError, 'Approved Status Requires Handle'
     end
     @submission.send_status_email unless @submission.status == initial_status
     render nothing: true, status: 200
@@ -15,14 +15,14 @@ class CallbacksController < ApplicationController
 
   def extract_and_update_status_and_handle(params)
     json = JSON.parse(params[:body])
-    fail ActionController::RoutingError, 'Invalid Status' unless json['status']
+    raise ActionController::RoutingError, 'Invalid Status' unless json['status']
     @submission.status = json['status'] if valid_status?(json['status'])
     extract_and_update_handle(json) if @submission.status == 'approved'
   end
 
   def validate_submission_and_params(params)
-    fail ActionController::RoutingError, 'Not Found' unless @submission
-    fail ActionController::RoutingError, 'Invalid Status' unless params[:body]
+    raise ActionController::RoutingError, 'Not Found' unless @submission
+    raise ActionController::RoutingError, 'Invalid Status' unless params[:body]
   end
 
   def extract_and_update_handle(json)
