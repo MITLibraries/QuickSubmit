@@ -109,4 +109,30 @@ class SubmissionsControllerTest < ActionController::TestCase
     post :resubmit, id: submissions(:sub_one)
     assert_redirected_to submissions_path
   end
+
+  test 'non-authenticated users cannot show submission' do
+    get :show, id: submissions(:sub_one)
+    assert_redirected_to root_path
+  end
+
+  test 'non-admin users can view own submission' do
+    sign_in users(:one)
+    get :show, id: submissions(:sub_one)
+    assert_response :success
+  end
+
+  test 'non-admin users cannot view other user submission' do
+    sign_in users(:one)
+    s = submissions(:sub_one)
+    s.user = users(:admin)
+    s.save
+    get :show, id: submissions(:sub_one)
+    assert_redirected_to root_path
+  end
+
+  test 'admin users can show submission' do
+    sign_in users(:admin)
+    get :show, id: submissions(:sub_one)
+    assert_response :success
+  end
 end

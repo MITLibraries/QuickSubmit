@@ -46,4 +46,17 @@ class SubmissionIndexPagesTest < Capybara::Rails::TestCase
     visit submissions_path
     assert_link('Sword Package')
   end
+
+  test 'admin index with filter only shows appropriate submissions' do
+    user = users(:admin)
+    mock_auth(user)
+    visit submissions_path
+    assert_text('popcorn soup')
+
+    click_link('Deposited')
+    assert_text('popcorn soup')
+
+    click_link('Failed')
+    refute_text('popcorn soup')
+  end
 end

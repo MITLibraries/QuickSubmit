@@ -26,7 +26,7 @@ class SubmissionsController < ApplicationController
 
   def index
     @submissions = if current_user.admin?
-                     Submission.all.order(created_at: :desc)
+                     filtered_submissions
                    else
                      current_user.submissions.order(created_at: :desc)
                    end
@@ -62,7 +62,18 @@ class SubmissionsController < ApplicationController
     redirect_to submissions_path
   end
 
+  def show
+  end
+
   private
+
+  def filtered_submissions
+    if params[:filter]
+      Submission.where(status: params[:filter])
+    else
+      Submission.all.order(created_at: :desc)
+    end
+  end
 
   def set_s3_direct_post
     @s3_direct_post = S3_BUCKET.presigned_post(

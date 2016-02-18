@@ -1,0 +1,14 @@
+<ul>
+  <li>Email: <%= mail_to(@submission.user.email) %></li>
+  <li>Submitted: <%= @submission.created_at %></li>
+  <li>Status: <%= @submission.status %></li>
+  <li>Title: <%= @submission.title %></li>
+  <li>Funder(s): </li>
+  <li>File(s):
+    <ul>
+    <% @submission.documents.each do |doc| %>
+      <li><%= link_to(@submission.document_uri(doc)) %></li>
+    <% end %>
+    </ul>
+  </li>
+</ul>

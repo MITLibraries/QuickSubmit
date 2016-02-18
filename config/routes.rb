@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :submissions, only: [:new, :create, :index]
+  resources :submissions, only: [:new, :create, :index, :show]
   get 'submissions/package/:id', to: 'submissions#package', as: :submission_package
   post 'submissions/resubmit/:id', to: 'submissions#resubmit', as: :resubmit
   post 'callbacks/status/:uuid', to: 'callbacks#status', as: :callback_submission_status
