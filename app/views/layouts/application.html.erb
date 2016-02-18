@@ -22,29 +22,32 @@
   </head>
   <body>
 
-    <div class="navbar navbar-default navbar-static-top">
-      <div class="container">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/">MIT QuickSubmit</a>
-        <div class="navbar-collapse collapse navbar-responsive-collapse">
-          <ul class="nav navbar-nav">
-            <li><%= link_to "New Submission", new_submission_path %></li>
-            <% if user_signed_in? %>
-              <li><%= link_to "Submissions", submissions_path %></li>
-              <li><%= link_to("Sign out", destroy_user_session_path, method: :delete, id: "sign_in") %></li>
-            <% else %>
-              <li><%= link_to("Sign in", user_omniauth_authorize_path(:mit_oauth2), id: "sign_in") %></li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-    </div>
+    <div class="page container">
 
-    <div class="container">
+      <nav class="navbar navbar-default navbar-static-top navbar-mitlib">
+        <div class="container">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="//libraries.mit.edu"><img src="<%= asset_path 'logo-black.png' %>" alt="MIT Libraries" width="111" height="47"></a>
+          <a class="navbar-text h1" href="/">QuickSubmit</a>
+          <div class="navbar-collapse collapse navbar-responsive-collapse">
+            <ul class="nav navbar-nav">
+              <li><%= link_to "New Submission", new_submission_path %></li>
+              <% if user_signed_in? %>
+                <li><%= link_to "Submissions", submissions_path %></li>
+                <li><%= link_to("Sign out", destroy_user_session_path, method: :delete, id: "sign_in") %></li>
+              <% else %>
+                <li><%= link_to("Sign in", user_omniauth_authorize_path(:mit_oauth2), id: "sign_in") %></li>
+              <% end %>
+            </ul>
+            <a class="navbar-text navbar-right" href="//web.mit.edu"><img src="<%= asset_path 'logo-mit-74x40.png' %>" alt="Massachusetts Institute of Technology" width="74" height="40"></a>
+          </div>
+        </div>
+      </nav>
+
       <div class="row">
         <div class="col-lg-12">
           <%= bootstrap_flash %>
