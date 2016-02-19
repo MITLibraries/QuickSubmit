@@ -1,5 +1,13 @@
 <h1>MIT DSpace Quick Submit Submissions</h1>
 
+View:
+ <%= link_to('All', submissions_path, class: 'btn btn-default') %>
+ <%= link_to('Failed', submissions_path(filter: 'failed'), class: 'btn btn-default') %>
+ <%= link_to('In Review Queue', submissions_path(filter: 'in review queue'), class: 'btn btn-default') %>
+ <%= link_to('Deposited', submissions_path(filter: 'deposited'), class: 'btn btn-default') %>
+
+<hr />
+
 <% if @submissions %>
 
   <% @submissions.each do |sub| %>
@@ -16,6 +24,9 @@
         <%= sub.title %>
       </div>
       <div class="panel-body">
+        <% if current_user.admin? %>
+        Submitter: <%= sub.user.email %><br />
+        <% end %>
         Submitted: <%= time_ago_in_words(sub.created_at) %> ago<br />
         Status: <%= sub.status || 'unknown' %><br />
         Permanent URL: <%= sub.handle || 'pending submission processing' %>
@@ -23,6 +34,8 @@
       </div>
       <% if current_user.admin? %>
         <div class="panel-footer">
+          <%= link_to('View Details', submission_path(sub)) %>
+          --
           <%= link_to('View Sword Package', submission_package_path(sub)) %>
           --
           <%= link_to('Resubmit Package', resubmit_path(sub), method: :post) %>
