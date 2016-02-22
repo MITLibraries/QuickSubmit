@@ -7,15 +7,9 @@
                               'host' => URI.parse(@s3_direct_post.url).host } },
                        layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10") do |f| %>
   <%= f.alert_message "Please fix the errors below." %>
-  <%= f.text_field :author %>
   <%= f.text_field :title %>
   <%= f.text_field :journal %>
   <%= f.text_field :doi %>
-  <%= f.text_field :grant_number %>
-
-  <%= f.form_group :doe do %>
-    <%= f.check_box :doe, label: "This submission was funded in part by grants from the DOE." %>
-  <% end %>
 
   <%= f.form_group :agreed_to_license do %>
     <%= f.check_box :agreed_to_license,

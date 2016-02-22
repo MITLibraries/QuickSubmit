@@ -7,9 +7,6 @@
 #  title             :string           not null
 #  journal           :string
 #  doi               :string
-#  author            :string
-#  doe               :boolean
-#  grant_number      :string
 #  agreed_to_license :boolean
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -17,6 +14,8 @@
 #  status            :string
 #  handle            :string
 #  uuid              :string
+#  pub_date          :datetime
+#  funders           :string
 #
 
 require 'test_helper'

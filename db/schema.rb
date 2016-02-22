@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160202152401) do
+ActiveRecord::Schema.define(version: 20160222142533) do
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
@@ -34,9 +34,6 @@ ActiveRecord::Schema.define(version: 20160202152401) do
     t.string   "title",             null: false
     t.string   "journal"
     t.string   "doi"
-    t.string   "author"
-    t.boolean  "doe"
-    t.string   "grant_number"
     t.boolean  "agreed_to_license"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
@@ -44,6 +41,8 @@ ActiveRecord::Schema.define(version: 20160202152401) do
     t.string   "status"
     t.string   "handle"
     t.string   "uuid"
+    t.datetime "pub_date"
+    t.string   "funders"
   end
 
   add_index "submissions", ["user_id"], name: "index_submissions_on_user_id"

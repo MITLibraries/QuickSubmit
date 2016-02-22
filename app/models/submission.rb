@@ -7,9 +7,6 @@
 #  title             :string           not null
 #  journal           :string
 #  doi               :string
-#  author            :string
-#  doe               :boolean
-#  grant_number      :string
 #  agreed_to_license :boolean
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -17,6 +14,8 @@
 #  status            :string
 #  handle            :string
 #  uuid              :string
+#  pub_date          :datetime
+#  funders           :string
 #
 
 class Submission < ActiveRecord::Base
@@ -28,6 +27,7 @@ class Submission < ActiveRecord::Base
   validates :handle, format: URI.regexp, allow_nil: true
   validates :handle, presence: true, if: :status_approved?
   serialize :documents, JSON
+  serialize :funders, JSON
   before_create :generate_uuid
 
   def status_approved?

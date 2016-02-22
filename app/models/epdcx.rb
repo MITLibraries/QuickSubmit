@@ -31,7 +31,6 @@ class Epdcx
       statement('http://libraries.mit.edu/xmlns/callback', @callback_uri)
       scholarly_work
       statement('http://purl.org/dc/elements/1.1/title', submission.title)
-      statement('http://purl.org/dc/elements/1.1/creator', submission.author)
 
       @xml['epdcx'].statement('epdcx:propertyURI' =>
                              'http://purl.org/eprint/terms/isExpressedAs',
