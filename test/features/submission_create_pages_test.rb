@@ -23,6 +23,7 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     fill_in('Journal', with: 'Super Mega Journal')
     fill_in('Title', with: 'Alphabetical Order is Good Enough')
     check('I am authorized to submit this article.')
+    select 'Department of Energy (DOE)', from: 'submission_funders'
   end
 
   test 'requires signed_in user' do

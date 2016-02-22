@@ -16,6 +16,10 @@
         label: "I am authorized to submit this article." %>
   <% end %>
 
+  <%= f.select :funders,
+      options_for_select(@submission.valid_funders, @submission.funders),
+      {include_hidden: false}, {multiple: true, size: 10} %>
+
   <%= f.file_field :documents, multiple: true %>
 
   <% if @submission.documents? %>

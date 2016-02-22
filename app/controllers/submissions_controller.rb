@@ -86,8 +86,8 @@ class SubmissionsController < ApplicationController
   end
 
   def submission_params
-    params.require(:submission).permit(:title, :agreed_to_license, :author,
-                                       :journal, :doi, :grant_number, :doe,
-                                       :documents_cache, documents: [])
+    params.require(:submission).permit(:title, :agreed_to_license,
+                                       :journal, :doi, :documents_cache,
+                                       documents: [], funders: [])
   end
 end
