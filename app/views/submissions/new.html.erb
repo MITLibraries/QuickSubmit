@@ -5,11 +5,15 @@
                                data: { 'form-data' => (@s3_direct_post.fields),
                               'url' => @s3_direct_post.url,
                               'host' => URI.parse(@s3_direct_post.url).host } },
-                       layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10") do |f| %>
+                       layout: :horizontal, label_col: "col-sm-2",
+                       control_col: "col-sm-10") do |f| %>
   <%= f.alert_message "Please fix the errors below." %>
   <%= f.text_field :title %>
-  <%= f.text_field :journal %>
-  <%= f.text_field :doi %>
+  <%= f.text_field :journal, help: 'Optional' %>
+  <%= f.text_field :doi, label: 'DOI' %>
+  <%= f.date_select :pub_date, discard_day: true, include_blank: true,
+                               label: 'Publication Date',
+                               help: 'If not yet published, please enter an estimated Publication Date.'%>
 
   <%= f.form_group :agreed_to_license do %>
     <%= f.check_box :agreed_to_license,
@@ -18,9 +22,11 @@
 
   <%= f.select :funders,
       options_for_select(@submission.valid_funders, @submission.funders),
-      {include_hidden: false}, {multiple: true, size: 10} %>
+      { include_hidden: false, help: 'Multiple funder selections are allowed' },
+      { multiple: true, size: 10 } %>
 
-  <%= f.file_field :documents, multiple: true %>
+  <%= f.file_field :documents, multiple: true,
+                               help: 'Drag and Drop files or click "Choose Files"' %>
 
   <% if @submission.documents? %>
     <%= f.form_group :documents do %>
