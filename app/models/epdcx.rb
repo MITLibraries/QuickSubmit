@@ -21,8 +21,10 @@ class Epdcx
       lang
       journal_article
       statement('http://purl.org/eprint/terms/bibliographicCitation',
-                submission.journal)
+                submission.journal) if submission.journal.present?
       doi(submission)
+      pub_date(submission)
+      funders(submission)
     end
   end
 
@@ -39,6 +41,7 @@ class Epdcx
   end
 
   def doi(submission)
+    return unless submission.doi.present?
     @xml['epdcx'].statement('epdcx:propertyURI' =>
                             'http://purl.org/dc/elements/1.1/identifier') do
       @xml['epdcx'].valueString('epdcx:sesURI' =>
@@ -53,6 +56,13 @@ class Epdcx
                             'http://purl.org/dc/elements/1.1/type',
                             'epdcx:valueURI' =>
                             'http://purl.org/eprint/entityType/Expression')
+  end
+
+  def funders(submission)
+    return unless submission.funders.present?
+    submission.funders.each do |funder|
+      statement('http://libraries.mit.edu/xmlns/sponsor', funder)
+    end
   end
 
   def journal_article
@@ -71,6 +81,12 @@ class Epdcx
                             'http://purl.org/dc/terms/RFC3066') do
       @xml['epdcx'].valueString('en')
     end
+  end
+
+  def pub_date(submission)
+    return unless submission.pub_date.present?
+    statement('http://purl.org/dc/terms/available',
+              submission.pub_date.strftime('%Y-%m'))
   end
 
   def scholarly_work
