@@ -5,24 +5,28 @@
                                data: { 'form-data' => (@s3_direct_post.fields),
                               'url' => @s3_direct_post.url,
                               'host' => URI.parse(@s3_direct_post.url).host } },
-                       layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10") do |f| %>
+                       layout: :horizontal, label_col: "col-sm-2",
+                       control_col: "col-sm-10") do |f| %>
   <%= f.alert_message "Please fix the errors below." %>
-  <%= f.text_field :author %>
   <%= f.text_field :title %>
-  <%= f.text_field :journal %>
-  <%= f.text_field :doi %>
-  <%= f.text_field :grant_number %>
+  <%= f.text_field :journal, placeholder: 'Optional' %>
+  <%= f.text_field :doi, label: 'DOI', placeholder: 'Optional' %>
+  <%= f.date_select :pub_date, discard_day: true, include_blank: true,
+                               label: 'Publication Date',
+                               help: 'If not yet published, please enter an estimated Publication Date.'%>
 
-  <%= f.form_group :doe do %>
-    <%= f.check_box :doe, label: "This submission was funded in part by grants from the DOE." %>
-  <% end %>
-
-  <%= f.form_group :agreed_to_license do %>
+  <%= f.form_group :agreed_to_license, label: { text: "Authorized", class: 'required' } do %>
     <%= f.check_box :agreed_to_license,
         label: "I am authorized to submit this article." %>
   <% end %>
 
-  <%= f.file_field :documents, multiple: true %>
+  <%= f.select :funders,
+      options_for_select(@submission.valid_funders, @submission.funders),
+      { include_hidden: false, help: 'Multiple funder selections are allowed' },
+      { multiple: true, size: 10 } %>
+
+  <%= f.file_field :documents, multiple: true,
+                               help: 'Drag and Drop files or click "Choose Files"' %>
 
   <% if @submission.documents? %>
     <%= f.form_group :documents do %>
@@ -61,7 +65,7 @@ $(function() {
       paramName:        'file', // S3 does not like nested name fields i.e. name="user[avatar_url]"
       dataType:         'XML',  // S3 returns XML if success_action_status is set to 201
       replaceFileInput: true,
-      acceptFileTypes: /(\.|\/)(pdf)$/i,
+      //acceptFileTypes: /(\.|\/)(pdf)$/i,
       progressall: function (e, data) {
         var progress = parseInt(data.loaded / data.total * 100, 10);
         progressBar.css('width', progress + '%')

@@ -7,9 +7,6 @@
 #  title             :string           not null
 #  journal           :string
 #  doi               :string
-#  author            :string
-#  doe               :boolean
-#  grant_number      :string
 #  agreed_to_license :boolean
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -17,6 +14,8 @@
 #  status            :string
 #  handle            :string
 #  uuid              :string
+#  pub_date          :datetime
+#  funders           :string
 #
 
 class Submission < ActiveRecord::Base
@@ -25,9 +24,11 @@ class Submission < ActiveRecord::Base
   validates :title, presence: true
   validates :agreed_to_license, inclusion: { in: [true] }
   validates :documents, presence: true
+  validates :funders, presence: true
   validates :handle, format: URI.regexp, allow_nil: true
   validates :handle, presence: true, if: :status_approved?
   serialize :documents, JSON
+  serialize :funders, JSON
   before_create :generate_uuid
 
   def status_approved?
@@ -76,5 +77,18 @@ class Submission < ActiveRecord::Base
     else
       "https:#{document}"
     end
+  end
+
+  def valid_funders
+    ['Department of Defense (DoD)',
+     'Department of Energy (DOE)',
+     'Department of Transportation (DOT)',
+     'National Aeronautics and Space Administration (NASA)',
+     'National Institutes of Health (NIH)',
+     'National Center for Atmospheric Research (NCAR)',
+     'National Ocean and Atmospheric Administration (NOAA)',
+     'National Science Foundation (NSF)',
+     'United States Department of Agriculture (USDA)',
+     'None / Other']
   end
 end

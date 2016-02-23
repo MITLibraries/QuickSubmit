@@ -7,9 +7,6 @@
 #  title             :string           not null
 #  journal           :string
 #  doi               :string
-#  author            :string
-#  doe               :boolean
-#  grant_number      :string
 #  agreed_to_license :boolean
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -17,6 +14,8 @@
 #  status            :string
 #  handle            :string
 #  uuid              :string
+#  pub_date          :datetime
+#  funders           :string
 #
 
 require 'test_helper'
@@ -51,6 +50,12 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_not sub.valid?
   end
 
+  test 'invalid without funders' do
+    sub = submissions(:sub_one)
+    sub.funders = ''
+    assert_not sub.valid?
+  end
+
   test 'valid with uri handle' do
     sub = submissions(:sub_one)
     sub.handle = 'http://example.com/123456/789.0'
@@ -73,7 +78,8 @@ class SubmissionTest < ActiveSupport::TestCase
     # fixtures bypass callbacks, so this is all manual.
     user = users(:one)
     sub = Submission.create(title: 'manual sub', agreed_to_license: true,
-                            documents: ['b_pdf.pdf'], user: user)
+                            documents: ['b_pdf.pdf'], user: user,
+                            funders: ['DOE'])
     assert(sub.uuid)
   end
 

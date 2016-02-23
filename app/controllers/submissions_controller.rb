@@ -7,9 +7,6 @@
 #  title             :string           not null
 #  journal           :string
 #  doi               :string
-#  author            :string
-#  doe               :boolean
-#  grant_number      :string
 #  agreed_to_license :boolean
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -17,6 +14,8 @@
 #  status            :string
 #  handle            :string
 #  uuid              :string
+#  pub_date          :datetime
+#  funders           :string
 #
 
 class SubmissionsController < ApplicationController
@@ -87,8 +86,8 @@ class SubmissionsController < ApplicationController
   end
 
   def submission_params
-    params.require(:submission).permit(:title, :agreed_to_license, :author,
-                                       :journal, :doi, :grant_number, :doe,
-                                       :documents_cache, documents: [])
+    params.require(:submission).permit(:title, :agreed_to_license, :pub_date,
+                                       :journal, :doi, :documents_cache,
+                                       documents: [], funders: [])
   end
 end

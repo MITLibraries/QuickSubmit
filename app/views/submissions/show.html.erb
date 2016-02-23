@@ -3,7 +3,14 @@
   <li>Submitted: <%= @submission.created_at %></li>
   <li>Status: <%= @submission.status %></li>
   <li>Title: <%= @submission.title %></li>
-  <li>Funder(s): </li>
+  <li>Expected Publication Date: <%= @submission.pub_date.strftime("%B %Y") if @submission.pub_date %></li>
+  <li>Funder(s):
+    <ul>
+      <% @submission.funders.each do |funder| %>
+        <li><%= funder %></li>
+      <% end %>
+    </ul>
+  </li>
   <li>File(s):
     <ul>
     <% @submission.documents.each do |doc| %>

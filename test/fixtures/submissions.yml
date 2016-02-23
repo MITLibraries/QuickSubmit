@@ -7,9 +7,6 @@
 #  title             :string           not null
 #  journal           :string
 #  doi               :string
-#  author            :string
-#  doe               :boolean
-#  grant_number      :string
 #  agreed_to_license :boolean
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -17,6 +14,8 @@
 #  status            :string
 #  handle            :string
 #  uuid              :string
+#  pub_date          :datetime
+#  funders           :string
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
@@ -25,6 +24,7 @@ sub_one:
   title: 'Popcorn is a fruit.'
   agreed_to_license: true
   documents: "[\"//s3.amazonaws.com/mitquicksubmitdev/uploads/ea656123-f24f-4b12-9c78-17399338a6d6/b_pdf.pdf\", \"//s3.amazonaws.com/mitquicksubmitdev/uploads/89ce4e35-8573-4def-8114-8767365c954e/a_pdf.pdf\"]"
+  funders: '["Department of Energy (DOE)"]'
   user: one
   uuid: 7648b505-af79-4a2b-abcb-2727f716100c
 
@@ -33,17 +33,16 @@ sub_two:
   user: two
   journal: 'Journal of Popcorn Management'
   doi: 'doi:10.10.1038/nphys1170'
-  author: 'Lastname, Firstname'
-  doe: true
-  grant_number: 'asdf123'
   agreed_to_license: true
   documents: "[\"//s3.amazonaws.com/mitquicksubmitdev/uploads/ea656123-f24f-4b12-9c78-17399338a6d6/b_pdf.pdf\"]"
+  funders: '["Department of Energy (DOE)"]'
   uuid: a481170a-8337-4adc-b5b6-289b1037bd76
 
 sub_deposited:
     title: 'popcorn soup'
     agreed_to_license: true
     documents: "[\"//s3.amazonaws.com/mitquicksubmitdev/uploads/ea656123-f24f-4b12-9c78-17399338a6d6/b_pdf.pdf\", \"//s3.amazonaws.com/mitquicksubmitdev/uploads/89ce4e35-8573-4def-8114-8767365c954e/a_pdf.pdf\"]"
+    funders: '["Department of Energy (DOE)"]'
     user: one
     uuid: 7648b505-af79-4a2b-abcb-2727f716100c
     status: 'deposited'
