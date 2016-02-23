@@ -6,8 +6,10 @@
   <li>Expected Publication Date: <%= @submission.pub_date.strftime("%B %Y") if @submission.pub_date %></li>
   <li>Funder(s):
     <ul>
-      <% @submission.funders.each do |funder| %>
-        <li><%= funder %></li>
+      <% if @submission.funders.present? %>
+        <% @submission.funders.each do |funder| %>
+          <li><%= funder %></li>
+        <% end %>
       <% end %>
     </ul>
   </li>
