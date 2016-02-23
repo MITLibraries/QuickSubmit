@@ -88,13 +88,16 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     assert_equal(2, @sub.documents.count)
   end
 
-  test 'non pdf cannot be attached' do
+  test 'non pdf can be attached' do
     subs = Submission.count
     base_valid_form
     attach_file('submission[documents][]',
                 File.absolute_path('./test/fixtures/a.txt'))
-    assert page.has_content?('Only PDF files are accepted at this time')
-    assert_equal(subs, Submission.count)
+    refute page.has_content?('Only PDF files are accepted at this time')
+    click_on('Create Submission')
+    assert_equal(subs + 1, Submission.count)
+    @sub = Submission.last
+    assert(@sub.documents.first.include?('a.txt'))
   end
 
   test 'pdf retained across invalid form submission' do
