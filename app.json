@@ -1,0 +1,64 @@
+{
+  "name": "QuickSubmit",
+  "scripts": {
+    "postdeploy": "rake db:migrate"
+  },
+  "env": {
+    "AWS_ACCESS_KEY_ID": {
+      "required": true
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+      "required": true
+    },
+    "DISABLE_ALL_EMAIL": {
+      "required": true
+    },
+    "EMAIL_FROM": {
+      "required": true
+    },
+    "LANG": {
+      "required": true
+    },
+    "MIT_OAUTH2_API_KEY": {
+      "required": true
+    },
+    "MIT_OAUTH2_API_SECRET": {
+      "required": true
+    },
+    "RACK_ENV": {
+      "required": true
+    },
+    "RAILS_ENV": {
+      "required": true
+    },
+    "RAILS_SERVE_STATIC_FILES": {
+      "required": true
+    },
+    "S3_BUCKET": {
+      "required": true
+    },
+    "SECRET_KEY_BASE": {
+      "required": true
+    },
+    "SKYLIGHT_AUTHENTICATION": {
+      "required": true
+    },
+    "SWORD_ENDPOINT": {
+      "required": true
+    },
+    "SWORD_PASSWORD": {
+      "required": true
+    },
+    "SWORD_USERNAME": {
+      "required": true
+    }
+  },
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+      "url": "urn:buildpack:heroku/ruby"
+    }
+  ]
+}
