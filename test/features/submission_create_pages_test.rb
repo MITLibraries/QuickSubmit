@@ -72,6 +72,7 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
   end
 
   test 'multiple pdfs can be attached' do
+    skip('this is too flakey to leave active')
     base_valid_form
     attach_file('submission[documents][]',
                 File.absolute_path('./test/fixtures/a_pdf.pdf'))
