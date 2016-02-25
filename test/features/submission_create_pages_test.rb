@@ -72,17 +72,11 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
   end
 
   test 'multiple pdfs can be attached' do
-    # this is a bit flakey. Fun with async js testing.
-    # when using capybara with rspec, we get auto delays
-    # when using the built in matchers. I'm not sure yet if
-    # those are in play with minitest.
-    # It may be worth rewriting this in rspec to see if the flakiness
-    # goes away (although that was always a bit suspect).
     base_valid_form
     attach_file('submission[documents][]',
-                [File.absolute_path('./test/fixtures/a_pdf.pdf'),
-                 File.absolute_path('./test/fixtures/b_pdf.pdf')])
-    assert page.has_content?('Uploading done')
+                File.absolute_path('./test/fixtures/a_pdf.pdf'))
+    attach_file('submission[documents][]',
+                File.absolute_path('./test/fixtures/b_pdf.pdf'))
     click_on('Create Submission')
     @sub = Submission.last
     assert_equal(2, @sub.documents.count)
