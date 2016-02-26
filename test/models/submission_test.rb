@@ -56,6 +56,18 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_not sub.valid?
   end
 
+  test 'invalid without valid funder' do
+    sub = submissions(:sub_one)
+    sub.funders << 'Fake Funder'
+    assert_not sub.valid?
+  end
+
+  test 'invalid with at least one invalid funder' do
+    sub = submissions(:sub_one)
+    sub.funders = ['Fake Funder']
+    assert_not sub.valid?
+  end
+
   test 'valid with uri handle' do
     sub = submissions(:sub_one)
     sub.handle = 'http://example.com/123456/789.0'
@@ -79,7 +91,7 @@ class SubmissionTest < ActiveSupport::TestCase
     user = users(:one)
     sub = Submission.create(title: 'manual sub', agreed_to_license: true,
                             documents: ['b_pdf.pdf'], user: user,
-                            funders: ['DOE'])
+                            funders: ['Department of Energy (DOE)'])
     assert(sub.uuid)
   end
 
