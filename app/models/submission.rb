@@ -25,11 +25,20 @@ class Submission < ActiveRecord::Base
   validates :agreed_to_license, inclusion: { in: [true] }
   validates :documents, presence: true
   validates :funders, presence: true
+  validate :funders_are_valid
   validates :handle, format: URI.regexp, allow_nil: true
   validates :handle, presence: true, if: :status_approved?
   serialize :documents, JSON
   serialize :funders, JSON
   before_create :generate_uuid
+
+  def funders_are_valid
+    return unless funders.present?
+    funders.each do |funder|
+      next if valid_funders.include?(funder)
+      errors.add(:funders, 'Invalid funder detected')
+    end
+  end
 
   def status_approved?
     status == 'approved'
