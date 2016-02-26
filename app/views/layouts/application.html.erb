@@ -40,7 +40,11 @@
                 <li><%= link_to "Submissions", submissions_path %></li>
                 <li><%= link_to("Sign out", destroy_user_session_path, method: :delete, id: "sign_in") %></li>
               <% else %>
-                <li><%= link_to("Sign in", user_omniauth_authorize_path(:mit_oauth2), id: "sign_in") %></li>
+                <% if ENV['FAKE_AUTH_ENABLED'] == 'true' %>
+                  <li><%= link_to("Sign in", user_omniauth_authorize_path(:developer), id: "sign_in") %></li>
+                <% else %>
+                  <li><%= link_to("Sign in", user_omniauth_authorize_path(:mit_oauth2), id: "sign_in") %></li>
+                <% end %>
               <% end %>
             </ul>
             <a class="navbar-text navbar-right" href="//web.mit.edu"><img src="<%= asset_path 'logo-mit-74x40.png' %>" alt="Massachusetts Institute of Technology" width="74" height="40"></a>
