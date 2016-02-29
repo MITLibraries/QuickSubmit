@@ -16,7 +16,7 @@
   <li>File(s):
     <ul>
     <% @submission.documents.each do |doc| %>
-      <li><%= link_to(@submission.document_uri(doc)) %></li>
+      <li><%= link_to(@submission.document_uri(doc), @submission.document_uri(doc)) %></li>
     <% end %>
     </ul>
   </li>
