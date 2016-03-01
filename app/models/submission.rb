@@ -88,7 +88,15 @@ class Submission < ActiveRecord::Base
     end
   end
 
+  def funders_minus_ui_only_funders
+    funders - ui_only_funders
+  end
+
   def valid_funders
+    submittable_funders + ui_only_funders
+  end
+
+  def submittable_funders
     ['Department of Defense (DoD)',
      'Department of Energy (DOE)',
      'Department of Transportation (DOT)',
@@ -97,7 +105,10 @@ class Submission < ActiveRecord::Base
      'National Center for Atmospheric Research (NCAR)',
      'National Ocean and Atmospheric Administration (NOAA)',
      'National Science Foundation (NSF)',
-     'United States Department of Agriculture (USDA)',
-     'None / Other']
+     'United States Department of Agriculture (USDA)']
+  end
+
+  def ui_only_funders
+    ['None / Other']
   end
 end
