@@ -53,7 +53,7 @@ class SubmissionIndexPagesTest < Capybara::Rails::TestCase
     visit submissions_path
     assert_text('popcorn soup')
 
-    click_link('Deposited')
+    click_link('Approved')
     assert_text('popcorn soup')
 
     click_link('Failed')
