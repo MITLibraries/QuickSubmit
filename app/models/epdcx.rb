@@ -59,8 +59,8 @@ class Epdcx
   end
 
   def funders(submission)
-    return unless submission.funders.present?
-    submission.funders.each do |funder|
+    return unless submission.funders_minus_ui_only_funders.present?
+    submission.funders_minus_ui_only_funders.each do |funder|
       statement('http://libraries.mit.edu/xmlns/sponsor', funder)
     end
   end
