@@ -4,14 +4,14 @@ View:
  <%= link_to('All', submissions_path, class: 'btn btn-default') %>
  <%= link_to('Failed', submissions_path(filter: 'failed'), class: 'btn btn-default') %>
  <%= link_to('In Review Queue', submissions_path(filter: 'in review queue'), class: 'btn btn-default') %>
- <%= link_to('Deposited', submissions_path(filter: 'deposited'), class: 'btn btn-default') %>
+ <%= link_to('Approved', submissions_path(filter: 'approved'), class: 'btn btn-default') %>
 
 <hr />
 
 <% if @submissions %>
 
   <% @submissions.each do |sub| %>
-    <% if sub.status == 'deposited' %>
+    <% if sub.status == 'approved' %>
       <div class="panel panel-success">
     <% elsif sub.status == 'in review queue' %>
       <div class="panel panel-info">

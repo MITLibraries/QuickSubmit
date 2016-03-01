@@ -82,7 +82,7 @@ class SubmissionsController < ApplicationController
   end
 
   def callback_uri
-    "#{root_url}/callbacks/status/#{@submission.uuid}"
+    "#{root_url}callbacks/status/#{@submission.uuid}"
   end
 
   def submission_params
