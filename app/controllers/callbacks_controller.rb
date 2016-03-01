@@ -1,4 +1,6 @@
 class CallbacksController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: :status
+
   def status
     @submission = Submission.find_by_uuid(params[:uuid])
     validate_submission_and_params(params)
@@ -14,20 +16,18 @@ class CallbacksController < ApplicationController
   private
 
   def extract_and_update_status_and_handle(params)
-    json = JSON.parse(params[:body])
-    raise ActionController::RoutingError, 'Invalid Status' unless json['status']
-    @submission.status = json['status'] if valid_status?(json['status'])
-    extract_and_update_handle(json) if @submission.status == 'approved'
+    unless params[:status]
+      raise ActionController::RoutingError, 'Invalid Status'
+    end
+    @submission.status = params[:status] if valid_status?(params[:status])
+    @submission.handle = params[:handle] if @submission.status == 'approved'
   end
 
   def validate_submission_and_params(params)
     raise ActionController::RoutingError, 'Not Found' unless @submission
-    raise ActionController::RoutingError, 'Invalid Status' unless params[:body]
-  end
-
-  def extract_and_update_handle(json)
-    handle = json['handle']
-    @submission.handle = handle
+    unless params[:status]
+      raise ActionController::RoutingError, 'Invalid Status'
+    end
   end
 
   # move this to the model?

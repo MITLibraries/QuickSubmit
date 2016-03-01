@@ -14,3 +14,6 @@ AllCops:
 ClassLength:
   Exclude:
     - test/**/*
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
