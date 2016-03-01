@@ -51,6 +51,9 @@
     },
     "SWORD_USERNAME": {
       "required": true
+    },
+    "FAKE_AUTH_ENABLED": {
+      "value": "true"
     }
   },
   "addons": [

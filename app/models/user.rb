@@ -11,7 +11,12 @@
 #
 
 class User < ActiveRecord::Base
-  devise :omniauthable, omniauth_providers: [:mit_oauth2]
+  if ENV['FAKE_AUTH_ENABLED'] == 'true'
+    devise :omniauthable, omniauth_providers: [:developer]
+  else
+    devise :omniauthable, omniauth_providers: [:mit_oauth2]
+  end
+
   has_many :submissions
 
   def self.from_omniauth(auth)

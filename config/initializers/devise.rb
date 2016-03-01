@@ -260,5 +260,9 @@ Devise.setup do |config|
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
 
-  config.omniauth :mit_oauth2, Rails.application.secrets.oauth_key, Rails.application.secrets.oauth_secret, scope: 'openid,email,profile'
+  if ENV['FAKE_AUTH_ENABLED'] == 'true'
+    config.omniauth :developer
+  else
+    config.omniauth :mit_oauth2, Rails.application.secrets.oauth_key, Rails.application.secrets.oauth_secret, scope: 'openid,email,profile'
+  end
 end
