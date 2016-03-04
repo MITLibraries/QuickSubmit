@@ -1,4 +1,18 @@
+# An EPDCX XML document for a Submission
 class Epdcx
+  # Creates an EPDCX XML document for a Submission
+  #
+  # @note This is called from within a {Mets} document
+  # @param xml
+  #   Existing Nokogiri XML document to embed EPDCX into. In the context
+  #   of this application, it will be a {Mets} document
+  # @param submission [Submission]
+  # @param callback_uri
+  #   Text based representation of a URI the will be included
+  #   in the mets.xml document that a remote server can use to communicate back
+  #   with a status update for the Submission
+  # @see Mets
+  # @see Submission
   def initialize(xml, submission, callback_uri)
     @xml = xml
     @callback_uri = callback_uri
@@ -9,6 +23,7 @@ class Epdcx
     end
   end
 
+  # Converts the built Nokogiri Document into standard xml
   def to_xml
     @xml.to_xml
   end

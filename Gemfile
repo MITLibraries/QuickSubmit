@@ -40,6 +40,7 @@ group :development do
   gem 'annotate'
   gem 'rubocop'
   gem 'web-console'
+  gem 'yard'
 end
 
 group :test do
