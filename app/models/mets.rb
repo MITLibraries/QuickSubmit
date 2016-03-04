@@ -1,10 +1,21 @@
+# A METS XML document for a Submission
 class Mets
+  # Creates a METS XML document for a Submission
+  #
+  # @param submission [Submission]
+  # @param callback_uri
+  #   Text based representation of a URI the will be included
+  #   in the mets.xml document that a remote server can use to communicate back
+  #   with a status update for the Submission
+  # @see Submission
+  # @see Epdcx
   def initialize(submission, callback_uri)
     @submission = submission
     @callback_uri = callback_uri
     @builder = xml_builder
   end
 
+  # Converts the built Nokogiri Document into standard xml
   def to_xml
     @builder.to_xml
   end

@@ -18,6 +18,7 @@
 #  funders           :string
 #
 
+# A {User} supplied set of metadata with attached documents
 class Submission < ActiveRecord::Base
   belongs_to :user
   validates :user, presence: true
@@ -32,6 +33,7 @@ class Submission < ActiveRecord::Base
   serialize :funders, JSON
   before_create :generate_uuid
 
+  # Ensures submitted funders are allowed
   def funders_are_valid
     return unless funders.present?
     funders.each do |funder|
@@ -40,10 +42,12 @@ class Submission < ActiveRecord::Base
     end
   end
 
+  # Convience method to check if the Submission status is 'approved'
   def status_approved?
     status == 'approved'
   end
 
+  # Generate a {Mets} XML representation of the Submission
   def to_mets(callback)
     Mets.new(self, callback).to_xml
   end
@@ -79,6 +83,11 @@ class Submission < ActiveRecord::Base
     end
   end
 
+  # Returns a usable URI associated S3 documents
+  # @param document
+  #   A reference to an S3 document from Submission.documents
+  # @return a usable URI based on whether or not fakes3 or real
+  #   S3 is being used.
   def document_uri(document)
     if document.include?('localhost')
       swap = "localhost:10001/#{ENV['S3_BUCKET']}/"
@@ -88,14 +97,19 @@ class Submission < ActiveRecord::Base
     end
   end
 
+  # An array of funders that does not include UI only funders
   def funders_minus_ui_only_funders
     funders - ui_only_funders
   end
 
+  # This includes both funders we want to include in METS and
+  # funders that we only want to display in the UI
+  # @note this array is used to both generate the UI and validate the input
   def valid_funders
     submittable_funders + ui_only_funders
   end
 
+  # Funders we want to display in the UI and also include in {Mets}
   def submittable_funders
     ['Department of Defense (DoD)',
      'Department of Energy (DOE)',
@@ -108,6 +122,7 @@ class Submission < ActiveRecord::Base
      'United States Department of Agriculture (USDA)']
   end
 
+  # Funders we want to display in the UI, but not include in {Mets}
   def ui_only_funders
     ['None / Other']
   end
