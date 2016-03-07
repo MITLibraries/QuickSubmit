@@ -15,11 +15,6 @@
                                label: 'Publication Date',
                                help: 'If not yet published, please enter an estimated Publication Date.'%>
 
-  <%= f.form_group :agreed_to_license, label: { text: "Authorized", class: 'required' } do %>
-    <%= f.check_box :agreed_to_license,
-        label: "I am authorized to submit this article." %>
-  <% end %>
-
   <%= f.select :funders,
       options_for_select(@submission.valid_funders, @submission.funders),
       { include_hidden: false, help: 'Multiple funder selections are allowed' },

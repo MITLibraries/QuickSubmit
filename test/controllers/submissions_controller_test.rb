@@ -2,20 +2,19 @@
 #
 # Table name: submissions
 #
-#  id                :integer          not null, primary key
-#  user_id           :integer
-#  title             :string           not null
-#  journal           :string
-#  doi               :string
-#  agreed_to_license :boolean
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  documents         :string
-#  status            :string
-#  handle            :string
-#  uuid              :string
-#  pub_date          :datetime
-#  funders           :string
+#  id         :integer          not null, primary key
+#  user_id    :integer
+#  title      :string           not null
+#  journal    :string
+#  doi        :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  documents  :string
+#  status     :string
+#  handle     :string
+#  uuid       :string
+#  pub_date   :datetime
+#  funders    :string
 #
 
 require 'test_helper'
