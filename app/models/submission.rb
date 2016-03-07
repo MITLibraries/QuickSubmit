@@ -2,20 +2,19 @@
 #
 # Table name: submissions
 #
-#  id                :integer          not null, primary key
-#  user_id           :integer
-#  title             :string           not null
-#  journal           :string
-#  doi               :string
-#  agreed_to_license :boolean
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  documents         :string
-#  status            :string
-#  handle            :string
-#  uuid              :string
-#  pub_date          :datetime
-#  funders           :string
+#  id         :integer          not null, primary key
+#  user_id    :integer
+#  title      :string           not null
+#  journal    :string
+#  doi        :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  documents  :string
+#  status     :string
+#  handle     :string
+#  uuid       :string
+#  pub_date   :datetime
+#  funders    :string
 #
 
 # A {User} supplied set of metadata with attached documents
@@ -23,7 +22,6 @@ class Submission < ActiveRecord::Base
   belongs_to :user
   validates :user, presence: true
   validates :title, presence: true
-  validates :agreed_to_license, inclusion: { in: [true] }
   validates :documents, presence: true
   validates :funders, presence: true
   validate :funders_are_valid

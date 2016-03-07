@@ -2,20 +2,19 @@
 #
 # Table name: submissions
 #
-#  id                :integer          not null, primary key
-#  user_id           :integer
-#  title             :string           not null
-#  journal           :string
-#  doi               :string
-#  agreed_to_license :boolean
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  documents         :string
-#  status            :string
-#  handle            :string
-#  uuid              :string
-#  pub_date          :datetime
-#  funders           :string
+#  id         :integer          not null, primary key
+#  user_id    :integer
+#  title      :string           not null
+#  journal    :string
+#  doi        :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  documents  :string
+#  status     :string
+#  handle     :string
+#  uuid       :string
+#  pub_date   :datetime
+#  funders    :string
 #
 
 require 'test_helper'
@@ -35,12 +34,6 @@ class SubmissionTest < ActiveSupport::TestCase
   test 'invalid without user' do
     sub = submissions(:sub_one)
     sub.user_id = ''
-    assert_not sub.valid?
-  end
-
-  test 'invalid without agreed_to_license' do
-    sub = submissions(:sub_one)
-    sub.agreed_to_license = false
     assert_not sub.valid?
   end
 
@@ -103,9 +96,8 @@ class SubmissionTest < ActiveSupport::TestCase
   test 'uuid is set' do
     # fixtures bypass callbacks, so this is all manual.
     user = users(:one)
-    sub = Submission.create(title: 'manual sub', agreed_to_license: true,
-                            documents: ['b_pdf.pdf'], user: user,
-                            funders: ['Department of Energy (DOE)'])
+    sub = Submission.create(title: 'manual sub', documents: ['b_pdf.pdf'],
+                            user: user, funders: ['Department of Energy (DOE)'])
     assert(sub.uuid)
   end
 

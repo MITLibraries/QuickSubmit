@@ -22,7 +22,6 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     visit new_submission_path
     fill_in('Journal', with: 'Super Mega Journal')
     fill_in('Title', with: 'Alphabetical Order is Good Enough')
-    check('I am authorized to submit this article.')
     select 'Department of Energy (DOE)', from: 'submission_funders'
   end
 
@@ -41,18 +40,16 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
   test 'invalid form retains valid portions' do
     base_valid_form
     fill_in('Title', with: '')
-    uncheck('I am authorized to submit this article.')
     click_on('Create Submission')
     assert_text('Please fix the errors below')
     assert_text("Title can't be blank")
-    assert_text('Agreed to license is not included in the list')
     assert_selector("input[value='Super Mega Journal']")
   end
 
   test 'invalid form submit does not create new submissions' do
     subs = Submission.count
     base_valid_form
-    uncheck('I am authorized to submit this article.')
+    fill_in('Title', with: '')
     click_on('Create Submission')
     assert_equal(Submission.count, subs)
   end
@@ -101,11 +98,11 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     attach_file('submission[documents][]',
                 File.absolute_path('./test/fixtures/a_pdf.pdf'))
     assert page.has_content?('Uploading done')
-    uncheck('I am authorized to submit this article.')
+    fill_in('Title', with: '')
     click_on('Create Submission')
     assert_equal(subs, Submission.count)
     assert_text('a_pdf.pdf')
-    check('I am authorized to submit this article.')
+    fill_in('Title', with: 'Popcorn is Good!')
     click_on('Create Submission')
     assert_equal((subs + 1), Submission.count)
     @sub = Submission.last
