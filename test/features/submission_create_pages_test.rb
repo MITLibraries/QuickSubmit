@@ -59,7 +59,7 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     base_valid_form
     attach_file('submission[documents][]',
                 File.absolute_path('./test/fixtures/a_pdf.pdf'))
-    assert page.has_content?('Uploading done')
+    assert_text('a_pdf.pdf uploaded')
     click_on('Create Submission')
     assert_equal(Submission.count, (subs + 1))
     @sub = Submission.last
@@ -69,12 +69,13 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
   end
 
   test 'multiple pdfs can be attached' do
-    skip('this is too flakey to leave active')
     base_valid_form
     attach_file('submission[documents][]',
                 File.absolute_path('./test/fixtures/a_pdf.pdf'))
     attach_file('submission[documents][]',
                 File.absolute_path('./test/fixtures/b_pdf.pdf'))
+    assert_text('a_pdf.pdf uploaded')
+    assert_text('b_pdf.pdf uploaded')
     click_on('Create Submission')
     @sub = Submission.last
     assert_equal(2, @sub.documents.count)
@@ -97,7 +98,7 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     base_valid_form
     attach_file('submission[documents][]',
                 File.absolute_path('./test/fixtures/a_pdf.pdf'))
-    assert page.has_content?('Uploading done')
+    assert_text('a_pdf.pdf uploaded')
     fill_in('Title', with: '')
     click_on('Create Submission')
     assert_equal(subs, Submission.count)
