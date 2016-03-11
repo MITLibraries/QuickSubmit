@@ -16,9 +16,6 @@ class CallbacksController < ApplicationController
   private
 
   def extract_and_update_status_and_handle(params)
-    unless params[:status]
-      raise ActionController::RoutingError, 'Invalid Status'
-    end
     @submission.status = params[:status] if valid_status?(params[:status])
     @submission.handle = params[:handle] if @submission.status == 'approved'
   end

@@ -23,17 +23,32 @@
   <%= f.file_field :documents, multiple: true,
                                help: 'Drag and Drop files or click "Choose Files"' %>
 
-  <% if @submission.documents? %>
-    <%= f.form_group :documents do %>
-      Already Uploaded Documents for this Submission:
-      <ul>
-      <% @submission.documents.each do |doc| %>
-        <li><%= doc %></li>
-        <%= f.hidden_field :documents, value: doc, name: 'submission[documents][]' %>
-      <% end %>
-      </ul>
-    <% end %>
-  <% end %>
+
+  <div class="form-group">
+    <div class="col-sm-10 col-sm-offset-2">
+      <!-- The global progress bar -->
+      <div id="progress" class="progress" style="display: none;">
+        <div class="progress-bar progress-bar-success"></div>
+      </div>
+
+      <!-- The container for the uploaded files -->
+      <div id="files" class="files">
+        Already Uploaded Documents for this Submission:
+        <ul id="file_list">
+          <% if @submission.documents? %>
+            <% @submission.documents.each do |doc| %>
+              <li><%= doc.split('/').last %></li>
+              <%= f.hidden_field :documents, value: doc, name: 'submission[documents][]', class: 'hidden_docs' %>
+            <% end %>
+          <% end %>
+        </ul>
+      </div>
+
+      <div id="resetUploads" style="display: none;">
+        <button type="button" id="uploadReset" class="btn btn-danger">Remove Uploads</button>
+      </div>
+    </div>
+  </div>
 
   <%= f.form_group do %>
     <%= f.submit %>
@@ -41,73 +56,74 @@
 <% end %>
 
 <script>
-$(function() {
-  $('.submissionUpload').find("input:file").each(function(i, elem) {
-    var fileInput    = $(elem);
-    var form         = $(fileInput.parents('form:first'));
-    var submitButton = form.find('input[type="submit"]');
-    var progressBar  = $("<div class='bar'></div>");
-    var barContainer = $("<div class='progress'></div>").append(progressBar);
-    var errorContainer = $('<span class="help-block errorContainer"></span>');
-    fileInput.after(errorContainer);
-    fileInput.after(barContainer);
-    fileInput.fileupload({
-      fileInput:       fileInput,
-      url:             form.data('url'),
-      type:            'POST',
-      autoUpload:       true,
-      formData:         form.data('form-data'),
-      paramName:        'file', // S3 does not like nested name fields i.e. name="user[avatar_url]"
-      dataType:         'XML',  // S3 returns XML if success_action_status is set to 201
-      replaceFileInput: true,
-      //acceptFileTypes: /(\.|\/)(pdf)$/i,
-      progressall: function (e, data) {
-        var progress = parseInt(data.loaded / data.total * 100, 10);
-        progressBar.css('width', progress + '%')
-      },
-      start: function (e) {
-        errorContainer.text("");
-        $('.submissionUpload').find("input:file").parent().parent().removeClass('has-error');
-        submitButton.prop('disabled', true);
+$(function () {
+    'use strict';
+    var form = $('#submission_documents').parents('form:first');
+    var url = form.data('url');
 
-        progressBar.
-          css('background', 'green').
-          css('display', 'block').
-          css('width', '0%').
-          text("Loading...");
-      },
-      done: function(e, data) {
-        // console.log('done');
-        // console.log(data);
-        submitButton.prop('disabled', false);
-        progressBar.text("Uploading done");
+    <% if @submission.documents? %>
+      $('#resetUploads').show();
+    <% else %>
+      $('#files').hide();
+    <% end %>
+
+    $("#uploadReset").click(function() {
+      $("#file_list").text('');
+      $("#files").hide();
+      $(".hidden_docs").remove();
+      $("#progress").hide();
+      $("#resetUploads").hide();
+    });
+
+    $('#submission_documents').fileupload({
+        url: url,
+        type: 'POST',
+        dataType: 'XML',
+        autoUpload: true,
+        formData: form.data('form-data'),
+        // acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+        paramName: 'file' // S3 does not like nested name fields i.e. name="user[avatar_url]",
+
+    }).on('fileuploadadd', function (e, data) {
+        // console.log("add");
+
+    }).on('fileuploadprocessalways', function (e, data) {
+        // console.log("always");
+
+    }).on('fileuploadprogressall', function (e, data) {
+        // console.log("progress all");
+
+    }).on('fileuploaddone', function (e, data) {
+        // console.log("upload done");
+        data.context = $('#file_list');
+        $.each(data.files, function (index, file) {
+            var node = $('<li/>').text(file.name + ' uploaded');
+            if (!index) {
+                node.append('<br>');
+                // console.log(file);
+            }
+            node.appendTo(data.context);
+        });
 
         // extract key and generate URL from response
         var key   = $(data.jqXHR.responseXML).find("Key").text();
-        // console.log(key);
         var url   = '//' + form.data('host') + '/' + key;
-        // console.log(url);
 
         // create hidden field
-        var input = $("<input />", { type:'hidden', name: fileInput.attr('name'), value: url })
-        // console.log(input);
+        var input = $("<input />", { type:'hidden', class: 'hidden_docs', name: $('#submission_documents').attr('name'), value: url })
         form.append(input);
-      },
-      fail: function(e, data) {
-        submitButton.prop('disabled', false);
-        // console.log('fail');
-        // console.log(data);
-        progressBar.
-          css("background", "red").
-          text("Failed");
-      },
-      processalways: function(e,data){
-        if (data.files.error) {
-          errorContainer.text("Only PDF files are accepted at this time.");
-          $('.submissionUpload').find("input:file").parent().parent().addClass('has-error');
-        }
-      }
-    });
-  });
+        $("#files").show();
+        $("#resetUploads").show();
+
+    }).on('fileuploadfail', function (e, data) {
+        // console.log("upload fail");
+        $.each(data.files, function (index) {
+            var error = $('<span class="text-danger"/>').text('File upload failed.');
+            $(data.context.children()[index])
+                .append('<br>')
+                .append(error);
+        });
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
 });
 </script>
