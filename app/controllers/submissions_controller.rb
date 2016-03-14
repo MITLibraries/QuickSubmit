@@ -18,6 +18,7 @@
 #
 
 class SubmissionsController < ApplicationController
+  before_action :require_user
   before_action :authenticate_user!
   before_action :set_s3_direct_post, only: [:new, :create]
   load_and_authorize_resource
@@ -64,6 +65,15 @@ class SubmissionsController < ApplicationController
   end
 
   private
+
+  def require_user
+    return if current_user
+    if ENV['FAKE_AUTH_ENABLED'] == 'true'
+      redirect_to user_omniauth_authorize_path(:developer)
+    else
+      redirect_to user_omniauth_authorize_path(:mit_oauth2)
+    end
+  end
 
   def filtered_submissions
     if params[:filter]

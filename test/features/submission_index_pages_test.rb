@@ -12,13 +12,6 @@ class SubmissionIndexPagesTest < Capybara::Rails::TestCase
     @sub.documents.map(&:remove!) if @sub
   end
 
-  test 'index requires signin' do
-    visit submissions_path
-    assert_equal(root_path, current_path)
-    assert_text('Sign in')
-    assert_text('You need to sign in or sign up before continuing.')
-  end
-
   test 'index shows own submissions' do
     mock_auth(users(:one))
     visit submissions_path

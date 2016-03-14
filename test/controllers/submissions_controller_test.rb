@@ -72,7 +72,7 @@ class SubmissionsControllerTest < ActionController::TestCase
 
   test 'non-authenticated users cannot download package' do
     get :package, id: submissions(:sub_one)
-    assert_redirected_to root_path
+    assert_redirected_to user_omniauth_authorize_path(:mit_oauth2)
   end
 
   test 'non-admin user cannot download package' do
@@ -94,10 +94,11 @@ class SubmissionsControllerTest < ActionController::TestCase
 
   test 'non-authenticated users cannot resubmit package' do
     post :resubmit, id: submissions(:sub_one)
-    assert_redirected_to root_path
+    assert_redirected_to user_omniauth_authorize_path(:mit_oauth2)
   end
 
   test 'non-admin user cannot resubmit package' do
+    sign_in users(:one)
     post :resubmit, id: submissions(:sub_one)
     assert_redirected_to root_path
   end
@@ -110,7 +111,7 @@ class SubmissionsControllerTest < ActionController::TestCase
 
   test 'non-authenticated users cannot show submission' do
     get :show, id: submissions(:sub_one)
-    assert_redirected_to root_path
+    assert_redirected_to user_omniauth_authorize_path(:mit_oauth2)
   end
 
   test 'non-admin users can view own submission' do
