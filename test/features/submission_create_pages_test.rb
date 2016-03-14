@@ -25,13 +25,6 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     select 'Department of Energy (DOE)', from: 'submission_funders'
   end
 
-  test 'requires signed_in user' do
-    visit new_submission_path
-    assert_equal(root_path, current_path)
-    assert_text('Sign in')
-    assert_text('You need to sign in or sign up before continuing.')
-  end
-
   test 'authenticated users can view the form' do
     base_valid_form
     assert_equal(new_submission_path, current_path)
