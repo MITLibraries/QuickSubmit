@@ -61,6 +61,12 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_not sub.valid?
   end
 
+  test 'invalid without pub_date' do
+    sub = submissions(:sub_one)
+    sub.pub_date = ''
+    assert_not sub.valid?
+  end
+
   test 'valid with a ui only funder' do
     sub = submissions(:sub_one)
     sub.funders = ['None / Other']
@@ -97,7 +103,8 @@ class SubmissionTest < ActiveSupport::TestCase
     # fixtures bypass callbacks, so this is all manual.
     user = users(:one)
     sub = Submission.create(title: 'manual sub', documents: ['b_pdf.pdf'],
-                            user: user, funders: ['Department of Energy (DOE)'])
+                            user: user, funders: ['Department of Energy (DOE)'],
+                            pub_date: 1.year.ago)
     assert(sub.uuid)
   end
 

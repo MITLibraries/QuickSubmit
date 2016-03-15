@@ -23,6 +23,7 @@ class Submission < ActiveRecord::Base
   validates :user, presence: true
   validates :title, presence: true
   validates :documents, presence: true
+  validates :pub_date, presence: true
   validates :funders, presence: true
   validate :funders_are_valid
   validates :handle, format: URI.regexp, allow_nil: true
