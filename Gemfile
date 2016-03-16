@@ -50,6 +50,7 @@ group :test do
   gem 'minitest-rails'
   gem 'minitest-rails-capybara'
   gem 'poltergeist'
+  gem 'timecop'
   gem 'vcr'
   gem 'webmock'
 end

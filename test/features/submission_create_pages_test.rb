@@ -18,11 +18,15 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
   end
 
   def base_valid_form
+    Timecop.freeze(Time.local(1999))
     mock_auth(users(:one))
     visit new_submission_path
     fill_in('Journal', with: 'Super Mega Journal')
     fill_in('Title', with: 'Alphabetical Order is Good Enough')
     select 'Department of Energy (DOE)', from: 'submission_funders'
+    select '1999', from: 'submission[pub_date(1i)]'
+    select 'January', from: 'submission[pub_date(2i)]'
+    Timecop.return
   end
 
   test 'authenticated users can view the form' do
