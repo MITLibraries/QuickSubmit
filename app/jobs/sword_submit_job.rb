@@ -27,7 +27,7 @@ class SwordSubmitJob < ActiveJob::Base
   end
 
   def deposited(sword)
-    @submission.status = 'deposited'
+    @submission.status = 'approved'
     @submission.handle = sword.handle
   end
 
