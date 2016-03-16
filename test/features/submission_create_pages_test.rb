@@ -18,7 +18,7 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
   end
 
   def base_valid_form
-    Timecop.freeze(Time.local(1999))
+    Timecop.freeze(Time.zone.local(1999))
     mock_auth(users(:one))
     visit new_submission_path
     fill_in('Journal', with: 'Super Mega Journal')
