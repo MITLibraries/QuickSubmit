@@ -19,7 +19,7 @@ class SwordSubmitJobTest < ActiveJob::TestCase
       SwordSubmitJob.perform_now(sub, callback_uri)
     end
     sub.reload
-    assert_equal('deposited', sub.status)
+    assert_equal('approved', sub.status)
     assert_equal('http://hdl.handle.net/123456789/420', sub.handle)
   end
 
