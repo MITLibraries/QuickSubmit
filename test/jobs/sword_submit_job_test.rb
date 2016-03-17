@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class SwordSubmitJobTest < ActiveJob::TestCase
-
   def setup
     @sub = submissions(:sub_one)
     FileUtils.rm_f(@sub.sword_path)
