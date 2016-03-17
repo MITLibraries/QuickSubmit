@@ -123,6 +123,6 @@ class Submission < ActiveRecord::Base
 
   # Funders we want to display in the UI, but not include in {Mets}
   def ui_only_funders
-    ['None / Other']
+    ['Other']
   end
 end

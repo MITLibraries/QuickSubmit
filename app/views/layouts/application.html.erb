@@ -37,7 +37,11 @@
             <ul class="nav navbar-nav">
               <li><%= link_to "New Submission", new_submission_path %></li>
               <% if user_signed_in? %>
-                <li><%= link_to "Submissions", submissions_path %></li>
+                <% if current_user.admin? %>
+                  <li><%= link_to "Submissions", submissions_path %></li>
+                <% else %>
+                  <li><%= link_to "My Submissions", submissions_path %></li>
+                <% end %>
                 <li><%= link_to("Sign out", destroy_user_session_path, method: :delete, id: "sign_in") %></li>
               <% else %>
                 <% if ENV['FAKE_AUTH_ENABLED'] == 'true' %>
