@@ -69,16 +69,15 @@ class SubmissionTest < ActiveSupport::TestCase
 
   test 'valid with a ui only funder' do
     sub = submissions(:sub_one)
-    sub.funders = ['None / Other']
+    sub.funders = ['Other']
     assert sub.valid?
   end
 
   test 'funders_minus_ui_only_funders' do
     sub = submissions(:sub_one)
-    sub.funders << 'None / Other'
-    assert_equal(sub.funders.include?('None / Other'), true)
-    assert_equal(sub.funders_minus_ui_only_funders.include?('None / Other'),
-                 false)
+    sub.funders << 'Other'
+    assert_equal(sub.funders.include?('Other'), true)
+    assert_equal(sub.funders_minus_ui_only_funders.include?('Other'), false)
   end
 
   test 'valid with uri handle' do
