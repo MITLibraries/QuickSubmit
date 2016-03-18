@@ -27,7 +27,7 @@ group :production do
 end
 
 group :production, :development do
-  gem 'passenger'
+  gem 'puma'
 end
 
 group :development, :test do
