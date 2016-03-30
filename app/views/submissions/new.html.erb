@@ -1,4 +1,4 @@
-<h1>MIT DSpace Quick Submit</h1>
+<h1>Public Access QuickSubmit</h1>
 
 <%= bootstrap_form_for(@submission,
                        html: { class: 'submissionUpload',
@@ -18,7 +18,7 @@
   <%= f.select :funders,
       options_for_select(@submission.valid_funders, @submission.funders),
       { include_hidden: false, help: 'Multiple funder selections are allowed' },
-      { multiple: true, size: 10 } %>
+      { multiple: true, size: 13 } %>
 
   <%= f.file_field :documents, multiple: true,
                                help: 'Drag and Drop files or click "Choose Files"' %>
