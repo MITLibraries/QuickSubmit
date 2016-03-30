@@ -72,6 +72,6 @@ class SubmissionMailerTest < ActionMailer::TestCase
     assert_equal(0, email.body.parts.length)
     assert_equal(['some_from@example.com'], email.from)
     assert_equal(['xyz789@example.com'], email.to)
-    assert_equal('QuickSubmit: failure', email.subject)
+    assert_equal('Public Access QuickSubmit: failure', email.subject)
   end
 end

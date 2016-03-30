@@ -22,6 +22,6 @@ class SubmissionMailer < ApplicationMailer
     @submission = submission
     @error = error
     mail(to: User.where(admin: true).map(&:email),
-         subject: 'QuickSubmit: failure')
+         subject: 'Public Access QuickSubmit: failure')
   end
 end

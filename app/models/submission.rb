@@ -32,6 +32,21 @@ class Submission < ActiveRecord::Base
   serialize :funders, JSON
   before_create :generate_uuid
 
+  SUBMITTABLE_FUNDERS = ['Department of Agriculture (USDA)',
+                         'Department of Defense (DoD)',
+                         'Department of Energy (DOE)',
+                         'Department of Homeland Security (DHS)',
+                         'Department of Labor',
+                         'Department of Transportation (DOT)',
+                         'Environmental Protection Agency (EPA)',
+                         'National Aeronautics and Space Administration (NASA)',
+                         'National Institutes of Health (NIH)',
+                         'National Ocean and Atmospheric Administration (NOAA)',
+                         'National Science Foundation (NSF)',
+                         'US Geological Survey (USGS)'].freeze
+
+  UI_ONLY_FUNDERS = ['Other'].freeze
+
   # Ensures submitted funders are allowed
   def funders_are_valid
     return unless funders.present?
@@ -110,19 +125,11 @@ class Submission < ActiveRecord::Base
 
   # Funders we want to display in the UI and also include in {Mets}
   def submittable_funders
-    ['Department of Defense (DoD)',
-     'Department of Energy (DOE)',
-     'Department of Transportation (DOT)',
-     'National Aeronautics and Space Administration (NASA)',
-     'National Institutes of Health (NIH)',
-     'National Center for Atmospheric Research (NCAR)',
-     'National Ocean and Atmospheric Administration (NOAA)',
-     'National Science Foundation (NSF)',
-     'United States Department of Agriculture (USDA)']
+    SUBMITTABLE_FUNDERS
   end
 
   # Funders we want to display in the UI, but not include in {Mets}
   def ui_only_funders
-    ['Other']
+    UI_ONLY_FUNDERS
   end
 end
