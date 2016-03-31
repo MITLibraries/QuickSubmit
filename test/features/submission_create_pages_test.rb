@@ -23,7 +23,7 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     visit new_submission_path
     fill_in('Journal', with: 'Super Mega Journal')
     fill_in('Title', with: 'Alphabetical Order is Good Enough')
-    select 'Department of Energy (DOE)', from: 'submission_funders'
+    check('Department of Energy (DOE)')
     select '1999', from: 'submission[pub_date(1i)]'
     select 'January', from: 'submission[pub_date(2i)]'
     Timecop.return
