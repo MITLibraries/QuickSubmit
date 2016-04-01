@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/MITLibraries/rails-bootstrap-forms
+  revision: a666d4e3baf0b9f612a82a586e862bbe867793e9
+  branch: use_parameterize_for_check_box_label_for
+  specs:
+    bootstrap_form (2.3.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -50,7 +57,6 @@ GEM
     aws-sdk-resources (2.2.28)
       aws-sdk-core (= 2.2.28)
     bcrypt (3.1.11)
-    bootstrap_form (2.3.0)
     builder (3.2.2)
     byebug (8.2.2)
     cancancan (1.13.1)
@@ -294,7 +300,7 @@ PLATFORMS
 DEPENDENCIES
   annotate
   aws-sdk (~> 2)
-  bootstrap_form
+  bootstrap_form!
   byebug
   cancancan
   coveralls

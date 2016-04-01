@@ -15,10 +15,11 @@
                                label: 'Publication Date',
                                help: 'If not yet published, please enter an estimated Publication Date.'%>
 
-  <%= f.select :funders,
-      options_for_select(@submission.valid_funders, @submission.funders),
-      { include_hidden: false, help: 'Multiple funder selections are allowed' },
-      { multiple: true, size: 13 } %>
+  <%= f.form_group :funders, label: { text: 'Funders' } do %>
+    <% @submission.valid_funders.each do |funder| %>
+      <%= f.check_box(:funders, { multiple: true, label: funder }, funder, nil ) %>
+    <% end %>
+  <% end %>
 
   <%= f.file_field :documents, multiple: true,
                                help: 'Drag and Drop files or click "Choose Files"' %>
