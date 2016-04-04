@@ -7,7 +7,7 @@
                               'host' => URI.parse(@s3_direct_post.url).host } },
                        layout: :horizontal, label_col: "col-sm-2",
                        control_col: "col-sm-10") do |f| %>
-  <%= f.alert_message "Please fix the errors below." %>
+  <%= f.alert_message "Please fix the problems below.", error_summary: false %>
   <%= f.text_field :title %>
   <%= f.text_field :journal, placeholder: 'Optional' %>
   <%= f.text_field :doi, label: 'DOI', placeholder: 'Optional' %>

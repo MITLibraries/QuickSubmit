@@ -38,8 +38,8 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     base_valid_form
     fill_in('Title', with: '')
     click_on('Create Submission')
-    assert_text('Please fix the errors below')
-    assert_text("Title can't be blank")
+    assert_text('Please fix the problems below')
+    assert_text('A title is required.')
     assert_selector("input[value='Super Mega Journal']")
   end
 

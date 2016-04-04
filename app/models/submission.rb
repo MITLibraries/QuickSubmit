@@ -21,10 +21,11 @@
 class Submission < ActiveRecord::Base
   belongs_to :user
   validates :user, presence: true
-  validates :title, presence: true
-  validates :documents, presence: true
-  validates :pub_date, presence: true
-  validates :funders, presence: true
+  validates :title, presence: { message: 'A title is required.' }
+  validates :documents, presence: { message:
+                                    'One or more documents is required.' }
+  validates :pub_date, presence: { message: 'A publication date is required.' }
+  validates :funders, presence: { message: 'At least one funder is required.' }
   validate :funders_are_valid
   validates :handle, format: URI.regexp, allow_nil: true
   validates :handle, presence: true, if: :status_approved?
