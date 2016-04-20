@@ -227,6 +227,8 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
+    rollbar (2.9.1)
+      multi_json
     rubocop (0.38.0)
       parser (>= 2.3.0.6, < 3.0)
       powerpack (~> 0.1)
@@ -324,6 +326,7 @@ DEPENDENCIES
   rails (= 4.2.6)
   rails_12factor
   rest-client
+  rollbar
   rubocop
   rubyzip
   skylight
