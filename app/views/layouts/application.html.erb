@@ -45,9 +45,9 @@
                 <li><%= link_to("Sign out", destroy_user_session_path, method: :delete, id: "sign_in") %></li>
               <% else %>
                 <% if ENV['FAKE_AUTH_ENABLED'] == 'true' %>
-                  <li><%= link_to("Sign in", user_omniauth_authorize_path(:developer), id: "sign_in") %></li>
+                  <li><%= link_to("Sign in", user_developer_omniauth_authorize_path, id: "sign_in") %></li>
                 <% else %>
-                  <li><%= link_to("Sign in", user_omniauth_authorize_path(:mit_oauth2), id: "sign_in") %></li>
+                  <li><%= link_to("Sign in", user_mit_oauth2_omniauth_authorize_path, id: "sign_in") %></li>
                 <% end %>
               <% end %>
             </ul>
