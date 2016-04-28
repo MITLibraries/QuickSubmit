@@ -54,5 +54,5 @@ group :test do
   gem 'poltergeist'
   gem 'timecop'
   gem 'vcr'
-  gem 'webmock'
+  gem 'webmock', '1.24.6'
 end
