@@ -134,4 +134,29 @@ class SubmissionsControllerTest < ActionController::TestCase
     get :show, id: submissions(:sub_one)
     assert_response :success
   end
+
+  test 'admin users can delete submission' do
+    sign_in users(:admin)
+    s = submissions(:sub_one)
+    delete :destroy, id: s
+    assert_raises(ActiveRecord::RecordNotFound) do
+      s.reload
+    end
+    assert_redirected_to submissions_path
+  end
+
+  test 'non admin users cannot delete submission' do
+    sign_in users(:one)
+    s = submissions(:sub_one)
+    delete :destroy, id: s
+    s.reload
+    assert_redirected_to root_path
+  end
+
+  test 'non-authenticated users cannot delete submission' do
+    s = submissions(:sub_one)
+    delete :destroy, id: s
+    s.reload
+    assert_redirected_to user_mit_oauth2_omniauth_authorize_path
+  end
 end

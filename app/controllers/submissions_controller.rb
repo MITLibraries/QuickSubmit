@@ -64,6 +64,12 @@ class SubmissionsController < ApplicationController
   def show
   end
 
+  def destroy
+    @submission.destroy
+    flash.notice = 'Submission has been deleted'
+    redirect_to submissions_path
+  end
+
   private
 
   def require_user
