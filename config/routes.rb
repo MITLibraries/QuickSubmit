@@ -4,8 +4,8 @@ Rails.application.routes.draw do
   post 'submissions/resubmit/:id', to: 'submissions#resubmit', as: :resubmit
   post 'callbacks/status/:uuid', to: 'callbacks#status', as: :callback_submission_status
 
-  devise_for :users, :controllers => {
-    :omniauth_callbacks => 'users/omniauth_callbacks'
+  devise_for :users, controllers: {
+    omniauth_callbacks: 'users/omniauth_callbacks'
   }
 
   devise_scope :user do
