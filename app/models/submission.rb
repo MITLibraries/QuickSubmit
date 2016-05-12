@@ -32,6 +32,7 @@ class Submission < ActiveRecord::Base
   serialize :documents, JSON
   serialize :funders, JSON
   before_create :generate_uuid
+  before_destroy :delete_documents_from_s3
 
   SUBMITTABLE_FUNDERS = ['Department of Agriculture (USDA)',
                          'Department of Defense (DoD)',
@@ -109,6 +110,13 @@ class Submission < ActiveRecord::Base
       URI.escape("http:#{document.gsub('localhost/', swap)}")
     else
       URI.escape("https:#{document}")
+    end
+  end
+
+  def delete_documents_from_s3
+    documents.each do |doc|
+      obj = document_uri(doc).split("#{ENV['S3_BUCKET']}/").last
+      S3_BUCKET.object(obj).delete
     end
   end
 
