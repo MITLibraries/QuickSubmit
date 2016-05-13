@@ -207,12 +207,12 @@ class SubmissionTest < ActiveSupport::TestCase
   test 'document_uri with localhost' do
     sub = submissions(:sub_one)
     assert_equal(sub.document_uri('//localhost/popcorn'),
-                 'http://localhost:10001/fakebucket/popcorn')
+                 'http://localhost:10001/testbucket/popcorn')
   end
 
   test 'document_uri with spaces' do
     sub = submissions(:sub_one)
     assert_equal(sub.document_uri('//localhost/popcorn says'),
-                 'http://localhost:10001/fakebucket/popcorn%20says')
+                 'http://localhost:10001/testbucket/popcorn%20says')
   end
 end

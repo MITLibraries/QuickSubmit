@@ -113,11 +113,20 @@ class Submission < ActiveRecord::Base
     end
   end
 
+  # Deletes all S3 content associated with a Submission
   def delete_documents_from_s3
     documents.each do |doc|
-      obj = document_uri(doc).split("#{ENV['S3_BUCKET']}/").last
+      obj = Submission.document_key(doc)
       S3_BUCKET.object(obj).delete
     end
+  end
+
+  def self.local_document_keys
+    Submission.all.map(&:documents).flatten.map { |k| document_key(k) }
+  end
+
+  def self.document_key(doc)
+    "uploads#{doc.split('uploads').last}"
   end
 
   # An array of funders that does not include UI only funders

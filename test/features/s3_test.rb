@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class S3Test < Capybara::Rails::TestCase
+class S3PagesTest < Capybara::Rails::TestCase
   def setup
     Capybara.current_driver = :poltergeist
     Capybara.server_port = 5000

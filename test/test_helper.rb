@@ -4,7 +4,9 @@ SimpleCov.formatters = [
   SimpleCov::Formatter::HTMLFormatter,
   Coveralls::SimpleCov::Formatter
 ]
-SimpleCov.start('rails')
+SimpleCov.start('rails') do
+  add_filter '/lib/tasks/'
+end
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
@@ -60,6 +62,7 @@ DatabaseCleaner.strategy = :transaction
 module Minitest
   class Spec
     before :each do
+      FileUtils.rm_r('tmp/s3/testbucket')
       DatabaseCleaner.start
     end
 
