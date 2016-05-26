@@ -32,6 +32,7 @@ class Submission < ActiveRecord::Base
   serialize :documents, JSON
   serialize :funders, JSON
   before_create :generate_uuid
+  before_destroy :delete_documents_from_s3
 
   SUBMITTABLE_FUNDERS = ['Department of Agriculture (USDA)',
                          'Department of Defense (DoD)',
@@ -110,6 +111,22 @@ class Submission < ActiveRecord::Base
     else
       URI.escape("https:#{document}")
     end
+  end
+
+  # Deletes all S3 content associated with a Submission
+  def delete_documents_from_s3
+    documents.each do |doc|
+      obj = Submission.document_key(doc)
+      S3_BUCKET.object(obj).delete
+    end
+  end
+
+  def self.local_document_keys
+    Submission.all.map(&:documents).flatten.map { |k| document_key(k) }
+  end
+
+  def self.document_key(doc)
+    "uploads#{doc.split('uploads').last}"
   end
 
   # An array of funders that does not include UI only funders

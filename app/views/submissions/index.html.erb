@@ -39,6 +39,8 @@ View:
           <%= link_to('View Sword Package', submission_package_path(sub)) %>
           --
           <%= link_to('Resubmit Package', resubmit_path(sub), method: :post) %>
+          --
+          <%= link_to('Delete Submission', submission_path(sub), method: :delete) %>
         </div>
       <% end %>
     </div>
