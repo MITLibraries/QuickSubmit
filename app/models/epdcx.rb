@@ -17,7 +17,8 @@ class Epdcx
     @xml = xml
     @callback_uri = callback_uri
     @xml['epdcx'].descriptionSet(
-      'xmlns:epdcx' => 'http://purl.org/eprint/epdcx/2006-11-16/') do
+      'xmlns:epdcx' => 'http://purl.org/eprint/epdcx/2006-11-16/'
+    ) do
       work(submission)
       entity(submission)
     end

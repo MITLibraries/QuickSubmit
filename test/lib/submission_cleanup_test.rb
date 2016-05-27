@@ -27,7 +27,8 @@ class RakeTaskTestCase < ActiveSupport::TestCase
       funders: ['Department of Energy (DOE)'],
       pub_date: 1.year.ago,
       status: status,
-      handle: 'http://example.com')
+      handle: 'http://example.com'
+    )
   end
 
   test 'submissions with approved and older than 1 month are deleted' do

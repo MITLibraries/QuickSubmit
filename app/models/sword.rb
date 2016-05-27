@@ -7,7 +7,8 @@ class Sword
     @sword_server = RestClient::Resource.new(
       Rails.application.secrets.sword_endpoint,
       user: Rails.application.secrets.sword_username,
-      password: Rails.application.secrets.sword_password)
+      password: Rails.application.secrets.sword_password
+    )
   end
 
   def deposit
@@ -15,7 +16,8 @@ class Sword
     @response = @sword_server.post(
       File.read(@submission.sword_path),
       content_type: 'application/zip',
-      x_packaging: 'http://purl.org/net/sword-types/METSDSpaceSIP')
+      x_packaging: 'http://purl.org/net/sword-types/METSDSpaceSIP'
+    )
   end
 
   def handle

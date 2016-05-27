@@ -26,7 +26,8 @@ class S3Test < ActiveSupport::TestCase
       funders: ['Department of Energy (DOE)'],
       pub_date: 1.year.ago,
       status: 'status',
-      handle: 'http://example.com')
+      handle: 'http://example.com'
+    )
     assert_equal(['uploads/45678', 'uploads/asdfa'], S3.abandoned_keys)
   end
 
@@ -38,7 +39,8 @@ class S3Test < ActiveSupport::TestCase
       funders: ['Department of Energy (DOE)'],
       pub_date: 1.year.ago,
       status: 'status',
-      handle: 'http://example.com')
+      handle: 'http://example.com'
+    )
     assert_equal(['uploads/45678', 'uploads/asdfa'], S3.abandoned_keys)
     S3.remove_abandoned_content
     assert_equal([], S3.abandoned_keys)
