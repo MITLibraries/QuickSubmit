@@ -36,7 +36,25 @@ To prevent using a real S3 service in testing (and development if
 you prefer), you can use the provided rake tasks `rake fakes3:start`
 and `rake fakes3:stop` to spin up a fake of the service.
 
-## Required Environment Variables
+## Minimum Environment Variables for development
+
+You can copy these into a .env file and use `heroku local` (included with the
+   [Heroku Toolbelt](https://toolbelt.heroku.com)) to launch the application.
+   You may want to remove the second line of Profile to disable processing of
+   the job queue depending on what portions of the application you are working
+   on.
+
+`FAKE_AUTH_ENABLED=true` see Optional Environment Variables
+
+`S3_BUCKET=fakebucket` see Environment Variables
+
+`AWS_ACCESS_KEY_ID=12345` see Environment Variables
+
+`AWS_SECRET_ACCESS_KEY=12345` see Environment Variables
+
+NOTE: You'll need to add the 3 SWORD_* variables if you want to deliver packages in development
+
+## Environment Variables
 
 `EMAIL_FROM`: this is the default email address messages will be sent from
 
