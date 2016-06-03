@@ -1,12 +1,12 @@
-<h1>Public Access QuickSubmit Submissions</h1>
+<h3 class="title title-page">Submissions</h3>
 
-View:
- <%= link_to('All', submissions_path, class: 'btn btn-default') %>
- <%= link_to('Failed', submissions_path(filter: 'failed'), class: 'btn btn-default') %>
- <%= link_to('In Review Queue', submissions_path(filter: 'in review queue'), class: 'btn btn-default') %>
- <%= link_to('Approved', submissions_path(filter: 'approved'), class: 'btn btn-default') %>
-
-<hr />
+<div class="wrap-filters">
+    View:
+   <%= link_to('All', submissions_path, class: 'btn btn-default') %>
+   <%= link_to('Failed', submissions_path(filter: 'failed'), class: 'btn btn-default') %>
+   <%= link_to('In Review Queue', submissions_path(filter: 'in review queue'), class: 'btn btn-default') %>
+   <%= link_to('Approved', submissions_path(filter: 'approved'), class: 'btn btn-default') %>
+</div>
 
 <% if @submissions %>
 
