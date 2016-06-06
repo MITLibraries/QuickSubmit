@@ -2,6 +2,9 @@ require 'test_helper'
 
 class S3Test < ActiveSupport::TestCase
   def setup
+    # always make sure at least one thing is in the bucket before deleting
+    # it all to prevent failures in CI
+    S3_BUCKET.put_object(key: 'uploads/deleteme')
     S3_BUCKET.objects.map(&:delete)
     S3_BUCKET.put_object(key: 'uploads/12345')
     S3_BUCKET.put_object(key: 'uploads/45678')
