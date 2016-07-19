@@ -14,7 +14,12 @@ require 'minitest/rails/capybara'
 require 'minitest/reporters'
 require 'capybara/poltergeist'
 require 'database_cleaner'
-Minitest::Reporters.use!
+
+if ENV['SPEC_REPORTER'] == 'true'
+  Minitest::Reporters.use! [Minitest::Reporters::SpecReporter.new]
+else
+  Minitest::Reporters.use!
+end
 
 VCR.configure do |config|
   config.ignore_localhost = true
@@ -25,7 +30,7 @@ end
 module ActiveSupport
   class TestCase
     # Setup all fixtures in test/fixtures/*.yml for all tests in alpha order.
-    self.use_transactional_fixtures = false
+    self.use_transactional_tests = false
     fixtures :all
 
     def mock_auth(user)
@@ -53,7 +58,7 @@ end
 
 module ActionController
   class TestCase
-    include Devise::TestHelpers
+    include Devise::Test::ControllerHelpers
   end
 end
 

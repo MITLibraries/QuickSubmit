@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.3.1'
 
-gem 'rails', '4.2.6'
+gem 'rails', '5.0.0'
 gem 'aws-sdk', '~> 2'
 gem 'bootstrap_form', git: 'https://github.com/MITLibraries/rails-bootstrap-forms',
                       branch: 'use_parameterize_for_check_box_label_for'
@@ -52,6 +52,7 @@ group :test do
   gem 'minitest-rails'
   gem 'minitest-rails-capybara'
   gem 'poltergeist'
+  gem 'rails-controller-testing'
   gem 'timecop'
   gem 'vcr'
   gem 'webmock', '1.24.6'

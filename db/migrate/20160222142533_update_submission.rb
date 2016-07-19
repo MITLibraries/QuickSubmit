@@ -1,4 +1,4 @@
-class UpdateSubmission < ActiveRecord::Migration
+class UpdateSubmission < ActiveRecord::Migration[4.2]
   def change
     change_table :submissions do |t|
       t.remove :author, :doe, :grant_number

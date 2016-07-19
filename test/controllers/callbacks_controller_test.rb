@@ -6,7 +6,8 @@ class CallbacksControllerTest < ActionController::TestCase
     sub.uuid = SecureRandom.uuid
     sub.save
     assert_difference('ActionMailer::Base.deliveries.size', +1) do
-      post :status, uuid: sub.uuid, status: 'approved', handle: 'http://handle.net/123456/789'
+      post :status, params: { uuid: sub.uuid, status: 'approved',
+                              handle: 'http://handle.net/123456/789' }
     end
     assert_response :success
     sub.reload
@@ -20,7 +21,7 @@ class CallbacksControllerTest < ActionController::TestCase
     sub.save
     initial_deliveries_size = ActionMailer::Base.deliveries.size
     exception = assert_raises(ActionController::RoutingError) do
-      post :status, uuid: sub.uuid, status: 'approved'
+      post :status, params: { uuid: sub.uuid, status: 'approved' }
     end
     assert_equal(initial_deliveries_size, ActionMailer::Base.deliveries.size)
     assert_equal('Approved Status Requires Handle', exception.message)
@@ -35,7 +36,8 @@ class CallbacksControllerTest < ActionController::TestCase
     sub.save
     initial_deliveries_size = ActionMailer::Base.deliveries.size
     exception = assert_raises(ActionController::RoutingError) do
-      post :status, uuid: sub.uuid, status: 'approved', handle: 'not a uri'
+      post :status, params: { uuid: sub.uuid, status: 'approved',
+                              handle: 'not a uri' }
     end
     assert_equal(initial_deliveries_size, ActionMailer::Base.deliveries.size)
     assert_equal('Approved Status Requires Handle', exception.message)
@@ -49,7 +51,7 @@ class CallbacksControllerTest < ActionController::TestCase
     sub.uuid = SecureRandom.uuid
     sub.save
     assert_difference('ActionMailer::Base.deliveries.size', +1) do
-      post :status, uuid: sub.uuid, status: 'rejected'
+      post :status, params: { uuid: sub.uuid, status: 'rejected' }
     end
     assert_response :success
     sub.reload
@@ -60,7 +62,7 @@ class CallbacksControllerTest < ActionController::TestCase
   test 'post to submission with invalid uuid returns 404' do
     initial_deliveries_size = ActionMailer::Base.deliveries.size
     exception = assert_raises(ActionController::RoutingError) do
-      post :status, uuid: SecureRandom.uuid
+      post :status, params: { uuid: SecureRandom.uuid }
     end
     assert_equal(initial_deliveries_size, ActionMailer::Base.deliveries.size)
     assert_equal('Not Found', exception.message)
@@ -73,7 +75,7 @@ class CallbacksControllerTest < ActionController::TestCase
     initial_deliveries_size = ActionMailer::Base.deliveries.size
 
     exception = assert_raises(ActionController::RoutingError) do
-      post :status, uuid: sub.uuid
+      post :status, params: { uuid: sub.uuid }
     end
     assert_equal(initial_deliveries_size, ActionMailer::Base.deliveries.size)
     assert_equal('Invalid Status', exception.message)
@@ -86,7 +88,8 @@ class CallbacksControllerTest < ActionController::TestCase
     sub.uuid = SecureRandom.uuid
     sub.save!
     assert_difference('ActionMailer::Base.deliveries.size', 0) do
-      post :status, uuid: sub.uuid, status: 'approved', handle: 'http://handle.net/123456/789'
+      post :status, params: { uuid: sub.uuid, status: 'approved',
+                              handle: 'http://handle.net/123456/789' }
     end
     assert_response :success
   end
@@ -97,7 +100,7 @@ class CallbacksControllerTest < ActionController::TestCase
     sub.uuid = SecureRandom.uuid
     sub.save!
     assert_difference('ActionMailer::Base.deliveries.size', 0) do
-      post :status, uuid: sub.uuid, status: 'rejected'
+      post :status, params: { uuid: sub.uuid, status: 'rejected' }
     end
     assert_response :success
   end
@@ -109,7 +112,7 @@ class CallbacksControllerTest < ActionController::TestCase
     sub.uuid = SecureRandom.uuid
     sub.save!
     assert_difference('ActionMailer::Base.deliveries.size', +1) do
-      post :status, uuid: sub.uuid, status: 'rejected'
+      post :status, params: { uuid: sub.uuid, status: 'rejected' }
     end
     assert_response :success
   end
@@ -120,8 +123,8 @@ class CallbacksControllerTest < ActionController::TestCase
     sub.uuid = SecureRandom.uuid
     sub.save!
     assert_difference('ActionMailer::Base.deliveries.size', +1) do
-      post :status, uuid: sub.uuid, status: 'approved',
-                    handle: 'http://handle.net/123456/789'
+      post :status, params: { uuid: sub.uuid, status: 'approved',
+                              handle: 'http://handle.net/123456/789' }
     end
     assert_response :success
   end
