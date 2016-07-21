@@ -10,7 +10,7 @@ class CallbacksController < ApplicationController
       raise ActionController::RoutingError, 'Approved Status Requires Handle'
     end
     @submission.send_status_email unless @submission.status == initial_status
-    render nothing: true, status: 200
+    head :ok
   end
 
   private

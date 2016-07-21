@@ -24,8 +24,5 @@ module QuickSubmit
 
     config.middleware.use Rack::Deflater, include: Rack::Mime::MIME_TYPES
       .select { |_k, v| v =~ /text|json|javascript/ }.values.uniq
-
-    # Do not swallow errors in after_commit/after_rollback callbacks.
-    config.active_record.raise_in_transactional_callbacks = true
   end
 end

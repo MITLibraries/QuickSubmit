@@ -38,7 +38,7 @@ class SubmissionsControllerTest < ActionController::TestCase
 
   test 'signed in user can post to create' do
     sign_in users(:one)
-    post :create, submission: { 'title': '' }
+    post :create, params: { submission: { 'title': '' } }
     assert_response :success
   end
 
@@ -71,13 +71,13 @@ class SubmissionsControllerTest < ActionController::TestCase
   end
 
   test 'non-authenticated users cannot download package' do
-    get :package, id: submissions(:sub_one)
+    get :package, params: { id: submissions(:sub_one) }
     assert_redirected_to user_mit_oauth2_omniauth_authorize_path
   end
 
   test 'non-admin user cannot download package' do
     sign_in users(:one)
-    get :package, id: submissions(:sub_one)
+    get :package, params: { id: submissions(:sub_one) }
     assert_redirected_to root_path
   end
 
@@ -86,37 +86,37 @@ class SubmissionsControllerTest < ActionController::TestCase
     sign_in users(:admin)
     VCR.use_cassette('read_a_and_b_files_from_s3',
                      preserve_exact_body_bytes: true) do
-      get :package, id: sub
+      get :package, params: { id: sub }
     end
     assert_response :success
     FileUtils.rm_f(sub.sword_path)
   end
 
   test 'non-authenticated users cannot resubmit package' do
-    post :resubmit, id: submissions(:sub_one)
+    post :resubmit, params: { id: submissions(:sub_one) }
     assert_redirected_to user_mit_oauth2_omniauth_authorize_path
   end
 
   test 'non-admin user cannot resubmit package' do
     sign_in users(:one)
-    post :resubmit, id: submissions(:sub_one)
+    post :resubmit, params: { id: submissions(:sub_one) }
     assert_redirected_to root_path
   end
 
   test 'admin users can resubmit package' do
     sign_in users(:admin)
-    post :resubmit, id: submissions(:sub_one)
+    post :resubmit, params: { id: submissions(:sub_one) }
     assert_redirected_to submissions_path
   end
 
   test 'non-authenticated users cannot show submission' do
-    get :show, id: submissions(:sub_one)
+    get :show, params: { id: submissions(:sub_one) }
     assert_redirected_to user_mit_oauth2_omniauth_authorize_path
   end
 
   test 'non-admin users can view own submission' do
     sign_in users(:one)
-    get :show, id: submissions(:sub_one)
+    get :show, params: { id: submissions(:sub_one) }
     assert_response :success
   end
 
@@ -125,20 +125,20 @@ class SubmissionsControllerTest < ActionController::TestCase
     s = submissions(:sub_one)
     s.user = users(:admin)
     s.save
-    get :show, id: submissions(:sub_one)
+    get :show, params: { id: submissions(:sub_one) }
     assert_redirected_to root_path
   end
 
   test 'admin users can show submission' do
     sign_in users(:admin)
-    get :show, id: submissions(:sub_one)
+    get :show, params: { id: submissions(:sub_one) }
     assert_response :success
   end
 
   test 'admin users can delete submission' do
     sign_in users(:admin)
     s = submissions(:sub_one)
-    delete :destroy, id: s
+    delete :destroy, params: { id: s }
     assert_raises(ActiveRecord::RecordNotFound) do
       s.reload
     end
@@ -148,14 +148,14 @@ class SubmissionsControllerTest < ActionController::TestCase
   test 'non admin users cannot delete submission' do
     sign_in users(:one)
     s = submissions(:sub_one)
-    delete :destroy, id: s
+    delete :destroy, params: { id: s }
     s.reload
     assert_redirected_to root_path
   end
 
   test 'non-authenticated users cannot delete submission' do
     s = submissions(:sub_one)
-    delete :destroy, id: s
+    delete :destroy, params: { id: s }
     s.reload
     assert_redirected_to user_mit_oauth2_omniauth_authorize_path
   end
