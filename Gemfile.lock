@@ -1,7 +1,7 @@
 GIT
-  remote: https://github.com/MITLibraries/rails-bootstrap-forms
-  revision: bae763aceddf818822875871b5059214fb7eab98
-  branch: use_parameterize_for_check_box_label_for
+  remote: https://github.com/bootstrap-ruby/rails-bootstrap-forms.git
+  revision: de93b855371937b05ab1f83339544c82da7738bb
+  ref: de93b85
   specs:
     bootstrap_form (2.4.0)
 

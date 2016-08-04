@@ -3,8 +3,9 @@ ruby '2.3.1'
 
 gem 'rails', '5.0.0'
 gem 'aws-sdk', '~> 2'
-gem 'bootstrap_form', git: 'https://github.com/MITLibraries/rails-bootstrap-forms',
-                      branch: 'use_parameterize_for_check_box_label_for'
+gem 'bootstrap_form',
+    git: 'https://github.com/bootstrap-ruby/rails-bootstrap-forms.git',
+    ref: 'de93b85'
 gem 'cancancan'
 gem 'delayed_job_active_record'
 gem 'devise'
