@@ -1,11 +1,9 @@
 source 'https://rubygems.org'
 ruby '2.3.1'
 
-gem 'rails', '5.0.0'
+gem 'rails', '5.0.0.1'
 gem 'aws-sdk', '~> 2'
-gem 'bootstrap_form',
-    git: 'https://github.com/bootstrap-ruby/rails-bootstrap-forms.git',
-    ref: 'de93b85'
+gem 'bootstrap_form'
 gem 'cancancan'
 gem 'delayed_job_active_record'
 gem 'devise'
