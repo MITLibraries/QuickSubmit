@@ -83,7 +83,14 @@
         <!-- close content-main -->
 
         <aside class="content-sup">
-
+          <% unless user_signed_in? %>
+          <div class="bit">
+            <h3 class="title">MIT OpenID Sign-in</h3>
+            <p>This application uses the MIT OpenId Connect pilot for sign-in (instead of Touchstone) &mdash; it will ask for approval to sign in with your MIT information and credentials. 
+            <a target="_blank" href="https://oidc.mit.edu/">Learn more</a>
+            </p>
+          </div>        
+          <% end %>
           <div class="bit">
             <h3 class="title">Related</h3>
             <ul>
