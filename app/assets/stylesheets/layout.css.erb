@@ -223,7 +223,7 @@ hr {
 .wrap-footer-institute {
   max-width: 1024px;
   margin: 0 auto;
-  padding: 8px 4%;
+  padding: 10px 4%;
 }
 
 .wrap-header .header-slim .logo-mit-lib svg {
@@ -262,8 +262,11 @@ hr {
 }
 
 .wrap-content {
-  padding-top: 1.5rem;
+  padding-top: 3rem;
   padding-bottom: 2%;
+}
+.wrap-content .content-main {
+  padding-bottom: 3rem;
 }
 @media (min-width: 768px) {
   .wrap-content.layout-3q1q {
@@ -276,7 +279,6 @@ hr {
   }
   .wrap-content.layout-3q1q .content-sup {
     width: 22%;
-    margin-top: 2.5rem;
     margin-left: 3%;
   }
 }
@@ -422,16 +424,19 @@ hr {
 .wrap-footer.footer-slim .wrap-sitemap {
   margin-left: 2%;
 }
-.wrap-footer.footer-slim .wrap-sitemap a {
-  display: inline-block;
+.wrap-footer.footer-slim .wrap-sitemap .item {
+  display: block;
   margin-right: 10px;
 }
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .wrap-footer.footer-slim .footer-main {
     -webkit-align-items: baseline;
         -ms-flex-align: baseline;
                 -ms-grid-row-align: baseline;
             align-items: baseline;
+  }
+  .wrap-footer.footer-slim .wrap-sitemap .item {
+    display: inline-block;
   }
 }
 
@@ -476,7 +481,7 @@ hr {
 }
 
 .bit {
-  margin: 1.5rem 0 3rem 0;
+  margin: 0 0 3rem 0;
   border-top: 3px solid #ccc;
   padding-top: 1rem;
   font-size: 1.4rem;
@@ -525,6 +530,9 @@ hr {
   border-bottom: 1px solid #ccc;
   background-color: #dedede;
   color: #333;
+}
+.wrap-outer-header-local .wrap-header-local {
+  padding-top: 2rem;
 }
 .wrap-outer-header-local a {
   color: #333;
@@ -614,8 +622,8 @@ hr {
 }
 
 .wrap-content .title-page {
-  border-bottom: 1px solid #ccc;
   padding: .5rem 0 1rem 0;
+  font-weight: 600;
 }
 .wrap-content .wrap-filters {
   margin: 1rem 0;
