@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.3.1'
 
-gem 'rails', '5.0.0.1'
+gem 'rails', '5.0.2'
 gem 'aws-sdk', '~> 2'
 gem 'bootstrap_form'
 gem 'cancancan'
@@ -19,7 +19,7 @@ gem 'rest-client'
 gem 'rubyzip', require: 'zip'
 gem 'skylight'
 gem 'therubyracer', platforms: :ruby
-gem 'twitter-bootstrap-rails'
+gem 'twitter-bootstrap-rails', '~> 3'
 gem 'uglifier', '>= 1.3.0'
 
 group :production do
