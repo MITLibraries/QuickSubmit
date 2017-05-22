@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.4.1'
 
-gem 'rails', '5.0.2'
+gem 'rails', '5.0.3'
 gem 'aws-sdk', '~> 2'
 gem 'bootstrap_form'
 gem 'cancancan'
