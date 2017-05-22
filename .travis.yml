@@ -2,7 +2,7 @@ language: ruby
 cache:
   bundler: true
 rvm:
-  - 2.3.1
+  - 2.4.1
 sudo: false
 env:
   - SPEC_REPORTER=true

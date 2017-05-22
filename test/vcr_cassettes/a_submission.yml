@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: http://username:password@example.com/
+    uri: http://example.com/
     body:
       encoding: UTF-8
       base64_string: |
@@ -458,6 +458,7 @@ http_interactions:
       - '19720'
       User-Agent:
       - Ruby
+      Authorization: Basic <%= Base64.encode64("username:password").chomp %>
   response:
     status:
       code: 202
@@ -494,6 +495,6 @@ http_interactions:
         QVvyaS/MVxbMpDlUKLvfuZPhwtfD3XcIrpKh5AUUGK/F691MN8bXPNqAtxhy
         rx3xYcVV3dh7l51kFfCs02emkCag3xad8I/m+HyGXbJT7HASdpv9973Muh8o
         iLvdYT9sZP/t4Sx6ofOTFZc3y+FfjnwpFuoDAAA=
-    http_version:
+    http_version: 
   recorded_at: Thu, 10 Dec 2015 14:52:26 GMT
 recorded_with: VCR 3.0.0
