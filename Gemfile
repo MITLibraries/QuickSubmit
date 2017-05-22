@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.3.1'
+ruby '2.4.1'
 
 gem 'rails', '5.0.2'
 gem 'aws-sdk', '~> 2'
@@ -20,7 +20,7 @@ gem 'rubyzip', require: 'zip'
 gem 'skylight'
 gem 'therubyracer', platforms: :ruby
 gem 'twitter-bootstrap-rails', '~> 3'
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier'
 
 group :production do
   gem 'pg'
@@ -33,7 +33,7 @@ end
 
 group :development, :test do
   gem 'byebug'
-  gem 'fakes3'
+  gem 'fakes3', '0.2.5'
   gem 'sqlite3'
 end
 
@@ -54,5 +54,5 @@ group :test do
   gem 'rails-controller-testing'
   gem 'timecop'
   gem 'vcr'
-  gem 'webmock', '1.24.6'
+  gem 'webmock'
 end

@@ -469,7 +469,7 @@ http_interactions:
         IG4gCjAwMDAwMDEwNjUgMDAwMDAgbiAKMDAwMDAxODQwNyAwMDAwMCBuIAow
         MDAwMDE4NzQ1IDAwMDAwIG4gCnRyYWlsZXIKPDwvU2l6ZSAxMQovUm9vdCAx
         IDAgUj4+CnN0YXJ0eHJlZgoxOTA0OQolJUVPRg==
-    http_version:
+    http_version: 
   recorded_at: Wed, 20 Jan 2016 18:37:05 GMT
 - request:
     method: get
@@ -940,11 +940,11 @@ http_interactions:
         IG4gCjAwMDAwMDEwNjUgMDAwMDAgbiAKMDAwMDAxODQwNyAwMDAwMCBuIAow
         MDAwMDE4NzQ1IDAwMDAwIG4gCnRyYWlsZXIKPDwvU2l6ZSAxMQovUm9vdCAx
         IDAgUj4+CnN0YXJ0eHJlZgoxOTA0OQolJUVPRg==
-    http_version:
+    http_version: 
   recorded_at: Wed, 20 Jan 2016 18:37:05 GMT
 - request:
     method: post
-    uri: http://username:password@example.com/
+    uri: http://example.com/
     body:
       encoding: UTF-8
       base64_string: |
@@ -1816,6 +1816,7 @@ http_interactions:
       - '38475'
       User-Agent:
       - Ruby
+      Authorization: Basic <%= Base64.encode64("username:password").chomp %>
   response:
     status:
       code: 202
@@ -1852,6 +1853,6 @@ http_interactions:
         oUHZ/8C9DBe+7B+/gbeN9DUvoEJe8dvdzDfG9zsYj/foC6cs8SnFVV2b7zY/
         ysbjWWfIzCHBo7ureuEf4XA6wy7ZOXY8CbvN//tC4v6X8eLxYb8bN7L7+nQW
         vdD5kYrLK+XwL5tvJxncAwAA
-    http_version:
+    http_version: 
   recorded_at: Thu, 10 Dec 2015 14:40:45 GMT
 recorded_with: VCR 3.0.0
