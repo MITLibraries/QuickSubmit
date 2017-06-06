@@ -38,7 +38,7 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     base_valid_form
     fill_in('Title', with: '')
     click_on('Create Submission')
-    assert_text('Please fix the problems below')
+    assert_text('Please review the problems below')
     assert_text('A title is required.')
     assert_selector("input[value='Super Mega Journal']")
   end
@@ -97,12 +97,14 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
                 File.absolute_path('./test/fixtures/a_pdf.pdf'))
     assert_text('a_pdf.pdf uploaded')
     fill_in('Title', with: '')
+    Timecop.freeze(Time.zone.local(1999))
     click_on('Create Submission')
     assert_equal(subs, Submission.count)
     assert_text('a_pdf.pdf')
     fill_in('Title', with: 'Popcorn is Good!')
     click_on('Create Submission')
     assert_equal((subs + 1), Submission.count)
+    Timecop.return
     @sub = Submission.last
     assert(@sub.documents.first.include?('a_pdf.pdf'))
   end

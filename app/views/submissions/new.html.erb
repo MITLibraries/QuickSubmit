@@ -1,29 +1,45 @@
 <h3 class="title title-page">Submit a new paper</h3>
 
-<%= bootstrap_form_for(@submission,
-                       html: { class: 'submissionUpload',
-                               data: { 'form-data' => (@s3_direct_post.fields),
-                              'url' => @s3_direct_post.url,
-                              'host' => URI.parse(@s3_direct_post.url).host } },
-                       layout: :horizontal, label_col: "col-sm-2",
-                       control_col: "col-sm-10") do |f| %>
-  <%= f.alert_message "Please fix the problems below.", error_summary: false %>
-  <%= f.text_field :title %>
-  <%= f.text_field :journal, placeholder: 'Optional' %>
-  <%= f.text_field :doi, label: 'DOI', placeholder: 'Optional' %>
-  <%= f.date_select :pub_date, discard_day: true, include_blank: true,
-                               label: 'Publication Date',
-                               help: 'If not yet published, please enter an estimated Publication Date.'%>
+<%= simple_form_for(@submission,
+             html: { class: 'submissionUpload',
+                     data: { 'form-data' => (@s3_direct_post.fields),
+                    'url' => @s3_direct_post.url,
+                    'host' => URI.parse(@s3_direct_post.url).host } },
+             ) do |f| %>
 
-  <%= f.form_group :funders, label: { text: 'Funders' } do %>
-    <% @submission.valid_funders.each do |funder| %>
-      <%= f.check_box(:funders, { multiple: true, label: funder }, funder, nil ) %>
-    <% end %>
-  <% end %>
+  <%= f.error_notification %>
 
-  <%= f.file_field :documents, multiple: true,
-                               help: 'Drag and Drop files or click "Choose Files"' %>
+  <%= f.input :title, label: 'Title',
+                      wrapper_html: { class: 'field-wrap' },
+                      input_html: { class: 'field field-text' } %>
 
+  <%= f.input :journal, label: 'Journal', placeholder: 'Optional',
+                        wrapper_html: { class: 'field-wrap' },
+                        input_html: { class: 'field field-text' } %>
+
+  <%= f.input :doi, placeholder: 'Optional',
+                    wrapper_html: { class: 'field-wrap' },
+                    input_html: { class: 'field field-text' } %>
+
+  <%= f.input :pub_date, label: 'Publication Date', as: :date,
+                         start_year: Date.today.year - 10,
+                         end_year: Date.today.year + 2, discard_day: true,
+                         order: [:month, :year],
+                         include_blank: true,
+                         hint: 'If not yet published, please enter an estimated Publication Date.',
+                         wrapper_html: { class: 'field-wrap' },
+                         input_html: { class: 'field field-select' } %>
+
+  <%= f.input :funders, label: 'Funders', as: :check_boxes,
+                        collection: @submission.valid_funders.compact, include_hidden: false,
+                        wrapper_html: { class: 'field-wrap' },
+                        input_html: { class: 'field-checkbox' } %>
+
+  <%= f.input :documents, as: :file, multiple: true,
+                               hint: 'Drag and Drop files or click "Choose Files"',
+                               wrapper_html: { class: 'field-wrap' },
+                               input_html: { class: 'field field-upload',
+                                             multiple: true } %>
 
   <div class="form-group">
     <div class="col-sm-10 col-sm-offset-2">
@@ -51,9 +67,10 @@
     </div>
   </div>
 
-  <%= f.form_group do %>
-    <%= f.submit %>
-  <% end %>
+  <div class="field-wrap">
+    <%= submit_tag "Create Submission", class: 'btn button-primary' %>
+  </div>
+
 <% end %>
 
 <script>

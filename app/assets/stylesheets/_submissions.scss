@@ -1,0 +1,26 @@
+.submissionUpload {
+
+	.field-text {
+	  width: 80%;
+	}
+
+}
+
+label.error {
+  color: $error;
+}
+
+.field_with_errors {
+	padding: 2px;
+	background-color: red;
+	display: table;
+}
+
+span.hint {
+	display: block;
+}
+
+span.checkbox {
+	display: block;
+	margin-left: 2em;
+}

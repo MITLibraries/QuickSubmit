@@ -14,6 +14,7 @@ dl {
 
 img {
   max-width: 100%;
+  vertical-align: middle;
 }
 
 a {
@@ -44,21 +45,55 @@ a {
           align-items: center;
 }
 
-.bit ul {
+.list-inline {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-indent: 0;
+}
+.list-inline li,
+.list-inline dt,
+.list-inline dd {
+  margin: 0;
+  padding: 0;
+}
+
+.list-unbulleted, .bit ul {
   list-style: none;
   padding-left: 0;
   text-indent: 0;
 }
 
-.wrap-footer .wrap-usergroups, .wrap-footer.footer-slim .sitemap-libraries-abbrev a, .wrap-outer-footer-institute .about-mit {
+.list-inline li,
+.list-inline dt,
+.list-inline dd {
+  display: inline-block;
+}
+
+.list-inline-pipe, .wrap-footer .wrap-usergroups, .wrap-footer.footer-slim .sitemap-libraries-abbrev a, .wrap-outer-footer-institute .about-mit {
+  padding-left: 0;
+}
+.list-inline-pipe li, .wrap-footer .wrap-usergroups li, .wrap-footer.footer-slim .sitemap-libraries-abbrev a li, .wrap-outer-footer-institute .about-mit li,
+.list-inline-pipe .item,
+.wrap-footer .wrap-usergroups .item,
+.wrap-footer.footer-slim .sitemap-libraries-abbrev a .item,
+.wrap-outer-footer-institute .about-mit .item {
   display: inline-block;
   padding-right: 1rem;
 }
-.wrap-footer .wrap-usergroups .item:after, .wrap-footer.footer-slim .sitemap-libraries-abbrev a .item:after, .wrap-outer-footer-institute .about-mit .item:after {
+.list-inline-pipe li:after, .wrap-footer .wrap-usergroups li:after, .wrap-footer.footer-slim .sitemap-libraries-abbrev a li:after, .wrap-outer-footer-institute .about-mit li:after,
+.list-inline-pipe .item:after,
+.wrap-footer .wrap-usergroups .item:after,
+.wrap-footer.footer-slim .sitemap-libraries-abbrev a .item:after,
+.wrap-outer-footer-institute .about-mit .item:after {
   content: ' | ';
   margin-left: 1rem;
 }
-.wrap-footer .wrap-usergroups .item:last-child:after, .wrap-footer.footer-slim .sitemap-libraries-abbrev a .item:last-child:after, .wrap-outer-footer-institute .about-mit .item:last-child:after {
+.list-inline-pipe li:last-child:after, .wrap-footer .wrap-usergroups li:last-child:after, .wrap-footer.footer-slim .sitemap-libraries-abbrev a li:last-child:after, .wrap-outer-footer-institute .about-mit li:last-child:after,
+.list-inline-pipe .item:last-child:after,
+.wrap-footer .wrap-usergroups .item:last-child:after,
+.wrap-footer.footer-slim .sitemap-libraries-abbrev a .item:last-child:after,
+.wrap-outer-footer-institute .about-mit .item:last-child:after {
   content: '';
 }
 
@@ -66,7 +101,7 @@ a {
   display: none;
 }
 
-a, .wrap-content a, .wrap-footer a, .wrap-outer-footer-institute a {
+a, .wrap-footer a, .wrap-outer-footer-institute a {
   transition: color .25s ease-in-out 0s;
   color: #338bc5;
   text-decoration: none;
@@ -75,17 +110,19 @@ a:hover, a:active, a:focus {
   color: #0ea6ec;
   text-decoration: underline;
 }
-a:disabled, a.is-disabled {
+a:disabled, .is-disabled {
   display: none;
   color: #595959;
 }
-a:active, a.is-pressed, a.is-active {
+a:active, .is-pressed, .is-active {
   color: #0ea6ec;
 }
 
+/* csslint ignore:start */
 * {
   box-sizing: border-box;
 }
+/* csslint ignore:end */
 
 html, body {
   height: 100%;
@@ -94,7 +131,7 @@ html, body {
 
 body {
   background-color: #595959;
-  color: #f3f3f3;
+  color: #fafafa;
   font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.5;
@@ -215,15 +252,72 @@ hr {
   clear: both;
 }
 
+.wrap-gridband,
+.wrap-notice,
 .wrap-header,
 .wrap-header-local,
 .wrap-breadcrumb,
 .wrap-content,
 .wrap-footer,
 .wrap-footer-institute {
-  max-width: 1024px;
+  max-width: 114rem;
   margin: 0 auto;
   padding: 10px 4%;
+}
+.wrap-gridband:after,
+.wrap-notice:after,
+.wrap-header:after,
+.wrap-header-local:after,
+.wrap-breadcrumb:after,
+.wrap-content:after,
+.wrap-footer:after,
+.wrap-footer-institute:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.gridband:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+.gridband .grid-item {
+  width: auto;
+  float: none;
+}
+@media (min-width: 768px) {
+  .gridband.layout-2c .grid-item {
+    float: left;
+    width: 48%;
+    margin-right: 3%;
+  }
+  .gridband.layout-2c .grid-item:nth-child(2n+0) {
+    float: right;
+    margin-right: 0;
+  }
+}
+@media (min-width: 768px) {
+  .gridband.layout-3c .grid-item {
+    float: left;
+    width: 32%;
+    margin-right: 2%;
+  }
+  .gridband.layout-3c .grid-item:nth-child(3n+3) {
+    float: right;
+    margin-right: 0;
+  }
+}
+@media (min-width: 768px) {
+  .gridband.layout-4c .grid-item {
+    float: left;
+    width: 23%;
+    margin-right: 2%;
+  }
+  .gridband.layout-4c .grid-item:nth-child(4n+4) {
+    float: right;
+    margin-right: 0;
+  }
 }
 
 .wrap-header .header-slim .logo-mit-lib svg {
@@ -268,32 +362,79 @@ hr {
 .wrap-content .content-main {
   padding-bottom: 3rem;
 }
+
 @media (min-width: 768px) {
-  .wrap-content.layout-3q1q {
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-  }
-  .wrap-content.layout-3q1q .content-main {
+  .layout-3q1q .col3q {
+    float: left;
     width: 73%;
   }
-  .wrap-content.layout-3q1q .content-sup {
+  .layout-3q1q .col1q-r {
+    float: right;
     width: 22%;
     margin-left: 3%;
   }
 }
+
 @media (min-width: 768px) {
-  .wrap-content.layout-1q2q1q {
+  .layout-1q3q .col1q {
+    float: left;
+    width: 22%;
+    margin-right: 3%;
+  }
+  .layout-1q3q .col3q {
+    float: right;
+    width: 73%;
+  }
+}
+
+@media (min-width: 768px) {
+  .layout-1q2q1q .col1q {
+    float: left;
+    width: 22%;
+    margin-right: 3%;
+  }
+  .layout-1q2q1q .content-main {
+    float: left;
+    width: 48%;
+    margin-right: 3%;
+  }
+  .layout-1q2q1q .col1q-r {
+    float: right;
+    width: 22%;
+  }
+}
+
+@media (min-width: 768px) {
+  .layout-1t2t {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
   }
+  .layout-1t2t .col1t {
+    float: left;
+    width: 33%;
+    margin-right: 3%;
+  }
+  .layout-1t2t .col2t {
+    float: right;
+    width: 63%;
+  }
 }
+
 @media (min-width: 768px) {
-  .wrap-content.layout-1t2t {
+  .layout-2t1t {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+  }
+  .layout-2t1t .col2t {
+    float: left;
+    width: 63%;
+    margin-right: 3%;
+  }
+  .layout-2t1t .col1t {
+    float: right;
+    width: 33%;
   }
 }
 
@@ -453,31 +594,128 @@ hr {
 
 .button-primary, .wrap-outer-header-local .action-auth {
   transition: background-color .25s, border .25s;
+  display: inline-block;
   border: 1px solid #338bc5;
   border-radius: 3px;
   padding: 5px 10px;
   background-color: #338bc5;
-  color: #f3f3f3;
+  color: #fafafa;
 }
 .button-primary:hover, .wrap-outer-header-local .action-auth:hover, .button-primary:focus, .wrap-outer-header-local .action-auth:focus {
   background-color: #0ea6ec;
   border-color: #0ea6ec;
-  color: #f3f3f3;
+  color: #fafafa;
   text-decoration: none;
 }
+.button-primary.green, .wrap-outer-header-local .green.action-auth {
+  border: 1px solid #3b815d;
+  background-color: #43926a;
+}
+.button-primary.green:hover, .wrap-outer-header-local .green.action-auth:hover, .button-primary.green:focus, .wrap-outer-header-local .green.action-auth:focus {
+  background-color: #2ea76a;
+  border-color: #43926a;
+}
 
-.button-secondary {
+.button-secondary, .button-subtle, .pagination a {
   transition: background-color .25s, border .25s;
+  display: inline-block;
+  border: 1px solid #ccc;
   border: 1px solid rgba(89, 89, 89, 0.3);
   border-radius: 3px;
   padding: 5px 10px;
   background-color: transparent;
 }
-.button-secondary:hover, .button-secondary:focus {
+.button-secondary:hover, .button-subtle:hover, .pagination a:hover, .button-secondary:focus, .button-subtle:focus, .pagination a:focus {
   background-color: #0ea6ec;
   border-color: #0ea6ec;
-  color: #f3f3f3;
+  color: #fafafa;
   text-decoration: none;
+}
+.button-secondary.green, .green.button-subtle, .pagination a.green {
+  border: 1px solid #43926a;
+  color: #43926a;
+}
+.button-secondary.green:hover, .green.button-subtle:hover, .pagination a.green:hover, .button-secondary.green:focus, .green.button-subtle:focus, .pagination a.green:focus {
+  background-color: #2ea76a;
+  border-color: #43926a;
+  color: #fafafa;
+}
+
+.button-subtle, .pagination a {
+  border: 0;
+}
+
+form {
+  margin: 1.5rem 0;
+}
+form .field-wrap {
+  margin-bottom: 1rem;
+}
+form .field-label {
+  display: inline-block;
+  margin-bottom: .2rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+form .field-label.error {
+  color: #AC1D22;
+}
+form .field {
+  display: block;
+  margin-top: .2rem;
+  margin-bottom: .2rem;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  background-image: none;
+}
+form .field:focus, form .field:active {
+  border-color: #338bc5;
+  box-shadow: 0 0 5px rgba(14, 166, 236, 0.8);
+}
+form .field.error {
+  border-color: #AC1D22;
+}
+form .field-text {
+  min-width: 25rem;
+  padding: 6px 12px;
+  background-color: #fff;
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
+}
+form .tip {
+  font-size: 1.4rem;
+  color: #756c61;
+  margin-bottom: 0;
+}
+form .tip.error {
+  color: #AC1D22;
+}
+form .field-textarea {
+  display: block;
+  min-width: 25rem;
+}
+form .field-select {
+  display: block;
+  min-width: 25rem;
+  padding: 3px;
+}
+form .field-upload {
+  border: none;
+}
+form .fields-inline .field-label {
+  display: inline-block;
+  max-width: 30%;
+}
+form .fields-inline .field {
+  display: inline-block;
+  max-width: 65%;
+}
+form .fields-inline.field-radio {
+  display: inline-block;
+  margin-right: 1.5rem;
+}
+form .disabled {
+  color: #595959;
+  cursor: not-allowed;
 }
 
 .bit {
@@ -485,6 +723,96 @@ hr {
   border-top: 3px solid #ccc;
   padding-top: 1rem;
   font-size: 1.4rem;
+}
+
+.alert p {
+  margin-top: .2rem;
+  margin-bottom: .2rem;
+}
+.alert.info {
+  color: #111;
+}
+.alert.success {
+  color: #43926a;
+}
+.alert.warning {
+  color: #faa933;
+}
+.alert.error {
+  color: #AC1D22;
+}
+
+/* global app style alerts and notices */
+.wrap-notices {
+  background-color: #333;
+  color: #fafafa;
+  font-size: 1.2rem;
+}
+.wrap-notices .link {
+  color: #83c8ff;
+}
+.wrap-notices.success {
+  border-bottom: 4px solid #43926a;
+}
+.wrap-notices.warning {
+  border-bottom: 4px solid #faa933;
+}
+.wrap-notices.error {
+  border-bottom: 4px solid #AC1D22;
+}
+
+.alert-banner {
+  display: block;
+  margin-bottom: 2rem;
+  border-radius: 2px;
+  padding: 1.6rem 2rem;
+  border-top: 3px solid rgba(51, 139, 197, 0.3);
+  background-color: rgba(51, 139, 197, 0.2);
+  color: #111;
+}
+.alert-banner.success {
+  border-top: 3px solid rgba(67, 146, 106, 0.3);
+  background-color: rgba(67, 146, 106, 0.2);
+  color: #234c37;
+}
+.alert-banner.warning {
+  border-top: 3px solid rgba(250, 169, 51, 0.3);
+  background-color: rgba(250, 169, 51, 0.2);
+  color: #5f3902;
+}
+.alert-banner.error {
+  border-top: 3px solid rgba(172, 29, 34, 0.3);
+  background-color: #f7d1d2;
+  color: #550e11;
+}
+
+@media (min-width: 768px) {
+  .inline-action .message {
+    display: inline-block;
+    vertical-align: middle;
+    width: 65%;
+  }
+  .inline-action .actions {
+    display: inline-block;
+    vertical-align: middle;
+    width: 34%;
+    text-align: right;
+  }
+}
+
+.well {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+  padding: 2rem 2.5rem;
+  margin: 2rem 0;
+}
+
+.pagination {
+  margin: 1rem;
+}
+.pagination .page {
+  display: inline-block;
+  min-width: 3rem;
+  text-align: center;
 }
 
 #skip {
@@ -508,22 +836,23 @@ hr {
 
 .wrap-outer-header {
   background-color: #111;
-  color: #f3f3f3;
+  color: #fafafa;
 }
 
 .wrap-header .logo-mit-lib {
   display: inline-block;
-  fill: #f3f3f3;
+  fill: #fafafa;
 }
 .wrap-header .logo-mit-lib svg {
   width: auto;
   height: auto;
+  max-width: 100%;
 }
 .wrap-header .link-logo-mit .logo-mit {
   fill: #999;
 }
 .wrap-header .link-logo-mit .logo-mit .color {
-  fill: #f3f3f3;
+  fill: #fafafa;
 }
 
 .wrap-outer-header-local {
@@ -543,12 +872,18 @@ hr {
 
 .wrap-outer-breadcrumb {
   background-color: #dedede;
+  color: #595959;
   font-size: 1.2rem;
+}
+
+.wrap-breadcrumb {
+  padding-top: 7px;
+  padding-bottom: 5px;
 }
 
 .wrap-outer-footer {
   background-color: #333;
-  color: #f3f3f3;
+  color: #fafafa;
   font-size: 1.2rem;
 }
 
@@ -565,11 +900,12 @@ hr {
   font-weight: 300;
 }
 .wrap-footer .logo-mit-lib {
-  fill: #f3f3f3;
+  fill: #fafafa;
 }
 .wrap-footer .logo-mit-lib svg {
   width: auto;
   height: auto;
+  max-width: 100%;
 }
 .wrap-footer .wrap-usergroups {
   font-size: 1.4rem;
@@ -603,14 +939,14 @@ hr {
   color: #999;
 }
 .wrap-outer-footer-institute a {
-  color: #f3f3f3;
+  color: #fafafa;
 }
 .wrap-outer-footer-institute .link-logo-mit .logo-mit {
   display: inline-block;
   fill: #999;
 }
 .wrap-outer-footer-institute .link-logo-mit .logo-mit .color {
-  fill: #f3f3f3;
+  fill: #fafafa;
 }
 .wrap-outer-footer-institute .about-mit {
   color: #ccc;
@@ -629,10 +965,12 @@ hr {
   margin: 1rem 0;
 }
 
-.wrap-outer-header-local.reasons {
+/* csslint ignore:start */
+.wrap-outer-header.reasons {
   background: #f23074; /* Old browsers */
   background: -moz-linear-gradient(45deg, #f23074 0%, #d6d628 36%, #207cca 66%, #544b8c 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(45deg, #f23074 0%,#d6d628 36%,#207cca 66%,#544b8c 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(45deg, #f23074 0%,#d6d628 36%,#207cca 66%,#544b8c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f23074', endColorstr='#544b8c',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
+/* csslint ignore:end */
