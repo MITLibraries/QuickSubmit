@@ -12,15 +12,28 @@ label.error {
 
 .field_with_errors {
 	padding: 2px;
-	background-color: red;
+	color: $error;
 	display: table;
 }
 
 span.hint {
 	display: block;
+	color: grey;
 }
 
 span.checkbox {
 	display: block;
 	margin-left: 2em;
+}
+
+span.checkbox label input {
+	margin: 4px;
+}
+
+.submission_pub_date label {
+	display: block;
+}
+
+#submission_pub_date_2i, #submission_pub_date_1i {
+	display: inline-block;
 }
