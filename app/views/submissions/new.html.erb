@@ -32,7 +32,7 @@
 
   <%= f.input :funders, label: 'Funders', as: :check_boxes,
                         collection: @submission.valid_funders.compact, include_hidden: false,
-                        wrapper_html: { class: 'field-wrap group-checkboxes' },
+                        wrapper_html: { class: 'field-wrap list-checkboxes' },
                         input_html: { class: 'input-checkbox' } %>
 
   <%= f.input :documents, as: :file, multiple: true,
