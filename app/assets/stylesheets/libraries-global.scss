@@ -642,6 +642,18 @@ hr {
 form {
   margin: 1.5rem 0;
 }
+form fieldset {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid #ccc;
+  padding: 2rem;
+}
+form legend {
+  padding: 0 1rem;
+  font-size: 1.4rem;
+  color: #595959;
+  text-transform: uppercase;
+}
 form .field-wrap {
   margin-bottom: 1rem;
 }
@@ -650,9 +662,6 @@ form .field-label {
   margin-bottom: .2rem;
   font-size: 1.4rem;
   font-weight: 600;
-}
-form .field-label.error {
-  color: #AC1D22;
 }
 form .field {
   display: block;
@@ -665,9 +674,6 @@ form .field {
 form .field:focus, form .field:active {
   border-color: #338bc5;
   box-shadow: 0 0 5px rgba(14, 166, 236, 0.8);
-}
-form .field.error {
-  border-color: #AC1D22;
 }
 form .field.wide {
   width: 90%;
@@ -726,19 +732,15 @@ form .disabled {
   color: #595959;
   cursor: not-allowed;
 }
-
-fieldset {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  border: 1px solid #ccc;
-  padding: 2rem;
+form .error .field-label {
+  color: #AC1D22;
 }
-
-legend {
-  padding: 0 1rem;
-  font-size: 1.4rem;
-  color: #595959;
-  text-transform: uppercase;
+form .error .field {
+  border-color: #AC1D22;
+}
+form .error .tip,
+form .error .hint {
+  color: #AC1D22;
 }
 
 .bit {
