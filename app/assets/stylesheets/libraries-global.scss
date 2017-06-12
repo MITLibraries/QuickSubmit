@@ -609,6 +609,20 @@ hr {
   background-color: #2ea76a;
   border-color: #43926a;
 }
+.button-primary.warn, .wrap-outer-header-local .warn.action-auth {
+  border: 1px solid #801619;
+  background-color: #96191e;
+}
+.button-primary.warn:before, .wrap-outer-header-local .warn.action-auth:before {
+  font-family: FontAwesome;
+  content: "\f071 ";
+  font-size: .8em;
+  margin-right: 5px;
+}
+.button-primary.warn:hover, .wrap-outer-header-local .warn.action-auth:hover, .button-primary.warn:focus, .wrap-outer-header-local .warn.action-auth:focus {
+  background-color: #c0090f;
+  border-color: #AC1D22;
+}
 
 .button-secondary, .button-subtle, .pagination a {
   transition: background-color .25s, border .25s;
@@ -632,6 +646,20 @@ hr {
 .button-secondary.green:hover, .green.button-subtle:hover, .pagination a.green:hover, .button-secondary.green:focus, .green.button-subtle:focus, .pagination a.green:focus {
   background-color: #2ea76a;
   border-color: #43926a;
+  color: #fafafa;
+}
+.button-secondary.warn, .warn.button-subtle, .pagination a.warn {
+  color: #AC1D22;
+}
+.button-secondary.warn:before, .warn.button-subtle:before, .pagination a.warn:before {
+  font-family: FontAwesome;
+  content: "\f071 ";
+  font-size: .8em;
+  margin-right: 5px;
+}
+.button-secondary.warn:hover, .warn.button-subtle:hover, .pagination a.warn:hover, .button-secondary.warn:focus, .warn.button-subtle:focus, .pagination a.warn:focus {
+  background-color: #c0090f;
+  border-color: #AC1D22;
   color: #fafafa;
 }
 
@@ -658,7 +686,8 @@ form legend {
   color: #595959;
   text-transform: uppercase;
 }
-form .field-wrap {
+form .field-wrap,
+form .field-group {
   margin-bottom: 1rem;
 }
 form .field-label {
