@@ -67,7 +67,6 @@ GEM
       xpath (~> 2.0)
     cliver (0.3.2)
     coderay (1.1.1)
-    commonjs (0.2.7)
     concurrent-ruby (1.0.5)
     coveralls (0.8.21)
       json (>= 1.8, < 3)
@@ -119,13 +118,6 @@ GEM
     jquery-validation-rails (1.16.0)
     json (2.1.0)
     jwt (1.5.6)
-    less (2.6.0)
-      commonjs (~> 0.2.7)
-    less-rails (2.8.0)
-      actionpack (>= 4.0)
-      less (~> 2.6.0)
-      sprockets (> 2, < 4)
-      tilt
     libv8 (3.16.14.19)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
@@ -278,7 +270,6 @@ GEM
       ref
     thor (0.19.4)
     thread_safe (0.3.6)
-    tilt (2.0.7)
     timecop (0.8.1)
     tins (1.14.0)
     tzinfo (1.2.3)
@@ -324,7 +315,6 @@ DEPENDENCIES
   jquery-fileupload-rails
   jquery-rails
   jquery-validation-rails
-  less-rails
   minitest-rails
   minitest-rails-capybara
   minitest-reporters
