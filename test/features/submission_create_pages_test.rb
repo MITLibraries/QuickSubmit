@@ -24,8 +24,8 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     fill_in('Journal', with: 'Super Mega Journal')
     fill_in('Title', with: 'Alphabetical Order is Good Enough')
     check('Department of Energy (DOE)')
-    select '1999', from: 'submission[pub_date(1i)]'
-    select 'January', from: 'submission[pub_date(2i)]'
+    fill_in('Publication Year', with: '1999')
+    select 'January', from: 'submission[publication_month]'
     Timecop.return
   end
 
@@ -57,12 +57,14 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     attach_file('submission[documents][]',
                 File.absolute_path('./test/fixtures/a_pdf.pdf'))
     assert_text('a_pdf.pdf uploaded')
+    Timecop.freeze(Time.zone.local(1999))
     click_on('Create Submission')
     assert_equal(Submission.count, (subs + 1))
     @sub = Submission.last
     assert_equal('abc123@example.com', @sub.user.email)
     assert_equal(submissions_path, current_path)
     assert_text('Your Submission is now in progress')
+    Timecop.return
   end
 
   test 'multiple pdfs can be attached' do
@@ -84,10 +86,12 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     attach_file('submission[documents][]',
                 File.absolute_path('./test/fixtures/a.txt'))
     refute page.has_content?('Only PDF files are accepted at this time')
+    Timecop.freeze(Time.zone.local(1999))
     click_on('Create Submission')
     assert_equal(subs + 1, Submission.count)
     @sub = Submission.last
     assert(@sub.documents.first.include?('a.txt'))
+    Timecop.return
   end
 
   test 'pdf retained across invalid form submission' do
