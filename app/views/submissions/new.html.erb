@@ -11,29 +11,33 @@
 
   <%= f.input :title, label: 'Title',
                       wrapper_html: { class: 'field-wrap' },
-                      input_html: { class: 'field field-text' } %>
+                      input_html: { class: 'field field-text wide' } %>
 
   <%= f.input :journal, label: 'Journal (optional)',
                         wrapper_html: { class: 'field-wrap' },
-                        input_html: { class: 'field field-text' } %>
+                        input_html: { class: 'field field-text  wide' } %>
 
   <%= f.input :doi, label: 'DOI (optional)',
                     wrapper_html: { class: 'field-wrap' },
-                    input_html: { class: 'field field-text' } %>
+                    input_html: { class: 'field field-text  wide' } %>
 
-  <%= f.input :pub_date, label: 'Publication Date', as: :date,
-                         start_year: Date.today.year - 10,
-                         end_year: Date.today.year + 2, discard_day: true,
-                         order: [:month, :year],
-                         include_blank: true,
+  <%= f.input :publication_month, label: 'Publication Month', as: :select,
+                         collection: Date::MONTHNAMES.compact,
                          hint: 'If not yet published, please enter an estimated Publication Date.',
                          wrapper_html: { class: 'field-wrap' },
                          input_html: { class: 'field field-select' } %>
 
-  <%= f.input :funders, label: 'Funders', as: :check_boxes,
+  <%= f.input :publication_year, label: 'Publication Year', as: :string,
+                         hint: 'If not yet published, please enter an estimated Publication Date.',
+                         wrapper_html: { class: 'field-wrap' },
+                         input_html: { class: 'field field-select' } %>
+
+  <label id="funder_label">Funders
+  <%= f.input :funders, label: false, as: :check_boxes,
                         collection: @submission.valid_funders.compact, include_hidden: false,
                         wrapper_html: { class: 'field-wrap list-checkboxes' },
-                        input_html: { class: 'input-checkbox' } %>
+                        input_html: { class: 'input-checkbox', 'labelledby': "funder_label" } %>
+  </label>
 
   <%= f.input :documents, as: :file, multiple: true,
                                hint: 'Drag and Drop files or click "Choose Files"',
