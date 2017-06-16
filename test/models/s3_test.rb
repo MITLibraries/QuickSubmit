@@ -27,7 +27,8 @@ class S3Test < ActiveSupport::TestCase
       documents: '//s3.amazonaws.com/mitquicksubmitdev/uploads/12345',
       user: users(:one),
       funders: ['Department of Energy (DOE)'],
-      pub_date: 1.year.ago,
+      publication_year: 1.year.ago.strftime('%Y'),
+      publication_month: 1.year.ago.strftime('%B'),
       status: 'status',
       handle: 'http://example.com'
     )
@@ -40,7 +41,8 @@ class S3Test < ActiveSupport::TestCase
       documents: '//s3.amazonaws.com/mitquicksubmitdev/uploads/12345',
       user: users(:one),
       funders: ['Department of Energy (DOE)'],
-      pub_date: 1.year.ago,
+      publication_year: 1.year.ago.strftime('%Y'),
+      publication_month: 1.year.ago.strftime('%B'),
       status: 'status',
       handle: 'http://example.com'
     )

@@ -38,6 +38,7 @@ class Submission < ActiveRecord::Base
   before_create :generate_uuid
   before_create :combine_publication_date
   before_destroy :delete_documents_from_s3
+  after_find :split_publication_date
 
   SUBMITTABLE_FUNDERS = ['Department of Agriculture (USDA)',
                          'Department of Defense (DoD)',
@@ -86,8 +87,13 @@ class Submission < ActiveRecord::Base
 
   # Combine the UI supplied month and year into a datetime object
   def combine_publication_date
-    self.pub_date = DateTime.new.utc(publication_year.to_i,
-                                     Date::MONTHNAMES.index(publication_month))
+    self.pub_date = DateTime.new(publication_year.to_i,
+                                 Date::MONTHNAMES.index(publication_month))
+  end
+
+  def split_publication_date
+    self.publication_year = pub_date.strftime('%Y')
+    self.publication_month = pub_date.strftime('%B')
   end
 
   # Generate a {Mets} XML representation of the Submission
