@@ -24,7 +24,7 @@ class SubmissionCreatePagesTest < Capybara::Rails::TestCase
     fill_in('Journal', with: 'Super Mega Journal')
     fill_in('Title', with: 'Alphabetical Order is Good Enough')
     check('Department of Energy (DOE)')
-    fill_in('Publication Year', with: '1999')
+    fill_in('Year', with: '1999')
     select 'January', from: 'submission[publication_month]'
     Timecop.return
   end
