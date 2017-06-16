@@ -83,7 +83,9 @@ class SubmissionsController < ApplicationController
 
   def filtered_submissions
     if params[:filter]
-      Submission.where(status: params[:filter])
+      filter = params[:filter]
+      filter = nil if filter == 'asdf'
+      Submission.where(status: filter)
     else
       Submission.all.order(created_at: :desc)
     end

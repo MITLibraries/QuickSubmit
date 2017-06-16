@@ -2,10 +2,11 @@
 
 <div class="wrap-filters">
     View:
-   <%= link_to('All', submissions_path, class: 'btn btn-default') %>
-   <%= link_to('Failed', submissions_path(filter: 'failed'), class: 'btn btn-default') %>
-   <%= link_to('In Review Queue', submissions_path(filter: 'in review queue'), class: 'btn btn-default') %>
-   <%= link_to('Approved', submissions_path(filter: 'approved'), class: 'btn btn-default') %>
+   <%= link_to('All', submissions_path, class: "button-secondary #{'current' unless params[:filter] }") %>
+   <%= link_to('Failed', submissions_path(filter: 'failed'), class: "button-secondary #{'current' if params[:filter] == 'failed' }") %>
+   <%= link_to('In Review Queue', submissions_path(filter: 'in review queue'), class: "button-secondary #{'current' if params[:filter] == 'in review queue' }") %>
+   <%= link_to('Approved', submissions_path(filter: 'approved'), class: "button-secondary #{'current' if params[:filter] == 'approved' }") %>
+   <%= link_to('Unknown', submissions_path(filter: 'asdf'), class: "button-secondary #{'current' if params[:filter] == 'asdf' }") %>
 </div>
 
 <% if @submissions %>
