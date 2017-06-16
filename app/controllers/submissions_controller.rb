@@ -83,7 +83,9 @@ class SubmissionsController < ApplicationController
 
   def filtered_submissions
     if params[:filter]
-      Submission.where(status: params[:filter])
+      filter = params[:filter]
+      filter = nil if filter == 'asdf'
+      Submission.where(status: filter)
     else
       Submission.all.order(created_at: :desc)
     end
@@ -102,7 +104,8 @@ class SubmissionsController < ApplicationController
   end
 
   def submission_params
-    params.require(:submission).permit(:title, :agreed_to_license, :pub_date,
+    params.require(:submission).permit(:title, :agreed_to_license,
+                                       :publication_year, :publication_month,
                                        :journal, :doi, :documents_cache,
                                        documents: [], funders: [])
   end

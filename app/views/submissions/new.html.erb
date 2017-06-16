@@ -1,31 +1,62 @@
 <h3 class="title title-page">Submit a new paper</h3>
 
-<%= bootstrap_form_for(@submission,
-                       html: { class: 'submissionUpload',
-                               data: { 'form-data' => (@s3_direct_post.fields),
-                              'url' => @s3_direct_post.url,
-                              'host' => URI.parse(@s3_direct_post.url).host } },
-                       layout: :horizontal, label_col: "col-sm-2",
-                       control_col: "col-sm-10") do |f| %>
-  <%= f.alert_message "Please fix the problems below.", error_summary: false %>
-  <%= f.text_field :title %>
-  <%= f.text_field :journal, placeholder: 'Optional' %>
-  <%= f.text_field :doi, label: 'DOI', placeholder: 'Optional' %>
-  <%= f.date_select :pub_date, discard_day: true, include_blank: true,
-                               label: 'Publication Date',
-                               help: 'If not yet published, please enter an estimated Publication Date.'%>
+<%= simple_form_for(@submission,
+             html: { class: 'submissionUpload',
+                     data: { 'form-data' => (@s3_direct_post.fields),
+                    'url' => @s3_direct_post.url,
+                    'host' => URI.parse(@s3_direct_post.url).host } },
+             ) do |f| %>
 
-  <%= f.form_group :funders, label: { text: 'Funders' } do %>
-    <% @submission.valid_funders.each do |funder| %>
-      <%= f.check_box(:funders, { multiple: true, label: funder }, funder, nil ) %>
-    <% end %>
-  <% end %>
+  <%= f.error_notification %>
 
-  <%= f.file_field :documents, multiple: true,
-                               help: 'Drag and Drop files or click "Choose Files"' %>
+  <%= f.input :title, label: 'Title',
+                      wrapper_html: { class: 'field-wrap' },
+                      input_html: { class: 'field field-text wide' } %>
+
+  <%= f.input :journal, label: 'Journal (optional)',
+                        wrapper_html: { class: 'field-wrap' },
+                        input_html: { class: 'field field-text  wide' } %>
+
+  <%= f.input :doi, label: 'DOI (optional)',
+                    wrapper_html: { class: 'field-wrap' },
+                    input_html: { class: 'field field-text  wide' } %>
+
+  <fieldset>
+    <legend>Publication Date</legend>
+
+      <div class="group-inline">
+
+      <%= f.input :publication_month, label: 'Month', as: :select,
+                           collection: Date::MONTHNAMES.compact,
+                           wrapper_html: { class: 'field-wrap' },
+                           input_html: { class: 'field field-select' } %>
+
+      <%= f.input :publication_year, label: 'Year', as: :string,
+                          wrapper_html: { class: 'field-wrap' },
+                          input_html: { class: 'field field-select' } %>
+
+      <p class="tip">If not yet published, please enter an estimated Publication Date.</p>
+    </div>
+
+  </fieldset>
+
+  <fieldset>
+    <legend>Funders</legend>
 
 
-  <div class="form-group">
+    <%= f.input :funders, label: false, as: :check_boxes,
+                        collection: @submission.valid_funders.compact, include_hidden: false,
+                        wrapper_html: { class: 'field-wrap list-checkboxes' },
+                        input_html: { class: 'input-checkbox', 'labelledby': "funder_label" } %>
+  </fieldset>
+
+  <%= f.input :documents, as: :file, multiple: true,
+                               hint: 'Drag and Drop files or click "Choose Files"',
+                               wrapper_html: { class: 'field-wrap' },
+                               input_html: { class: 'field field-upload',
+                                             multiple: true } %>
+
+  <div class="field-group">
     <div class="col-sm-10 col-sm-offset-2">
       <!-- The global progress bar -->
       <div id="progress" class="progress" style="display: none;">
@@ -46,14 +77,15 @@
       </div>
 
       <div id="resetUploads" style="display: none;">
-        <button type="button" id="uploadReset" class="btn btn-danger">Remove Uploads</button>
+        <button type="button" id="uploadReset" class="btn button-secondary warn">Remove Uploads</button>
       </div>
     </div>
   </div>
 
-  <%= f.form_group do %>
-    <%= f.submit %>
-  <% end %>
+  <div class="field-wrap">
+    <%= submit_tag "Create Submission", class: 'btn button-primary' %>
+  </div>
+
 <% end %>
 
 <script>

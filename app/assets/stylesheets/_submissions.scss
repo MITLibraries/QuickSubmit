@@ -1,0 +1,11 @@
+
+label.error {
+  color: $error;
+}
+
+.field_with_errors {
+	padding: 2px;
+	color: $error;
+	display: table;
+}
+

@@ -20,11 +20,15 @@
 # A {User} supplied set of metadata with attached documents
 class Submission < ActiveRecord::Base
   belongs_to :user
+  attr_accessor :publication_year, :publication_month
+  validates :publication_year, presence: true
+  validate :valid_year?
+  validates :publication_month, presence: true
+  validate :valid_month?
   validates :user, presence: true
   validates :title, presence: { message: 'A title is required.' }
   validates :documents, presence: { message:
                                     'One or more documents is required.' }
-  validates :pub_date, presence: { message: 'A publication date is required.' }
   validates :funders, presence: { message: 'At least one funder is required.' }
   validate :funders_are_valid
   validates :handle, format: URI.regexp, allow_nil: true
@@ -32,7 +36,9 @@ class Submission < ActiveRecord::Base
   serialize :documents, JSON
   serialize :funders, JSON
   before_create :generate_uuid
+  before_create :combine_publication_date
   before_destroy :delete_documents_from_s3
+  after_find :split_publication_date
 
   SUBMITTABLE_FUNDERS = ['Department of Agriculture (USDA)',
                          'Department of Defense (DoD)',
@@ -49,6 +55,22 @@ class Submission < ActiveRecord::Base
 
   UI_ONLY_FUNDERS = ['Other'].freeze
 
+  # Ensures submitted year string is reasonably sane
+  def valid_year?
+    d=publication_year, s=Time.zone.now.year-5, e=Time.zone.now.year+5
+    if d.grep(/^(\d)+$/) do |date_str|
+      (s..e).include?(date_str.to_i)
+    end.first
+    else
+      errors.add(:publication_year, 'Invalid publication year')
+    end
+  end
+
+  def valid_month?
+    return if Date::MONTHNAMES.compact.include?(publication_month)
+    errors.add(:publication_month, 'Invalid publication month')
+  end
+
   # Ensures submitted funders are allowed
   def funders_are_valid
     return unless funders.present?
@@ -61,6 +83,17 @@ class Submission < ActiveRecord::Base
   # Convience method to check if the Submission status is 'approved'
   def status_approved?
     status == 'approved'
+  end
+
+  # Combine the UI supplied month and year into a datetime object
+  def combine_publication_date
+    self.pub_date = DateTime.new(publication_year.to_i,
+                                 Date::MONTHNAMES.index(publication_month))
+  end
+
+  def split_publication_date
+    self.publication_year = pub_date.strftime('%Y')
+    self.publication_month = pub_date.strftime('%B')
   end
 
   # Generate a {Mets} XML representation of the Submission

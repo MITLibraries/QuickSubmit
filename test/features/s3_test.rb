@@ -24,8 +24,8 @@ class S3PagesTest < Capybara::Rails::TestCase
     fill_in('Journal', with: 'Super Mega Journal')
     fill_in('Title', with: 'Alphabetical Order is Good Enough')
     check('Department of Energy (DOE)')
-    select '1999', from: 'submission[pub_date(1i)]'
-    select 'January', from: 'submission[pub_date(2i)]'
+    fill_in('Year', with: '1999')
+    select 'January', from: 'submission[publication_month]'
     Timecop.return
   end
 
@@ -34,11 +34,13 @@ class S3PagesTest < Capybara::Rails::TestCase
     attach_file('submission[documents][]',
                 File.absolute_path('./test/fixtures/a_pdf.pdf'))
     assert_text('a_pdf.pdf uploaded')
+    Timecop.freeze(Time.zone.local(1999))
     click_on('Create Submission')
     @sub = Submission.last
     doc = @sub.documents.last
     doc_uri = @sub.document_uri(doc).split("#{ENV['S3_BUCKET']}/").last
     assert_equal(true, S3_BUCKET.object(doc_uri).exists?)
+    Timecop.return
   end
 
   test 'deleting a Submission deletes files from s3' do
@@ -46,6 +48,7 @@ class S3PagesTest < Capybara::Rails::TestCase
     attach_file('submission[documents][]',
                 File.absolute_path('./test/fixtures/a_pdf.pdf'))
     assert_text('a_pdf.pdf uploaded')
+    Timecop.freeze(Time.zone.local(1999))
     click_on('Create Submission')
     @sub = Submission.last
     doc = @sub.documents.last
@@ -53,5 +56,6 @@ class S3PagesTest < Capybara::Rails::TestCase
     assert_equal(true, S3_BUCKET.object(doc_uri).exists?)
     @sub.destroy
     assert_equal(false, S3_BUCKET.object(doc_uri).exists?)
+    Timecop.return
   end
 end

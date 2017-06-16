@@ -61,9 +61,15 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_not sub.valid?
   end
 
-  test 'invalid without pub_date' do
+  test 'invalid without publication_year' do
     sub = submissions(:sub_one)
-    sub.pub_date = ''
+    sub.publication_year = ''
+    assert_not sub.valid?
+  end
+
+  test 'invalid without publication_month' do
+    sub = submissions(:sub_one)
+    sub.publication_month = ''
     assert_not sub.valid?
   end
 
@@ -103,7 +109,8 @@ class SubmissionTest < ActiveSupport::TestCase
     user = users(:one)
     sub = Submission.create(title: 'manual sub', documents: ['b_pdf.pdf'],
                             user: user, funders: ['Department of Energy (DOE)'],
-                            pub_date: 1.year.ago)
+                            publication_year: 1.year.ago.strftime('%Y'),
+                            publication_month: 1.year.ago.strftime('%B'))
     assert(sub.uuid)
   end
 

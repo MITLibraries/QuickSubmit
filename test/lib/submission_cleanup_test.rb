@@ -25,7 +25,8 @@ class RakeTaskTestCase < ActiveSupport::TestCase
       documents: ['b_pdf.pdf'],
       user: users(:one),
       funders: ['Department of Energy (DOE)'],
-      pub_date: 1.year.ago,
+      publication_year: 1.year.ago.strftime('%Y'),
+      publication_month: 1.year.ago.strftime('%B'),
       status: status,
       handle: 'http://example.com'
     )
